@@ -1383,3 +1383,69 @@ select option{
     min-height:auto !important;
     padding:12px 30px !important;
 }
+/* MOBILE RESPONSIVE */
+
+@media (max-width: 768px) {
+
+    .navbar{
+        padding: 15px 20px;
+        justify-content: center;
+    }
+
+    .nav-menu{
+        display: none;
+    }
+
+    .nav-btn{
+        display: none;
+    }
+
+    .logo img{
+        height: 60px;
+        width: auto;
+    }
+
+    .hero{
+        padding-top: 120px;
+        text-align: center;
+    }
+
+    .hero h1{
+        font-size: 42px;
+        line-height: 1.2;
+    }
+
+    .hero p{
+        font-size: 18px;
+        line-height: 1.8;
+        padding: 0 10px;
+    }
+
+    .hero-buttons{
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+        align-items: center;
+    }
+
+    .hero-buttons a{
+        width: 90%;
+        text-align: center;
+    }
+
+    .stats-grid,
+    .services-grid,
+    .portfolio-grid,
+    .contact-grid{
+        grid-template-columns: 1fr !important;
+    }
+
+    .section-title h2{
+        font-size: 32px;
+    }
+
+    .container{
+        width: 92%;
+        margin: auto;
+    }
+}
