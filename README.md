@@ -1,2 +1,54 @@
-# nexttech-labs
-NextTech Labs - A modern technology agency website showcasing Web Development, AI Solutions, Data Analytics and Workflow Automation services.
+# 🚀 NextTech Labs
+
+NextTech Labs is a modern technology agency website focused on delivering innovative digital solutions for businesses, startups, and organizations.
+
+## 🌟 Services
+
+- 🌐 Web Development
+- 🤖 AI Solutions
+- 📊 Data Analytics
+- ⚙️ Workflow Automation
+
+## 📁 Pages
+
+- Home
+- Services
+- Portfolio
+- About
+- Contact
+
+## 💼 Featured Projects
+
+### 🧘 YogSeekho
+Online Yoga Learning Platform
+
+### 🏥 Diabetic Yoga Sewa
+Healthcare & Wellness Platform
+
+### 📊 AI Data Analyzer
+AI-powered Data Analysis Tool
+
+### 📅 Appointment Booking System
+Automated Scheduling & Booking Platform
+
+## 🛠 Technologies Used
+
+- HTML5
+- CSS3
+- JavaScript
+- Responsive Design
+- Google Apps Script
+
+## 📞 Contact
+
+**NextTech Labs**
+
+📧 nexttechlabs.business@gmail.com
+
+📱 +91 8354027338
+
+📍 Lucknow, Uttar Pradesh, India
+
+---
+
+### Building Digital Solutions That Drive Growth 🚀
