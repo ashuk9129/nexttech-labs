@@ -47,7 +47,7 @@ Automated Scheduling & Booking Platform
 
 📱 +91 8354027338
 
-📍 Lucknow, Uttar Pradesh, India
+📍 Adil Nagar, Kursi Road, Lucknow, Uttar Pradesh
 
 ---
 
