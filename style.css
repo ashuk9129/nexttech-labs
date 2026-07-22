@@ -136,7 +136,8 @@ a{
 
 .logo img{
     height: 80px;
-    width:auto;
+    width: auto;
+    filter: brightness(1.5);
 }
 
 .nav-menu{
@@ -767,9 +768,10 @@ grid-template-columns:1fr;
 }
 
 .logo img{
-    height: 80px;
-    width: auto;
-    filter: brightness(1.5);
+    height:110px;
+    width:auto;
+    display:block;
+    object-fit:contain;
 }
 .footer{
     background:#070d1f;
@@ -1383,6 +1385,9 @@ select option{
     min-height:auto !important;
     padding:12px 30px !important;
 }
+.map-section{
+    margin-top:40px;
+}
 /* MOBILE RESPONSIVE */
 
 @media (max-width: 768px) {
@@ -1447,5 +1452,131 @@ select option{
     .container{
         width: 92%;
         margin: auto;
+    }
+}
+html, body {
+    overflow-x: hidden;
+    width: 100%;
+}
+
+* {
+    box-sizing: border-box;
+}
+@media (max-width:768px){
+
+.nav-menu{
+    display:none;
+}
+
+.nav-btn{
+    display:none;
+}
+
+.logo img{
+    height:55px;
+}
+
+.navbar{
+    justify-content:center;
+}
+}
+/* =========================
+   MOBILE RESPONSIVE FIX
+========================= */
+
+html,
+body{
+    overflow-x:hidden;
+    width:100%;
+}
+
+*{
+    box-sizing:border-box;
+}
+
+@media (max-width:768px){
+
+    .container{
+        width:92%;
+        margin:auto;
+        padding:0 10px;
+    }
+
+    .navbar{
+        padding:15px;
+        justify-content:center;
+    }
+
+    .nav-menu{
+        display:none;
+    }
+
+    .nav-btn{
+        display:none;
+    }
+
+    .logo img{
+        height:60px;
+        width:auto;
+        max-width:100%;
+    }
+
+    .hero{
+        min-height:auto;
+        padding-top:120px;
+        padding-bottom:60px;
+    }
+
+    .hero-grid{
+        display:grid;
+        grid-template-columns:1fr;
+        gap:30px;
+        text-align:center;
+    }
+
+    .hero-content h1{
+        font-size:2.5rem;
+        line-height:1.2;
+    }
+
+    .hero-content p{
+        font-size:1rem;
+        line-height:1.8;
+        padding:0 5px;
+    }
+
+    .hero-buttons{
+        display:flex;
+        flex-direction:column;
+        align-items:center;
+        gap:15px;
+    }
+
+    .hero-buttons a,
+    .hero-buttons button{
+        width:100%;
+        max-width:280px;
+        text-align:center;
+    }
+
+    .stats-grid,
+    .services-grid,
+    .portfolio-grid,
+    .contact-grid{
+        grid-template-columns:1fr !important;
+    }
+
+    .section-title h2{
+        font-size:32px;
+    }
+
+    img{
+        max-width:100%;
+        height:auto;
+    }
+
+    .floating-card,
+    .service-tag{
+        display:none;
     }
 }
