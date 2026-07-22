@@ -226,7 +226,7 @@ a{
     min-height:85vh;
     display:flex;
     align-items:center;
-    padding-top:140px;
+    padding-top:80px;
 }
 
 .hero-grid{
@@ -252,7 +252,14 @@ a{
     font-family:'Poppins',sans-serif;
     margin-bottom:20px;
 }
+@media (max-width:768px){
 
+.hero-content h1{
+    font-size:2.3rem;
+    line-height:1.2;
+}
+
+}
 .hero-content h1 span{
     background:linear-gradient(
         90deg,
@@ -1579,4 +1586,38 @@ body{
     .service-tag{
         display:none;
     }
+}
+@media (max-width:768px){
+
+.logo img{
+    height:65px;
+    width:auto;
+}
+
+.hero{
+    padding-top:50px;
+}
+
+.hero-content{
+    text-align:center;
+}
+
+.hero-content p{
+    font-size:1rem;
+    line-height:1.8;
+}
+
+.hero-buttons{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:15px;
+}
+
+.hero-buttons a{
+    width:90%;
+    max-width:280px;
+    text-align:center;
+}
+
 }
