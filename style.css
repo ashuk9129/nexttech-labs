@@ -1,43 +1,112 @@
-/* ABOUT PAGE MOBILE FIX */
+/* =========================
+   MOBILE RESPONSIVE
+========================= */
 
 @media screen and (max-width:768px){
 
+    html,
+    body{
+        overflow-x:hidden;
+        width:100%;
+    }
+
+    *{
+        box-sizing:border-box;
+    }
+
+    .container{
+        width:92%;
+        margin:auto;
+    }
+
+    /* Navbar */
+
+    .navbar{
+        padding:15px;
+    }
+
+    .logo img{
+        height:60px;
+        width:auto;
+        max-width:100%;
+    }
+
+    .nav-menu,
+    .nav-btn{
+        display:none;
+    }
+
+    /* Hero */
+
+    .hero{
+        min-height:auto;
+        padding-top:60px;
+        padding-bottom:50px;
+    }
+
+    .hero-grid{
+        grid-template-columns:1fr;
+        gap:30px;
+        text-align:center;
+    }
+
+    .hero-content h1{
+        font-size:2.2rem;
+        line-height:1.2;
+    }
+
+    .hero-content p{
+        font-size:1rem;
+        line-height:1.7;
+    }
+
+    .hero-buttons{
+        display:flex;
+        flex-direction:column;
+        align-items:center;
+        gap:15px;
+    }
+
+    .hero-buttons a,
+    .hero-buttons button{
+        width:100%;
+        max-width:280px;
+    }
+
+    /* About */
+
     .about-grid{
-        display:grid !important;
-        grid-template-columns:1fr !important;
-        gap:25px !important;
-    }
-
-    .about-content{
-        width:100% !important;
-        max-width:100% !important;
-        text-align:left;
-    }
-
-    .about-content h3{
-        font-size:1.8rem !important;
-        line-height:1.3 !important;
-    }
-
-    .about-content p{
-        font-size:1rem !important;
-        line-height:1.8 !important;
+        grid-template-columns:1fr;
+        gap:25px;
     }
 
     .about-stats{
-        display:grid !important;
-        grid-template-columns:1fr !important;
-        gap:15px !important;
-        width:100% !important;
+        grid-template-columns:1fr;
+        gap:15px;
     }
 
     .about-stat{
-        width:100% !important;
-        padding:20px !important;
+        padding:20px;
     }
 
-    html,
-    body{
-        overflow-x:hidden !important;
+    /* Other Grids */
+
+    .stats-grid,
+    .services-grid,
+    .portfolio-grid,
+    .contact-grid{
+        grid-template-columns:1fr !important;
+    }
+
+    /* Hide floating elements */
+
+    .floating-card,
+    .service-tag{
+        display:none;
+    }
+
+    img{
+        max-width:100%;
+        height:auto;
     }
 }
