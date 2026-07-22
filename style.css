@@ -767,10 +767,9 @@ grid-template-columns:1fr;
 }
 
 .logo img{
-    height:110px;
-    width:auto;
-    display:block;
-    object-fit:contain;
+    height: 80px;
+    width: auto;
+    filter: brightness(1.5);
 }
 .footer{
     background:#070d1f;
