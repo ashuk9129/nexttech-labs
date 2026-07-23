@@ -3,75 +3,96 @@
 // SCRIPT.JS
 // =========================
 
+// =========================
 // Mobile Menu
+// =========================
 
-const menuBtn = document.querySelector(".menu-btn");
-const navMenu = document.querySelector(".nav-menu");
+const menuBtn = document.getElementById("menuBtn");
+const navMenu = document.getElementById("navMenu");
 
-if (menuBtn) {
+if (menuBtn && navMenu) {
+
     menuBtn.addEventListener("click", () => {
+
         navMenu.classList.toggle("active");
+
+        menuBtn.innerHTML =
+            navMenu.classList.contains("active")
+                ? "✕"
+                : "☰";
+
     });
+
+    document.querySelectorAll(".nav-menu a").forEach(link => {
+
+        link.addEventListener("click", () => {
+
+            navMenu.classList.remove("active");
+            menuBtn.innerHTML = "☰";
+
+        });
+
+    });
+
 }
 
-// Close menu on link click
-
-document.querySelectorAll(".nav-menu a").forEach(link => {
-    link.addEventListener("click", () => {
-        navMenu.classList.remove("active");
-    });
-});
-
-
 // =========================
-// Sticky Header Effect
+// Sticky Header
 // =========================
 
 const header = document.querySelector(".header");
 
-window.addEventListener("scroll", () => {
+if (header) {
 
-    if (window.scrollY > 50) {
-        header.style.background = "rgba(11,17,32,0.95)";
-        header.style.boxShadow = "0 10px 30px rgba(0,0,0,0.3)";
-    } else {
-        header.style.background = "rgba(11,17,32,0.7)";
-        header.style.boxShadow = "none";
-    }
+    window.addEventListener("scroll", () => {
 
-});
+        if (window.scrollY > 50) {
 
+            header.style.background = "rgba(11,17,32,0.95)";
+            header.style.boxShadow = "0 10px 30px rgba(0,0,0,.35)";
+
+        } else {
+
+            header.style.background = "rgba(11,17,32,.7)";
+            header.style.boxShadow = "none";
+
+        }
+
+    });
+
+}
 
 // =========================
-// Scroll Reveal Animation
+// Scroll Reveal
 // =========================
 
 const revealElements = document.querySelectorAll(
     ".service-card, .why-card, .project-card, .tech-stack span, .cta-box"
 );
 
-const revealOnScroll = () => {
+function revealOnScroll() {
 
-    const triggerBottom = window.innerHeight * 0.85;
+    const trigger = window.innerHeight * 0.85;
 
     revealElements.forEach(element => {
 
-        const elementTop = element.getBoundingClientRect().top;
+        const top = element.getBoundingClientRect().top;
 
-        if (elementTop < triggerBottom) {
+        if (top < trigger) {
+
             element.classList.add("show");
+
         }
 
     });
 
-};
+}
 
-window.addEventListener("scroll", revealOnScroll);
 window.addEventListener("load", revealOnScroll);
-
+window.addEventListener("scroll", revealOnScroll);
 
 // =========================
-// Hero Cards Floating Effect
+// Floating Cards Animation
 // =========================
 
 const cards = document.querySelectorAll(
@@ -81,6 +102,7 @@ const cards = document.querySelectorAll(
 cards.forEach((card, index) => {
 
     card.animate(
+
         [
             {
                 transform: "translateY(0px)"
@@ -92,14 +114,15 @@ cards.forEach((card, index) => {
                 transform: "translateY(0px)"
             }
         ],
+
         {
-            duration: 3500 + (index * 600),
+            duration: 3500 + (index * 500),
             iterations: Infinity
         }
+
     );
 
 });
-
 
 // =========================
 // Smooth Scroll
@@ -109,17 +132,17 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
 
     anchor.addEventListener("click", function (e) {
 
-        e.preventDefault();
-
-        const target = document.querySelector(
-            this.getAttribute("href")
-        );
+        const target = document.querySelector(this.getAttribute("href"));
 
         if (target) {
 
+            e.preventDefault();
+
             target.scrollIntoView({
+
                 behavior: "smooth",
                 block: "start"
+
             });
 
         }
@@ -128,35 +151,32 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
 
 });
 
-
 // =========================
-// Current Year Auto Update
+// Auto Copyright
 // =========================
 
-const copyright =
-document.querySelector(".copyright");
+const copyright = document.querySelector(".copyright");
 
 if (copyright) {
 
     copyright.innerHTML =
-    `© ${new Date().getFullYear()} NextTech Labs. All Rights Reserved.`;
+        `© ${new Date().getFullYear()} NextTech Labs. All Rights Reserved.`;
 
 }
-
 
 // =========================
 // Console Branding
 // =========================
 
 console.log(`
-🚀 NextTech Labs
+🚀 NEXTTECH LABS
 
 Engineering Smart Digital Solutions
 
-Web Development
-AI Solutions
-Data Analytics
-Workflow Automation
+✔ Web Development
+✔ AI Solutions
+✔ Data Analytics
+✔ Workflow Automation
 
-Website Loaded Successfully
+Website Loaded Successfully 🚀
 `);
