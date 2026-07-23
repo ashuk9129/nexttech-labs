@@ -180,3 +180,64 @@ Engineering Smart Digital Solutions
 
 Website Loaded Successfully 🚀
 `);
+// =========================
+// Contact Form - EmailJS
+// =========================
+
+const contactForm = document.getElementById("contactForm");
+
+if (contactForm) {
+
+    contactForm.addEventListener("submit", function (e) {
+
+        e.preventDefault();
+
+        const btn = document.getElementById("sendBtn");
+
+        btn.disabled = true;
+        btn.innerHTML = "Sending...";
+
+        emailjs.send(
+            "service_i2alr9c",
+            "template_smid89m",
+            {
+                from_name: document.getElementById("name").value,
+                from_email: document.getElementById("email").value,
+                phone: document.getElementById("phone").value,
+                subject: document.getElementById("subject").value,
+                message: document.getElementById("message").value
+            }
+        )
+        .then(() => {
+
+            Swal.fire({
+                icon: "success",
+                title: "Message Sent!",
+                text: "Thank you for contacting NextTech Labs. We'll get back to you soon.",
+                confirmButtonColor: "#2563eb"
+            });
+
+            contactForm.reset();
+
+        })
+        .catch((error) => {
+
+            console.error(error);
+
+            Swal.fire({
+                icon: "error",
+                title: "Oops!",
+                text: "Failed to send message. Please try again."
+            });
+
+        })
+        .finally(() => {
+
+            btn.disabled = false;
+            btn.innerHTML = "Send Message";
+
+        });
+
+    });
+
+}
