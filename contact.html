@@ -40,6 +40,7 @@
 
     </div>
 </header>
+
 <section class="section" style="padding: top 180px;">
 
     <div class="container">
@@ -62,7 +63,7 @@
                 </div>
 
                 <div class="contact-item">
-                    📧 nexttechlabs.business@gmail.com
+                    📧 info.nexttechlabs@gmail.com
                 </div>
 
                 <div class="contact-item">
@@ -96,15 +97,15 @@
                            placeholder="Phone Number"
                            required>
 
-                    <select id="service">
+                    <select id="subject">
 
-                        <option>Select Service</option>
-                        <option>Web Development</option>
-                        <option>AI Solutions</option>
-                        <option>Data Analytics</option>
-                        <option>Workflow Automation</option>
+    <option value="">Select Service</option>
+    <option>Web Development</option>
+    <option>AI Solutions</option>
+    <option>Data Analytics</option>
+    <option>Workflow Automation</option>
 
-                    </select>
+</select>
 
                     <textarea
                         id="message"
@@ -112,11 +113,26 @@
                         placeholder="Tell us about your project..."
                     ></textarea>
 
-                    <button type="button"
-        class="btn-primary"
-        onclick="sendWhatsApp()">
-    Get Free Consultation
+                    <button
+    type="submit"
+    id="sendBtn"
+    class="btn-primary">
+
+    Send Message
+
 </button>
+<div style="text-align:center;margin:20px 0;">
+    <strong>OR</strong>
+</div>
+
+<a href="https://wa.me/918354027338?text=Hello%20NextTech%20Labs,%20I%20want%20to%20discuss%20my%20project."
+   target="_blank"
+   class="btn-primary"
+   style="display:block;text-align:center;text-decoration:none;">
+
+💬 Chat on WhatsApp
+
+</a>
 
                 </form>
 
@@ -128,32 +144,7 @@
 
 </section>
 
-<script>
-function sendWhatsApp(){
 
-    let name = document.getElementById("name").value;
-    let email = document.getElementById("email").value;
-    let phone = document.getElementById("phone").value;
-    let service = document.getElementById("service").value;
-    let message = document.getElementById("message").value;
-
-    let text =
-`Hello NextTech Labs,
-
-Name: ${name}
-Email: ${email}
-Phone: ${phone}
-Service: ${service}
-
-Project Details:
-${message}`;
-
-    let url =
-`https://wa.me/918354027338?text=${encodeURIComponent(text)}`;
-
-    window.open(url, "_blank");
-}
-</script>
         <div class="map-section">
     <iframe
         src="https://www.google.com/maps?q=Adil+Nagar+Kursi+Road+Lucknow&output=embed"
@@ -173,9 +164,9 @@ ${message}`;
     </div>
 </footer>
 <script>
+
 </script>
-    <script src="script.js"></script>
-    <!-- Floating WhatsApp Button -->
+<!-- Floating WhatsApp Button -->
 <a href="https://wa.me/918354027338?text=Hello%20NextTech%20Labs,%20I%20want%20to%20discuss%20a%20project."
    class="whatsapp-float"
    target="_blank"
@@ -190,5 +181,17 @@ ${message}`;
     </svg>
 
 </a>
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+
+<script>
+emailjs.init({
+    publicKey:"SnxJfxRfHVsfzeiyi"
+});
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<script src="script.js"></script>
 </body>
+
 </html>
