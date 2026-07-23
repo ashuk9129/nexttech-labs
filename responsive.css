@@ -1,0 +1,52 @@
+/* =========================
+   MOBILE NAVBAR
+========================= */
+
+@media (max-width:768px){
+
+    .navbar{
+        padding:15px 20px;
+        height:70px;
+    }
+
+    .logo img{
+        height:55px;
+    }
+
+    .nav-btn{
+        display:none;
+    }
+
+    .menu-btn{
+        display:block;
+        background:none;
+        border:none;
+        color:#fff;
+        font-size:30px;
+        cursor:pointer;
+        z-index:1001;
+    }
+
+    .nav-menu{
+        position:fixed;
+        top:70px;
+        right:-100%;
+        width:280px;
+        height:calc(100vh - 70px);
+        background:#0b1120;
+        display:flex;
+        flex-direction:column;
+        padding:40px 25px;
+        gap:25px;
+        transition:.35s ease;
+        border-left:1px solid rgba(255,255,255,.08);
+    }
+
+    .nav-menu.active{
+        right:0;
+    }
+
+    .nav-menu a{
+        font-size:18px;
+    }
+}
