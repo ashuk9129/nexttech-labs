@@ -1,20 +1,10 @@
-/* =========================
-   MOBILE NAVBAR
-========================= */
-
 @media (max-width:768px){
 
     .navbar{
+        display:flex;
+        justify-content:space-between;
+        align-items:center;
         padding:15px 20px;
-        height:70px;
-    }
-
-    .logo img{
-        height:55px;
-    }
-
-    .nav-btn{
-        display:none;
     }
 
     .menu-btn{
@@ -22,24 +12,29 @@
         background:none;
         border:none;
         color:#fff;
-        font-size:30px;
+        font-size:32px;
         cursor:pointer;
         z-index:1001;
     }
 
+    .nav-btn{
+        display:none;
+    }
+
     .nav-menu{
         position:fixed;
-        top:70px;
+        top:80px;
         right:-100%;
         width:280px;
-        height:calc(100vh - 70px);
+        height:calc(100vh - 80px);
         background:#0b1120;
         display:flex;
         flex-direction:column;
-        padding:40px 25px;
-        gap:25px;
-        transition:.35s ease;
-        border-left:1px solid rgba(255,255,255,.08);
+        align-items:flex-start;
+        gap:20px;
+        padding:30px;
+        transition:right .3s ease;
+        z-index:1000;
     }
 
     .nav-menu.active{
@@ -47,6 +42,11 @@
     }
 
     .nav-menu a{
+        display:block;
+        width:100%;
+        color:#fff;
         font-size:18px;
+        text-decoration:none;
+        padding:12px 0;
     }
 }
