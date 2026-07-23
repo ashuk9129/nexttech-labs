@@ -1,40 +1,58 @@
-@media (max-width:768px){
+/* ==========================================
+   NEXTTECH LABS
+   RESPONSIVE.CSS
+========================================== */
+
+@media screen and (max-width:768px){
+
+    /* Navbar */
 
     .navbar{
         display:flex;
         justify-content:space-between;
         align-items:center;
         padding:15px 20px;
+        position:relative;
+    }
+
+    .logo img{
+        height:55px;
     }
 
     .menu-btn{
-        display:block;
+        display:block !important;
         background:none;
         border:none;
         color:#fff;
         font-size:32px;
         cursor:pointer;
-        z-index:1001;
+        z-index:1002;
     }
 
     .nav-btn{
-        display:none;
+        display:none !important;
     }
 
     .nav-menu{
-        position:fixed;
-        top:80px;
+        position:fixed !important;
+        top:75px;
         right:-100%;
         width:280px;
-        height:calc(100vh - 80px);
+        height:calc(100vh - 75px);
+
         background:#0b1120;
-        display:flex;
-        flex-direction:column;
-        align-items:flex-start;
+
+        display:flex !important;
+        flex-direction:column !important;
+        justify-content:flex-start;
+        align-items:flex-start !important;
+
+        padding:30px 25px;
         gap:20px;
-        padding:30px;
-        transition:right .3s ease;
-        z-index:1000;
+
+        transition:right .35s ease;
+
+        z-index:1001;
     }
 
     .nav-menu.active{
@@ -45,8 +63,67 @@
         display:block;
         width:100%;
         color:#fff;
-        font-size:18px;
         text-decoration:none;
+        font-size:18px;
         padding:12px 0;
+        border-bottom:1px solid rgba(255,255,255,.08);
     }
+
+    /* Hero */
+
+    .hero{
+        padding-top:120px;
+        padding-bottom:70px;
+    }
+
+    .hero-grid{
+        grid-template-columns:1fr;
+        gap:40px;
+    }
+
+    .hero-content{
+        text-align:center;
+    }
+
+    .hero h1{
+        font-size:2.2rem;
+    }
+
+    .hero p{
+        font-size:1rem;
+    }
+
+    .hero-buttons{
+        flex-direction:column;
+        gap:15px;
+    }
+
+    .hero-buttons a{
+        width:100%;
+    }
+
+    .hero-visual{
+        margin-top:20px;
+    }
+
+    /* Sections */
+
+    .services-grid,
+    .portfolio-grid,
+    .why-grid,
+    .about-grid,
+    .contact-grid{
+        grid-template-columns:1fr;
+    }
+
+    .service-card,
+    .project-card,
+    .why-card{
+        width:100%;
+    }
+
+    footer{
+        text-align:center;
+    }
+
 }
