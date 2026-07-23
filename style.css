@@ -1540,3 +1540,52 @@ select option{
         height:auto;
     }
 }
+/* Floating WhatsApp */
+
+.whatsapp-float{
+    position:fixed;
+    right:25px;
+    bottom:25px;
+
+    width:62px;
+    height:62px;
+
+    background:#25D366;
+    color:#fff;
+
+    border-radius:50%;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    text-decoration:none;
+
+    box-shadow:0 10px 25px rgba(37,211,102,.45);
+
+    z-index:9999;
+
+    transition:.3s;
+}
+
+.whatsapp-float:hover{
+    transform:scale(1.12);
+    box-shadow:0 15px 35px rgba(37,211,102,.6);
+}
+
+.whatsapp-float svg{
+    width:30px;
+    height:30px;
+}
+
+@media(max-width:768px){
+
+    .whatsapp-float{
+        right:18px;
+        bottom:18px;
+
+        width:58px;
+        height:58px;
+    }
+
+}
