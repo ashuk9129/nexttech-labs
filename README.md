@@ -43,7 +43,7 @@ Automated Scheduling & Booking Platform
 
 **NextTech Labs**
 
-📧 nexttechlabs.business@gmail.com
+📧 info.nexttechlabs@gmail.com
 
 📱 +91 8354027338
 
