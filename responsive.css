@@ -127,3 +127,14 @@
     }
 
 }
+@media(max-width:768px){
+
+.contact-grid{
+    grid-template-columns:1fr;
+}
+
+.map-section iframe{
+    min-height:320px;
+}
+
+}
