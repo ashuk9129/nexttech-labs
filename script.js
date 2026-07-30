@@ -9,6 +9,9 @@
 
 const menuBtn = document.getElementById("menuBtn");
 const navMenu = document.getElementById("navMenu");
+window.addEventListener("load", () => {
+    document.body.classList.add("loaded");
+});
 
 if (menuBtn && navMenu) {
 
@@ -241,3 +244,27 @@ if (contactForm) {
     });
 
 }
+document.querySelectorAll("a").forEach(link => {
+
+    if (
+        link.hostname === window.location.hostname &&
+        !link.hasAttribute("target") &&
+        link.getAttribute("href") &&
+        !link.getAttribute("href").startsWith("#")
+    ) {
+
+        link.addEventListener("click", function(e){
+
+            e.preventDefault();
+
+            document.body.classList.remove("loaded");
+
+            setTimeout(()=>{
+                window.location.href = this.href;
+            },300);
+
+        });
+
+    }
+
+});
