@@ -1363,3 +1363,460 @@ select option {
 .about-list li:last-child{
     border:none;
 }
+/* ==========================================
+   ABOUT PAGE - PREMIUM DESIGN
+========================================== */
+
+.about-hero{
+    padding:170px 0 100px;
+}
+
+.about-hero-grid{
+    display:grid;
+    grid-template-columns:1.2fr .8fr;
+    gap:60px;
+    align-items:center;
+}
+
+.hero-badge{
+    display:inline-block;
+    padding:10px 20px;
+    border-radius:50px;
+    background:rgba(0,255,255,.08);
+    border:1px solid rgba(0,255,255,.2);
+    color:var(--cyan);
+    font-size:14px;
+    letter-spacing:2px;
+    font-weight:600;
+    margin-bottom:25px;
+}
+
+.about-left h1{
+    font-size:58px;
+    line-height:1.15;
+    margin-bottom:25px;
+}
+
+.about-left h1 span{
+    color:var(--cyan);
+}
+
+.about-left p{
+    color:var(--text);
+    font-size:18px;
+    line-height:1.9;
+    margin-bottom:25px;
+}
+
+.company-info{
+    display:flex;
+    gap:20px;
+    margin-top:35px;
+}
+
+.info-box{
+    flex:1;
+    padding:25px;
+    border-radius:18px;
+    background:rgba(255,255,255,.03);
+    border:1px solid rgba(255,255,255,.08);
+}
+
+.info-box h3{
+    margin-bottom:12px;
+    color:var(--white);
+}
+
+.info-box p{
+    margin:0;
+    font-size:15px;
+}
+
+.company-card{
+    padding:35px;
+    border-radius:25px;
+    background:rgba(255,255,255,.04);
+    border:1px solid rgba(255,255,255,.08);
+    backdrop-filter:blur(15px);
+}
+
+.company-card h2{
+    text-align:center;
+    margin-bottom:30px;
+}
+
+.stats-grid{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:20px;
+}
+
+.stat-box{
+    text-align:center;
+    padding:30px 20px;
+    border-radius:20px;
+    background:rgba(255,255,255,.03);
+    border:1px solid rgba(255,255,255,.06);
+    transition:.35s;
+}
+
+.stat-box:hover{
+    transform:translateY(-8px);
+}
+
+.stat-box h3{
+    font-size:36px;
+    color:var(--cyan);
+}
+
+.stat-box p{
+    margin-top:10px;
+}
+/*==========================================
+ COMPANY SECTION
+==========================================*/
+
+.company-section{
+    padding:100px 0;
+}
+
+.company-grid{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:30px;
+    margin-top:50px;
+}
+
+.company-card{
+    padding:40px;
+    border-radius:24px;
+    background:rgba(255,255,255,.03);
+    border:1px solid rgba(255,255,255,.08);
+    transition:.35s;
+}
+
+.company-card:hover{
+    transform:translateY(-8px);
+    border-color:var(--cyan);
+}
+
+.company-icon{
+    width:70px;
+    height:70px;
+    border-radius:18px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:32px;
+    background:rgba(0,255,255,.08);
+    margin-bottom:25px;
+}
+
+.company-card h3{
+    font-size:28px;
+    margin-bottom:20px;
+}
+
+.company-card p{
+    color:var(--text);
+    line-height:1.9;
+}
+
+/*==========================================
+ MISSION
+==========================================*/
+
+.mission-grid{
+
+display:grid;
+
+grid-template-columns:repeat(2,1fr);
+
+gap:30px;
+
+margin-top:50px;
+
+}
+
+.mission-card{
+
+padding:45px;
+
+border-radius:24px;
+
+background:rgba(255,255,255,.03);
+
+border:1px solid rgba(255,255,255,.08);
+
+transition:.35s;
+
+}
+
+.mission-card:hover{
+
+transform:translateY(-8px);
+
+}
+
+.mission-icon{
+
+font-size:42px;
+
+margin-bottom:25px;
+
+}
+
+.mission-card h3{
+
+margin-bottom:18px;
+
+font-size:28px;
+
+}
+
+.mission-card p{
+
+color:var(--text);
+
+line-height:1.9;
+
+}
+
+/*==========================================
+WHY SECTION
+==========================================*/
+
+.why-section .service-card{
+
+padding:35px;
+
+min-height:260px;
+
+display:flex;
+
+flex-direction:column;
+
+justify-content:flex-start;
+
+}
+
+.why-section .service-card h3{
+
+margin:18px 0;
+
+}
+
+.why-section .service-card p{
+
+line-height:1.8;
+
+}
+
+/*==========================================
+VALUES
+==========================================*/
+
+.values-section .glass-card{
+
+padding:35px;
+
+min-height:220px;
+
+}
+
+.values-section .glass-card h3{
+
+margin-bottom:18px;
+
+}
+/*==========================================
+PROCESS SECTION
+==========================================*/
+
+.process-grid{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:30px;
+    margin-top:60px;
+}
+
+.process-item{
+    position:relative;
+    padding:35px 25px;
+    border-radius:24px;
+    text-align:center;
+    background:rgba(255,255,255,.03);
+    border:1px solid rgba(255,255,255,.08);
+    transition:.35s;
+}
+
+.process-item:hover{
+    transform:translateY(-10px);
+    border-color:var(--cyan);
+}
+
+.process-number{
+    width:70px;
+    height:70px;
+    margin:auto;
+    margin-bottom:25px;
+    border-radius:50%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:linear-gradient(135deg,#00E5FF,#00B8D4);
+    color:#000;
+    font-size:24px;
+    font-weight:700;
+}
+
+.process-item h3{
+    margin-bottom:15px;
+    font-size:24px;
+}
+
+.process-item p{
+    color:var(--text);
+    line-height:1.8;
+}
+
+/*==========================================
+FAQ
+==========================================*/
+
+.faq-grid{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:25px;
+    margin-top:50px;
+}
+
+.faq-grid .glass-card{
+    padding:30px;
+    border-radius:22px;
+    transition:.35s;
+}
+
+.faq-grid .glass-card:hover{
+    transform:translateY(-8px);
+}
+
+.faq-grid h3{
+    margin-bottom:15px;
+    font-size:22px;
+}
+
+.faq-grid p{
+    color:var(--text);
+    line-height:1.8;
+}
+
+/*==========================================
+CTA
+==========================================*/
+
+.cta-box{
+    max-width:900px;
+    margin:auto;
+    padding:70px 50px;
+    text-align:center;
+    border-radius:30px;
+    background:linear-gradient(135deg,
+    rgba(0,229,255,.12),
+    rgba(255,255,255,.03));
+    border:1px solid rgba(255,255,255,.08);
+}
+
+.cta-box h2{
+    font-size:46px;
+    margin:20px 0;
+}
+
+.cta-box p{
+    max-width:700px;
+    margin:0 auto 35px;
+    color:var(--text);
+    line-height:1.9;
+}
+
+/*==========================================
+SECTION TITLE
+==========================================*/
+
+.section-tag{
+    display:inline-block;
+    padding:8px 18px;
+    border-radius:40px;
+    border:1px solid rgba(0,229,255,.25);
+    background:rgba(0,229,255,.08);
+    color:var(--cyan);
+    font-size:13px;
+    letter-spacing:2px;
+    text-transform:uppercase;
+    margin-bottom:18px;
+    font-weight:600;
+}
+
+.section-title{
+    text-align:center;
+    max-width:800px;
+    margin:0 auto 60px;
+}
+
+.section-title h2{
+    font-size:48px;
+    margin-bottom:20px;
+}
+
+.section-title p{
+    color:var(--text);
+    line-height:1.9;
+}
+
+/*==========================================
+RESPONSIVE
+==========================================*/
+
+@media(max-width:992px){
+
+.about-hero-grid,
+.company-grid,
+.mission-grid,
+.process-grid,
+.faq-grid{
+
+grid-template-columns:1fr;
+
+}
+
+.company-info{
+
+flex-direction:column;
+
+}
+
+.about-left h1{
+
+font-size:42px;
+
+}
+
+.section-title h2{
+
+font-size:36px;
+
+}
+
+.cta-box{
+
+padding:50px 30px;
+
+}
+
+.cta-box h2{
+
+font-size:34px;
+
+}
+
+}
