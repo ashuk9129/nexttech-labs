@@ -1,0 +1,5 @@
+User-agent: *
+
+Allow: /
+
+Sitemap: https://nexttech-labs.vercel.app/sitemap.xml
