@@ -85,14 +85,8 @@ body {
     font-family: 'Inter', sans-serif;
     overflow-x: hidden;
     padding-top: 120px;
-    opacity: 0;
-    transition: opacity var(--transition-smooth);
+    
 }
-
-body.loaded {
-    opacity: 1;
-}
-
 img {
     max-width: 100%;
 }
@@ -162,6 +156,62 @@ select option {
     padding-top: 180px;
     text-align: center;
     margin-bottom: 50px;
+}
+/* ===========================
+   Legal Pages
+=========================== */
+
+.page-header {
+    min-height: 100vh;
+    padding: 140px 20px 80px;
+    background: var(--bg);
+    color: var(--white);
+}
+
+.page-header .container {
+    max-width: 900px;
+    margin: auto;
+}
+
+.page-header h1 {
+    font-size: 48px;
+    margin-bottom: 20px;
+    text-align: center;
+    color: var(--white);
+}
+
+.page-header h2 {
+    margin-top: 35px;
+    margin-bottom: 15px;
+    color: var(--cyan);
+    font-size: 28px;
+}
+
+.page-header p {
+    color: var(--text);
+    line-height: 1.9;
+    margin-bottom: 20px;
+    font-size: 17px;
+}
+
+.page-header ul {
+    margin-left: 25px;
+    margin-bottom: 25px;
+}
+
+.page-header li {
+    color: var(--text);
+    line-height: 1.8;
+    margin-bottom: 10px;
+}
+
+.page-header a {
+    color: var(--cyan);
+    text-decoration: none;
+}
+
+.page-header a:hover {
+    text-decoration: underline;
 }
 
 /* =========================
