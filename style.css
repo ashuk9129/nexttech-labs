@@ -1347,3 +1347,19 @@ select option {
         height: 58px;
     }
 }
+.about-list{
+    list-style:none;
+    padding:0;
+    margin-top:20px;
+}
+
+.about-list li{
+    padding:12px 0;
+    border-bottom:1px solid rgba(255,255,255,.08);
+    color:var(--text);
+    font-size:16px;
+}
+
+.about-list li:last-child{
+    border:none;
+}
