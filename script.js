@@ -174,14 +174,14 @@ Engineering Smart Digital Solutions
 Website Loaded Successfully 🚀
 `);
 // =========================
-// Contact Form - EmailJS
+// Contact Form - Backend API
 // =========================
 
 const contactForm = document.getElementById("contactForm");
 
 if (contactForm) {
 
-    contactForm.addEventListener("submit", function (e) {
+    contactForm.addEventListener("submit", async function (e) {
 
         e.preventDefault();
 
@@ -190,18 +190,34 @@ if (contactForm) {
         btn.disabled = true;
         btn.innerHTML = "Sending...";
 
-        emailjs.send(
-            "service_i2alr9c",
-            "template_smid89m",
-            {
-                from_name: document.getElementById("name").value,
-                from_email: document.getElementById("email").value,
-                phone: document.getElementById("phone").value,
-                subject: document.getElementById("subject").value,
-                message: document.getElementById("message").value
+        const leadData = {
+            name: document.getElementById("name").value.trim(),
+            email: document.getElementById("email").value.trim(),
+            phone: document.getElementById("phone").value.trim(),
+            subject: document.getElementById("subject").value,
+            message: document.getElementById("message").value.trim()
+        };
+
+        try {
+
+            const response = await fetch(
+                "http://localhost:5000/api/leads",
+                {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(leadData)
+                }
+            );
+
+            const data = await response.json();
+
+            if (!response.ok) {
+                throw new Error(
+                    data.message || "Failed to save lead."
+                );
             }
-        )
-        .then(() => {
 
             Swal.fire({
                 icon: "success",
@@ -212,10 +228,9 @@ if (contactForm) {
 
             contactForm.reset();
 
-        })
-        .catch((error) => {
+        } catch (error) {
 
-            console.error(error);
+            console.error("Contact Form Error:", error);
 
             Swal.fire({
                 icon: "error",
@@ -223,41 +238,13 @@ if (contactForm) {
                 text: "Failed to send message. Please try again."
             });
 
-        })
-        .finally(() => {
+        } finally {
 
             btn.disabled = false;
             btn.innerHTML = "Send Message";
 
-        });
+        }
 
     });
 
 }
-document.querySelectorAll("a").forEach(link => {
-
-    if (
-        link.hostname === window.location.hostname &&
-        !link.hasAttribute("target") &&
-        link.getAttribute("href") &&
-        !link.getAttribute("href").startsWith("#")
-    ) {
-
-        link.addEventListener("click", function(e){
-
-            e.preventDefault();
-
-            document.body.classList.remove("loaded");
-
-            setTimeout(()=>{
-                window.location.href = this.href;
-            },300);
-
-        });
-
-    }
-
-});
-window.addEventListener("load", () => {
-    document.body.classList.add("loaded");
-});
