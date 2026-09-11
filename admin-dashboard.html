@@ -1396,7 +1396,7 @@
 
                 <span>Clients</span>
 
-                <h2>
+                <h2 id="totalClients">
                     0
                 </h2>
 
@@ -1407,8 +1407,8 @@
 
                 <span>Projects</span>
 
-                <h2>
-        
+                <h2 id="totalProjects">
+                    0
                 </h2>
 
             </div>
@@ -2259,6 +2259,36 @@
 
 </div>
 
+
+<!-- Lead View Modal -->
+<div class="client-modal" id="leadModal">
+    <div class="client-modal-content" style="max-width:650px;">
+        <div class="client-modal-header">
+            <div>
+                <h2>Lead Details</h2>
+                <p>Complete enquiry information</p>
+            </div>
+            <button type="button" class="close-client-modal" onclick="closeLeadModal()">&times;</button>
+        </div>
+        <div id="leadDetails"></div>
+        <div class="client-form-actions">
+            <button type="button" class="cancel-client-btn" onclick="closeLeadModal()">Close</button>
+        </div>
+    </div>
+</div>
+<style>
+#leadDetails .detail-row{
+    display:flex;justify-content:space-between;gap:20px;
+    padding:13px 0;border-bottom:1px solid #e5e7eb;
+}
+#leadDetails .detail-row strong{color:#374151;min-width:100px}
+#leadDetails .detail-row span{color:#111827;text-align:right;word-break:break-word}
+#leadDetails .detail-message{
+    margin-top:18px;padding:15px;background:#f8fafc;border-radius:10px;
+}
+#leadDetails .detail-message strong{display:block;margin-bottom:8px}
+#leadDetails .detail-message p{color:#374151;line-height:1.6;white-space:pre-wrap}
+</style>
     <script>
 
         // =========================
@@ -2586,7 +2616,7 @@ function renderLeads(leads) {
 // Update Lead Status
 // =========================
 
-async function updateLeadStatus(select) {
+window.updateLeadStatus = async function(select) {
 
     const leadId = select.dataset.id;
     const newStatus = select.value;
@@ -2641,7 +2671,7 @@ async function updateLeadStatus(select) {
 // View Lead
 // =========================
 
-function viewLead(id) {
+window.viewLead = function(id) {
 
     const lead = allLeads.find(
         item => Number(item.id) === Number(id)
@@ -2714,7 +2744,7 @@ function closeLeadModal() {
 // Delete Lead
 // =========================
 
-async function deleteLead(id) {
+window.deleteLead = async function(id) {
 
     const lead = allLeads.find(
         item => Number(item.id) === Number(id)
@@ -2927,7 +2957,7 @@ async function loadClients() {
         renderClients(filteredClients);
 
         const clientCount =
-            document.querySelector(".stat-card:nth-child(3) h2");
+            document.getElementById("totalClients");
 
         if (clientCount) {
             clientCount.textContent = allClients.length;
@@ -3392,7 +3422,7 @@ window.deleteClient = async function(id) {
         renderClients(filteredClients);
 
         const clientCount =
-            document.querySelector(".stat-card:nth-child(3) h2");
+            document.getElementById("totalClients");
 
         if (clientCount) {
             clientCount.textContent = allClients.length;
@@ -3487,7 +3517,7 @@ async function loadProjects() {
         renderProjects(filteredProjects);
 
         const projectCount =
-            document.querySelector(".stat-card:nth-child(4) h2");
+            document.getElementById("totalProjects");
 
         if (projectCount) {
             projectCount.textContent = allProjects.length;
@@ -3977,7 +4007,7 @@ window.deleteProject = async function(id) {
         renderProjects(filteredProjects);
 
         const projectCount =
-            document.querySelector(".stat-card:nth-child(4) h2");
+            document.getElementById("totalProjects");
 
         if (projectCount) {
             projectCount.textContent = allProjects.length;
@@ -4054,13 +4084,6 @@ async function loadQuotations() {
 
         renderQuotations(filteredQuotations);
 
-        const quotationCount =
-            document.querySelector(".stat-card:nth-child(4) h2");
-
-        // Keep Projects count in the card; quotation count is shown in section.
-        if (quotationCount && allProjects.length === 0) {
-            quotationCount.textContent = allQuotations.length;
-        }
 
     } catch (error) {
 
