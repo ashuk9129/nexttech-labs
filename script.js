@@ -201,7 +201,7 @@ if (contactForm) {
         try {
 
             const response = await fetch(
-                "http://localhost:5000/api/leads",
+                "https://nexttech-backend-euka.onrender.com/api/leads",
                 {
                     method: "POST",
                     headers: {
