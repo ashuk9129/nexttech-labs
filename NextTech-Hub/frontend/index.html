@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>NextTech Hub — Premium Workspace</title>
+<link rel="stylesheet" href="css/style.css">
+
+</head>
+<body>
+
+<div id="login" class="login">
+  <div class="login-box">
+    <div class="login-brand">NextTech<span>Hub</span><b>●</b></div>
+    <p>Premium client management workspace by NextTech Labs</p>
+    <label>Email</label>
+    <input id="email" type="email" placeholder="admin@nexttechlabs.in">
+    <label>Password</label>
+    <input id="password" type="password" placeholder="Enter password">
+    <button class="btn" onclick="login()">Sign in to Workspace</button>
+    <p id="error" class="error"></p>
+  </div>
+</div>
+
+<div class="app">
+<aside class="sidebar">
+  <div class="brand"><div class="brand-mark">NT</div><div class="brand-text">NextTech<span>Hub</span><b>●</b></div></div>
+  <div class="nav-title">Workspace</div>
+  <div class="nav">
+    <button class="active" onclick="show('dashboard',this)">▦ &nbsp; Dashboard</button>
+    <button onclick="show('clients',this)">♙ &nbsp; Clients</button>
+    <button onclick="show('leads',this)">◉ &nbsp; Leads & CRM</button>
+    <button onclick="show('inbox',this)">✉ &nbsp; Unified Inbox</button>
+    <button onclick="show('social',this)">◎ &nbsp; Social Media</button>
+    <button onclick="show('automation',this)">⚡ &nbsp; Automation</button>
+    <button onclick="show('google',this)">⌖ &nbsp; Google Business</button>
+    <button onclick="show('analytics',this)">▥ &nbsp; Analytics</button>
+  </div>
+  <div class="nav-title">Manage</div>
+  <div class="nav">
+    <button onclick="show('settings',this)">⚙ &nbsp; Settings</button>
+  </div>
+</aside>
+
+<main class="main">
+<section id="dashboard" class="content active">
+  <div class="topbar">
+    <div><div class="eyebrow">Overview</div><h1>Good afternoon, Ashutosh 👋</h1><div class="sub">Your entire client operation, in one premium workspace.</div></div>
+    <div class="top-actions"><input class="search" placeholder="⌕  Search workspace"><div class="profile"><div class="avatar">NT</div><b>NextTech Labs</b></div></div>
+  </div>
+  <div class="cards">
+    <div class="card"><div class="label">Active Clients</div><div class="num" id="dashActiveClients">0</div><div class="trend">Live businesses</div></div>
+    <div class="card"><div class="label">Total Leads</div><div class="num" id="dashTotalLeads">0</div><div class="trend">Across all clients</div></div>
+    <div class="card"><div class="label">Customers</div><div class="num" id="dashCustomers">0</div><div class="trend">Converted from leads</div></div>
+    <div class="card"><div class="label">Active Automations</div><div class="num" id="dashActiveAutomations">0</div><div class="trend">Running workflows</div></div>
+  </div>
+  <div class="metric-grid" style="margin-top:14px">
+    <div class="card followup-card" onclick="show('leads', document.querySelector('.nav button[onclick*=leads]'))"><div class="label">🔔 Follow-ups Due Today</div><div class="num" id="dashDueToday">0</div></div>
+    <div class="card followup-card" onclick="show('leads', document.querySelector('.nav button[onclick*=leads]'))"><div class="label">🔴 Overdue Follow-ups</div><div class="num" id="dashOverdue">0</div></div>
+    <div class="card"><div class="label">Conversion Rate</div><div class="num" id="dashConversionRate">0%</div></div>
+  </div>
+  <div class="grid">
+    <div class="panel"><div class="panel-head"><h3>Lead Performance</h3><span class="small">Last 8 weeks</span></div><div class="chart">
+      <div class="bar" style="height:35%"></div><div class="bar" style="height:48%"></div><div class="bar" style="height:42%"></div><div class="bar" style="height:65%"></div><div class="bar" style="height:58%"></div><div class="bar" style="height:78%"></div><div class="bar" style="height:92%"></div><div class="bar" style="height:73%"></div>
+    </div></div>
+    <div class="panel"><div class="panel-head"><h3>Active Clients</h3><span class="pill">4 Live</span></div><div class="client-list">
+      <div class="client"><b>ABC Restaurant</b><span class="status"><i class="dot"></i>Live</span></div>
+      <div class="client"><b>Sharma Furniture</b><span class="status"><i class="dot"></i>Live</span></div>
+      <div class="client"><b>FitZone Gym</b><span class="status"><i class="dot"></i>Live</span></div>
+      <div class="client"><b>Royal Clinic</b><span class="status"><i class="dot"></i>Live</span></div>
+    </div></div>
+  </div>
+</section>
+
+<section id="clients" class="content">
+  <div class="topbar"><div><div class="eyebrow">Client management</div><h1>Clients</h1><div class="sub">Every business, account and integration in one place.</div></div><button class="btn" onclick="openClientModal()">+ Add Client</button></div>
+  <div class="panel"><div class="toolbar"><div class="filters"><select class="select"><option>All clients</option><option>Active</option><option>Onboarding</option></select><select class="select"><option>All industries</option><option>Restaurant</option><option>Retail</option><option>Fitness</option><option>Healthcare</option></select></div><span class="small">24 client workspaces</span></div>
+  <table class="table">
+  <thead>
+    <tr>
+      <th>Business</th>
+      <th>Industry</th>
+      <th>Connected</th>
+      <th>Leads</th>
+      <th>Status</th>
+    </tr>
+  </thead>
+
+  <tbody id="clientsTableBody"></tbody>
+</table></div>
+</section>
+
+<section id="leads" class="content">
+  <div class="topbar"><div><div class="eyebrow">CRM</div><h1>Leads & CRM</h1><div class="sub">Capture, qualify and follow up without losing a lead.</div></div><button class="btn">+ New Lead</button></div>
+  <div class="metric-grid"><div class="card"><div class="label">New</div><div class="num">186</div></div><div class="card"><div class="label">Qualified</div><div class="num">94</div></div><div class="card"><div class="label">Follow-up</div><div class="num">61</div></div><div class="card"><div class="label">Converted</div><div class="num">42</div></div></div>
+  <div class="panel" style="margin-top:15px"><table class="table"><tr><th>Lead</th><th>Business</th><th>Source</th><th>Stage</th><th>Next action</th></tr><tr><td><b>Rahul Sharma</b><br><span class="small">+91 98XXXXXX21</span></td><td>ABC Restaurant</td><td>Instagram DM</td><td><span class="pill">Qualified</span></td><td>Call today</td></tr><tr><td><b>Priya Verma</b><br><span class="small">+91 97XXXXXX10</span></td><td>FitZone Gym</td><td>WhatsApp</td><td><span class="pill">New</span></td><td>Send pricing</td></tr><tr><td><b>Aman Gupta</b><br><span class="small">+91 99XXXXXX44</span></td><td>Sharma Furniture</td><td>Google</td><td><span class="pill">Follow-up</span></td><td>Tomorrow</td></tr></table></div>
+</section>
+
+<section id="inbox" class="content">
+  <div class="topbar"><div><div class="eyebrow">Conversations</div><h1>Unified Inbox</h1><div class="sub">Customer conversations from every connected channel.</div></div></div>
+  <div class="panel">
+    <div class="inbox-item"><div><b>Instagram · ABC Restaurant</b><br><span class="small">“Hi, what's the table booking process?”</span></div><button class="btn">Reply</button></div>
+    <div class="inbox-item"><div><b>WhatsApp · Sharma Furniture</b><br><span class="small">“Do you have custom furniture?”</span></div><button class="btn">Reply</button></div>
+    <div class="inbox-item"><div><b>Google · FitZone Gym</b><br><span class="small">New 5-star review received ⭐⭐⭐⭐⭐</span></div><button class="btn secondary">View</button></div>
+  </div>
+</section>
+
+<section id="social" class="content">
+  <div class="topbar"><div><div class="eyebrow">Content operations</div><h1>Social Media</h1><div class="sub">Plan, approve and schedule content for every client.</div></div><button class="btn">+ Create Post</button></div>
+  <div class="content-grid"><div class="panel"><div class="panel-head"><h3>Upcoming</h3><span class="pill">6 scheduled</span></div><div class="client-list"><div class="client"><div><b>ABC Restaurant</b><br><span class="small">Instagram · Weekend Special</span></div><span class="pill">Scheduled</span></div><div class="client"><div><b>Sharma Furniture</b><br><span class="small">Facebook · New Collection</span></div><span class="pill">Scheduled</span></div><div class="client"><div><b>FitZone Gym</b><br><span class="small">Instagram · Transformation Reel</span></div><span class="pill">Draft</span></div></div></div>
+  <div class="panel"><div class="panel-head"><h3>Publishing health</h3></div><div class="metric-grid"><div class="card"><div class="label">Published</div><div class="num">48</div></div><div class="card"><div class="label">Scheduled</div><div class="num">16</div></div></div></div></div>
+</section>
+
+<section id="automation" class="content">
+  <div class="topbar"><div><div class="eyebrow">Automation Hub</div><h1>Automation</h1><div class="sub">Design trigger → condition → action workflows across every channel.</div></div><button class="btn" onclick="openAutomationModal()">+ New Automation</button></div>
+
+  <div class="panel">
+    <div class="panel-head"><h3>Channels & processes</h3><span class="small">Wire these up once a backend/API connection is added</span></div>
+    <div id="automationCategoryGrid" class="metric-grid" style="grid-template-columns:repeat(4,1fr)"></div>
+  </div>
+
+  <div class="panel" style="margin-top:15px">
+    <div class="toolbar">
+      <div class="filters">
+        <select class="select" id="automationClientFilter" onchange="renderAutomationRules()"></select>
+        <select class="select" id="automationCategoryFilter" onchange="renderAutomationRules()"></select>
+      </div>
+      <span class="small" id="automationCount">0 automations</span>
+    </div>
+    <div id="automationRulesList"></div>
+  </div>
+</section>
+
+<section id="customersModule" class="content"></section>
+
+<section id="google" class="content">
+  <div class="topbar"><div><div class="eyebrow">Local growth</div><h1>Google Business</h1><div class="sub">Profiles, reviews and local visibility.</div></div><button class="btn">+ Connect Profile</button></div>
+  <div class="metric-grid"><div class="card"><div class="label">Connected Profiles</div><div class="num">19</div></div><div class="card"><div class="label">New Reviews</div><div class="num">27</div></div><div class="card"><div class="label">Profile Actions</div><div class="num">1,842</div></div><div class="card"><div class="label">Avg. Rating</div><div class="num">4.7 ★</div></div></div>
+  <div class="panel" style="margin-top:15px"><div class="panel-head"><h3>Recent reviews</h3><span class="small">Across all clients</span></div><div class="client-list"><div class="client"><div><b>ABC Restaurant</b><br><span class="small">“Amazing food and fast service.”</span></div><span>★★★★★</span></div><div class="client"><div><b>FitZone Gym</b><br><span class="small">“Great trainers and clean equipment.”</span></div><span>★★★★★</span></div></div></div>
+</section>
+
+<section id="analytics" class="content">
+  <div class="topbar"><div><div class="eyebrow">Performance</div><h1>Analytics</h1><div class="sub">Cross-platform performance across your client portfolio.</div></div><select class="select"><option>Last 30 days</option><option>Last 7 days</option><option>Last 90 days</option></select></div>
+  <div class="metric-grid"><div class="card"><div class="label">Reach</div><div class="num">84.2K</div><div class="trend">↑ 22%</div></div><div class="card"><div class="label">Engagement</div><div class="num">9.8K</div><div class="trend">↑ 14%</div></div><div class="card"><div class="label">Leads</div><div class="num">186</div><div class="trend">↑ 18%</div></div><div class="card"><div class="label">Conversions</div><div class="num">42</div><div class="trend">↑ 11%</div></div></div>
+  <div class="panel" style="margin-top:15px"><div class="panel-head"><h3>Performance trend</h3></div><div class="chart"><div class="bar" style="height:30%"></div><div class="bar" style="height:40%"></div><div class="bar" style="height:45%"></div><div class="bar" style="height:58%"></div><div class="bar" style="height:52%"></div><div class="bar" style="height:73%"></div><div class="bar" style="height:88%"></div><div class="bar" style="height:96%"></div></div></div>
+</section>
+
+<section id="settings" class="content">
+  <div class="topbar"><div><div class="eyebrow">Workspace</div><h1>Settings</h1><div class="sub">Integrations, workspace preferences and account controls.</div></div></div>
+  <div class="panel">
+    <div class="settings-row"><div><b>Instagram</b><br><span class="small">Connect client Instagram accounts</span></div><span class="pill">Ready</span></div>
+    <div class="settings-row"><div><b>WhatsApp Business</b><br><span class="small">Messaging and lead conversations</span></div><span class="pill">Ready</span></div>
+    <div class="settings-row"><div><b>Google Business Profile</b><br><span class="small">Reviews, posts and profile insights</span></div><span class="pill">Ready</span></div>
+    <div class="settings-row"><div><b>Google Sheets</b><br><span class="small">Lead export and automation actions</span></div><span class="pill">Ready</span></div>
+  </div>
+</section>
+<section id="clientWorkspace" class="content"></section>
+<section id="crmModule" class="content"></section>
+<div id="leadModal" class="modal-overlay">
+  <div class="client-modal lead-modal">
+
+    <div class="modal-header">
+      <div>
+        <div class="eyebrow">CRM · NEW LEAD</div>
+        <h2>Add New Lead</h2>
+        <p>Add a new prospect to this client's pipeline.</p>
+      </div>
+
+      <button class="modal-close" onclick="closeAddLead()">×</button>
+    </div>
+
+    <div class="form-section">
+
+      <div class="form-grid">
+
+        <div class="form-group">
+          <label>Lead Name *</label>
+          <input id="leadName" type="text" placeholder="Customer name">
+        </div>
+
+        <div class="form-group">
+          <label>Mobile *</label>
+          <input id="leadPhone" type="tel" placeholder="+91 XXXXX XXXXX">
+        </div>
+
+        <div class="form-group">
+          <label>Email</label>
+          <input id="leadEmail" type="email" placeholder="customer@email.com">
+        </div>
+
+        <div class="form-group">
+          <label>Lead Source</label>
+          <select id="leadSource">
+            <option>Website</option>
+            <option>WhatsApp</option>
+            <option>Instagram</option>
+            <option>Facebook</option>
+            <option>Google</option>
+            <option>Referral</option>
+            <option>Walk-in</option>
+            <option>Other</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>Follow-up Date</label>
+          <input id="leadFollowup" type="date">
+        </div>
+
+        <div class="form-group">
+          <label>Status</label>
+          <select id="leadStatus">
+            <option>New</option>
+            <option>Contacted</option>
+            <option>Follow-up</option>
+            <option>Converted</option>
+            <option>Lost</option>
+          </select>
+        </div>
+
+      </div>
+
+      <div class="form-group" style="margin-top:14px;">
+        <label>Requirement / Notes</label>
+        <textarea
+          id="leadNotes"
+          rows="4"
+          placeholder="Customer requirement, enquiry details, notes..."
+        ></textarea>
+      </div>
+
+    </div>
+
+    <div class="modal-footer">
+
+      <button class="btn secondary" onclick="closeAddLead()">
+        Cancel
+      </button>
+
+      <button class="btn" onclick="saveLead()">
+        Create Lead
+      </button>
+
+    </div>
+
+  </div>
+</div>
+</main>
+</div>
+<div id="clientModal" class="modal-overlay">
+  <div class="client-modal">
+
+    <div class="modal-header">
+      <div>
+        <div class="eyebrow">Client onboarding</div>
+        <h2>Add New Client</h2>
+        <p>Create a new client workspace for NextTech Labs.</p>
+      </div>
+
+      <button class="modal-close" onclick="closeClientModal()">×</button>
+    </div>
+
+    <div class="form-section">
+      <h3>Business Information</h3>
+
+      <div class="form-grid">
+
+        <div class="form-group">
+          <label>Business Name *</label>
+          <input id="clientBusiness" type="text"
+                 placeholder="e.g. Sharma Restaurant">
+        </div>
+
+        <div class="form-group">
+          <label>Owner Name *</label>
+          <input id="clientOwner" type="text"
+                 placeholder="Business owner name">
+        </div>
+
+        <div class="form-group">
+          <label>Industry *</label>
+          <select id="clientIndustry">
+            <option value="">Select industry</option>
+            <option>Restaurant</option>
+            <option>Retail</option>
+            <option>Fitness</option>
+            <option>Healthcare</option>
+            <option>Education</option>
+            <option>Real Estate</option>
+            <option>Salon & Beauty</option>
+            <option>Other</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>Business Phone *</label>
+          <input id="clientPhone" type="tel"
+                 placeholder="+91 XXXXX XXXXX">
+        </div>
+
+        <div class="form-group">
+          <label>Email Address *</label>
+          <input id="clientEmail" type="email"
+                 placeholder="business@example.com">
+        </div>
+
+        <div class="form-group">
+          <label>Website</label>
+          <input id="clientWebsite" type="url"
+                 placeholder="https://example.com">
+        </div>
+
+      </div>
+    </div>
+
+    <div class="form-section">
+      <h3>Business Location</h3>
+
+      <div class="form-grid">
+
+        <div class="form-group">
+          <label>Address</label>
+          <input id="clientAddress" type="text"
+                 placeholder="Business address">
+        </div>
+
+        <div class="form-group">
+          <label>City</label>
+          <input id="clientCity" type="text"
+                 placeholder="Lucknow">
+        </div>
+
+      </div>
+    </div>
+
+    <div class="form-section">
+      <h3>Services</h3>
+
+      <div class="service-grid">
+
+        <label class="service-option">
+          <input type="checkbox" value="Social Media">
+          <span>◎</span>
+          <div>
+            <b>Social Media</b>
+            <small>Posts & scheduling</small>
+          </div>
+        </label>
+
+        <label class="service-option">
+          <input type="checkbox" value="WhatsApp">
+          <span>◉</span>
+          <div>
+            <b>WhatsApp</b>
+            <small>Customer conversations</small>
+          </div>
+        </label>
+
+        <label class="service-option">
+          <input type="checkbox" value="Google Business">
+          <span>⌖</span>
+          <div>
+            <b>Google Business</b>
+            <small>Reviews & visibility</small>
+          </div>
+        </label>
+
+        <label class="service-option">
+          <input type="checkbox" value="Lead Management">
+          <span>◉</span>
+          <div>
+            <b>Lead Management</b>
+            <small>CRM & follow-ups</small>
+          </div>
+        </label>
+
+        <label class="service-option">
+          <input type="checkbox" value="Automation">
+          <span>⚡</span>
+          <div>
+            <b>Automation</b>
+            <small>Workflow automation</small>
+          </div>
+        </label>
+
+        <label class="service-option">
+          <input type="checkbox" value="Analytics">
+          <span>▥</span>
+          <div>
+            <b>Analytics</b>
+            <small>Reports & insights</small>
+          </div>
+        </label>
+
+      </div>
+    </div>
+
+    <div class="modal-footer">
+      <button class="btn secondary" onclick="closeClientModal()">
+        Cancel
+      </button>
+
+      <button class="btn" onclick="createClient()">
+        Create Client
+      </button>
+    </div>
+
+  </div>
+</div>
+<div id="automationModal" class="modal-overlay">
+  <div class="client-modal lead-modal">
+    <div class="modal-header">
+      <div>
+        <div class="eyebrow">AUTOMATION HUB</div>
+        <h2 id="automationModalTitle">New Automation</h2>
+        <p>Trigger → Condition → Action → Delay. Stored locally until a backend is connected.</p>
+      </div>
+      <button class="modal-close" onclick="closeAutomationModal()">×</button>
+    </div>
+
+    <div class="form-section">
+      <div class="form-grid">
+        <div class="form-group">
+          <label>Automation Name *</label>
+          <input id="autoName" type="text" placeholder="e.g. New Lead Welcome">
+        </div>
+        <div class="form-group">
+          <label>Client *</label>
+          <select id="autoClient"></select>
+        </div>
+        <div class="form-group">
+          <label>Category *</label>
+          <select id="autoCategory"></select>
+        </div>
+        <div class="form-group">
+          <label>Trigger *</label>
+          <select id="autoTrigger">
+            <option>Lead Created</option>
+            <option>Lead Status Changed</option>
+            <option>Lead Converted</option>
+            <option>Lead Lost</option>
+            <option>Follow-up Due</option>
+            <option>Follow-up Overdue</option>
+            <option>Customer Created</option>
+            <option>Customer Inactive</option>
+            <option>Website Form Submitted</option>
+            <option>WhatsApp Message Received</option>
+            <option>Appointment Created</option>
+            <option>Review Received</option>
+            <option>Date/Time Trigger</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Condition (optional)</label>
+          <input id="autoCondition" type="text" placeholder="e.g. WhatsApp number exists">
+        </div>
+        <div class="form-group">
+          <label>Action *</label>
+          <select id="autoAction">
+            <option>Send WhatsApp Message</option>
+            <option>Send Email</option>
+            <option>Send SMS</option>
+            <option>Create Follow-up</option>
+            <option>Assign User</option>
+            <option>Add Tag</option>
+            <option>Change Lead Status</option>
+            <option>Create Task</option>
+            <option>Send Notification</option>
+            <option>Start Campaign</option>
+            <option>Request Review</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Delay before action</label>
+          <input id="autoDelay" type="text" placeholder="e.g. 0 (immediate), 1 day, 3 hours">
+        </div>
+      </div>
+      <div class="form-group" style="margin-top:14px">
+        <label><input type="checkbox" id="autoActive" checked style="width:auto;accent-color:var(--blue)"> Active</label>
+      </div>
+    </div>
+
+    <div class="modal-footer">
+      <button class="btn secondary" onclick="closeAutomationModal()">Cancel</button>
+      <button class="btn" onclick="saveAutomation()">Save Automation</button>
+    </div>
+  </div>
+</div>
+<script src="js/app.js"></script>
+</body>
+</html>
