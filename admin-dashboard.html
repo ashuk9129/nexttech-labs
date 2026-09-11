@@ -1333,7 +1333,21 @@
     }
 }
 
-    </style>
+    
+/* =========================================================
+   NEXTTECH LABS PREMIUM QUOTATION / INVOICE UI
+========================================================= */
+.premium-actions{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.premium-action{border:0;border-radius:8px;padding:7px 9px;font-size:12px;font-weight:700;cursor:pointer;transition:.2s;white-space:nowrap}
+.premium-action:hover{transform:translateY(-1px);filter:brightness(.98)}
+.premium-view{background:#e0f2fe;color:#075985}.premium-pdf{background:#ede9fe;color:#6d28d9}.premium-share{background:#dcfce7;color:#166534}.premium-invoice{background:#dbeafe;color:#1d4ed8}.premium-edit{background:#f3f4f6;color:#374151}.premium-delete{background:#fee2e2;color:#b91c1c}
+.premium-document-modal{display:none;position:fixed;inset:0;z-index:30000;background:rgba(15,23,42,.68);backdrop-filter:blur(8px);padding:18px;align-items:center;justify-content:center}.premium-document-modal.active{display:flex}.premium-document-shell{width:min(1100px,100%);max-height:94vh;overflow:auto;background:#eef2f7;border-radius:20px;box-shadow:0 30px 100px rgba(0,0,0,.35)}.premium-document-toolbar{position:sticky;top:0;z-index:2;display:flex;justify-content:space-between;align-items:center;gap:12px;padding:13px 16px;background:#0f172a;color:#fff}.premium-document-toolbar h3{font-size:15px;margin:0}.premium-toolbar-actions{display:flex;gap:7px;flex-wrap:wrap}.premium-toolbar-btn{border:0;border-radius:8px;padding:8px 11px;font-weight:700;cursor:pointer}.premium-toolbar-btn.light{background:#fff;color:#111827}.premium-toolbar-btn.green{background:#16a34a;color:#fff}.premium-toolbar-btn.blue{background:#2563eb;color:#fff}.premium-toolbar-btn.purple{background:#7c3aed;color:#fff}.premium-toolbar-btn.close{background:#334155;color:#fff}
+.premium-document{width:min(794px,calc(100vw - 55px));min-height:1123px;margin:22px auto;background:#fff;color:#111827;padding:42px 45px;box-shadow:0 12px 45px rgba(15,23,42,.16);font-family:Arial,Helvetica,sans-serif}.premium-doc-head{display:flex;justify-content:space-between;gap:25px;border-bottom:4px solid #172554;padding-bottom:20px}.premium-brand{display:flex;gap:13px;align-items:center}.premium-brand img{width:74px;height:74px;object-fit:contain}.premium-brand h1{font-size:26px;margin:0;color:#0f172a}.premium-brand p{margin:4px 0 0;color:#64748b;font-size:11px}.premium-company{text-align:right;font-size:10.5px;line-height:1.65;color:#334155}.premium-company strong{color:#0f172a}.premium-doc-title{display:flex;justify-content:space-between;gap:20px;align-items:flex-start;margin:26px 0 22px}.premium-doc-title h2{font-size:30px;letter-spacing:3px;color:#1d4ed8;margin:0}.premium-doc-sub{color:#64748b;font-size:11px;margin-top:6px}.premium-doc-meta{border:1px solid #dbeafe;background:#f8fbff;border-radius:10px;padding:11px 14px;min-width:200px;font-size:11px;line-height:1.8}.premium-doc-meta strong{float:right}.premium-client-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-bottom:22px}.premium-client-box{border:1px solid #e2e8f0;border-radius:10px;padding:13px;background:#fbfdff;min-height:95px}.premium-client-box h4{font-size:10px;text-transform:uppercase;letter-spacing:1px;color:#64748b;margin:0 0 8px}.premium-client-box strong{font-size:14px}.premium-client-box div{font-size:10.5px;line-height:1.55;color:#334155}.premium-items{width:100%;border-collapse:collapse;margin-top:12px;font-size:10.5px}.premium-items th{background:#172554;color:#fff;padding:9px 8px;text-align:left}.premium-items td{padding:9px 8px;border-bottom:1px solid #e2e8f0;vertical-align:top}.premium-items .num{text-align:right}.premium-items .qty{text-align:center}.premium-totals{width:310px;margin:18px 0 0 auto;font-size:11px}.premium-total-row{display:flex;justify-content:space-between;padding:5px 0}.premium-grand{margin-top:6px;padding:11px 0;border-top:2px solid #172554;background:#eff6ff;color:#1d4ed8;font-size:15px;font-weight:800}.premium-terms{margin-top:28px;padding:15px;background:#f8fafc;border:1px solid #e2e8f0;border-radius:10px;font-size:10.5px;line-height:1.65}.premium-terms h4{margin:0 0 7px;font-size:11px;color:#0f172a}.premium-sign{display:flex;justify-content:flex-end;margin-top:25px}.premium-stamp-wrap{text-align:center;width:150px}.premium-stamp{width:92px;height:92px;margin:0 auto 5px;border:3px double #1d4ed8;border-radius:50%;display:flex;align-items:center;justify-content:center;text-align:center;color:#1d4ed8;font-weight:800;font-size:10px;line-height:1.15;transform:rotate(-8deg);position:relative}.premium-stamp:before{content:'★ NEXTTECH LABS ★';position:absolute;top:12px;font-size:7px}.premium-stamp:after{content:'AUTHORIZED';position:absolute;bottom:12px;font-size:7px}.premium-stamp span{font-size:18px}.premium-footer{margin-top:30px;padding-top:12px;border-top:2px solid #e2e8f0;display:flex;justify-content:space-between;color:#64748b;font-size:9px}
+.premium-share-modal{display:none;position:fixed;inset:0;z-index:31000;background:rgba(15,23,42,.6);backdrop-filter:blur(7px);align-items:center;justify-content:center;padding:18px}.premium-share-modal.active{display:flex}.premium-share-card{width:min(460px,100%);background:#fff;border-radius:18px;padding:22px;box-shadow:0 25px 80px rgba(0,0,0,.3)}.premium-share-card h3{margin:0 0 5px}.premium-share-card p{color:#64748b;font-size:13px;margin:0 0 18px}.share-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.share-option{border:0;border-radius:10px;padding:12px;font-weight:700;cursor:pointer}.share-wa{background:#dcfce7;color:#166534}.share-email{background:#dbeafe;color:#1d4ed8}.share-copy{background:#f1f5f9;color:#334155}.share-native{background:#ede9fe;color:#6d28d9}.share-cancel{width:100%;margin-top:12px;border:0;background:#e5e7eb;padding:11px;border-radius:10px;font-weight:700;cursor:pointer}.service-row-grid{display:grid!important;grid-template-columns:minmax(260px,1.8fr) 80px 125px 125px 42px!important;gap:8px!important;align-items:center!important}.service-row-grid select{width:100%;border:1px solid #ddd;border-radius:9px;padding:10px;background:#fff!important;color:#111827!important}.service-row-grid select option{background:#fff!important;color:#111827!important}.service-row-description{font-size:10px;color:#64748b;margin-top:3px}.service-row-total{font-weight:800;text-align:right}.auto-number{background:#f8fafc!important;color:#1d4ed8!important;font-weight:800!important;border-color:#bfdbfe!important}
+@media(max-width:760px){.premium-document{padding:25px 20px;width:calc(100vw - 30px)}.premium-doc-head,.premium-doc-title{flex-direction:column}.premium-company{text-align:left}.premium-client-grid{grid-template-columns:1fr}.premium-doc-meta{width:100%;box-sizing:border-box}.premium-items{font-size:9px}.premium-totals{width:100%}.premium-document-toolbar{align-items:flex-start;flex-direction:column}.service-row-grid{grid-template-columns:1fr 70px 110px 110px 40px!important}.premium-actions{gap:4px}}
+@media print{.premium-document{box-shadow:none;margin:0;width:100%;min-height:auto}.premium-document-modal,.premium-document-toolbar,.premium-share-modal{display:none!important}}
+
+</style>
 
 </head>
 
@@ -1842,8 +1856,8 @@
                 </div>
 
                 <div class="form-group">
-                    <label>Invoice Number *</label>
-                    <input type="text" id="invoiceNumber" required>
+                    <label>Invoice Number <span style="color:#2563eb">(Auto)</span></label>
+                    <input type="text" id="invoiceNumber" class="auto-number" readonly required>
                 </div>
 
                 <div class="form-group">
@@ -2180,8 +2194,8 @@
             <div class="quotation-form-grid">
 
                 <div class="quotation-form-group">
-                    <label>Quotation Number *</label>
-                    <input type="text" id="quotationNumber" required>
+                    <label>Quotation Number <span style="color:#2563eb">(Auto)</span></label>
+                    <input type="text" id="quotationNumber" class="auto-number" readonly required>
                 </div>
 
                 <div class="quotation-form-group">
@@ -6093,6 +6107,205 @@ function generateQuotationPDF(id) {
 
 <div id="invoicePrintArea" style="display:none;"></div>
 <div id="quotationPrintArea" style="display:none;"></div>
+
+<!-- Premium Document Preview / Share -->
+<div class="premium-document-modal" id="premiumDocumentModal">
+  <div class="premium-document-shell">
+    <div class="premium-document-toolbar">
+      <h3 id="premiumDocumentTitle">Document Preview</h3>
+      <div class="premium-toolbar-actions">
+        <button class="premium-toolbar-btn green" id="premiumWhatsAppBtn">WhatsApp</button>
+        <button class="premium-toolbar-btn blue" id="premiumEmailBtn">Email</button>
+        <button class="premium-toolbar-btn purple" id="premiumPdfBtn">Download / PDF</button>
+        <button class="premium-toolbar-btn light" id="premiumCopyBtn">Copy Details</button>
+        <button class="premium-toolbar-btn close" id="premiumCloseBtn">Close</button>
+      </div>
+    </div>
+    <div id="premiumDocumentBody"></div>
+  </div>
+</div>
+
+<div class="premium-share-modal" id="premiumShareModal">
+  <div class="premium-share-card">
+    <h3 id="premiumShareTitle">Share Document</h3>
+    <p>Select how you want to share this document.</p>
+    <div class="share-grid">
+      <button class="share-option share-wa" id="shareWhatsAppOption">WhatsApp</button>
+      <button class="share-option share-email" id="shareEmailOption">Email</button>
+      <button class="share-option share-copy" id="shareCopyOption">Copy Details</button>
+      <button class="share-option share-native" id="shareNativeOption">More Options</button>
+    </div>
+    <button class="share-cancel" id="shareCancelOption">Cancel</button>
+  </div>
+</div>
+
+<script>
+(function(){
+    let activeShareType = null;
+    let activeShareId = null;
+
+    function money(v){
+        return Number(v || 0).toLocaleString("en-IN", {minimumFractionDigits:2, maximumFractionDigits:2});
+    }
+    function docDate(v){
+        if(!v) return "—";
+        const d = new Date(v);
+        return Number.isNaN(d.getTime()) ? String(v).slice(0,10) : d.toLocaleDateString("en-IN", {day:"2-digit",month:"short",year:"numeric"});
+    }
+    function getClient(clientId, fallback){
+        const list = typeof allClients !== "undefined" ? allClients : [];
+        return list.find(c => Number(c.id) === Number(clientId)) || fallback || {};
+    }
+    function parseItems(items){
+        if(typeof items === "string") { try { items = JSON.parse(items); } catch { items = []; } }
+        return Array.isArray(items) ? items : [];
+    }
+    function nextNumber(prefix, list, field){
+        const year = new Date().getFullYear();
+        const re = new RegExp("^" + prefix + "-" + year + "-(\\d+)$");
+        let max = 0;
+        (list || []).forEach(x => {
+            const m = String(x[field] || "").match(re);
+            if(m) max = Math.max(max, Number(m[1]) || 0);
+        });
+        return prefix + "-" + year + "-" + String(max + 1).padStart(4,"0");
+    }
+    function clientBlock(client, label){
+        return `<div class="premium-client-box"><h4>${label}</h4><strong>${escapeHtml(client.name || client.company || "Client")}</strong><div>${client.company ? escapeHtml(client.company) + "<br>" : ""}${client.email ? "✉ " + escapeHtml(client.email) + "<br>" : ""}${client.phone ? "☎ " + escapeHtml(client.phone) + "<br>" : ""}${client.address ? escapeHtml(client.address).replace(/\n/g,"<br>") : ""}</div></div>`;
+    }
+    function documentHTML(type, doc){
+        const isQ = type === "quotation";
+        const client = getClient(doc.client_id, {name:doc.client_name, company:doc.client_company});
+        const items = parseItems(doc.items);
+        const rows = items.length ? items.map((item,i)=>{
+            const qty = Number(item.quantity ?? item.qty ?? 1);
+            const rate = Number(item.rate || 0);
+            const amount = Number(item.amount ?? qty * rate);
+            return `<tr><td>${i+1}</td><td><strong>${escapeHtml(item.name || item.service || "Item")}</strong>${item.description ? `<div class="service-row-description">${escapeHtml(item.description)}</div>` : ""}</td><td class="qty">${qty}</td><td class="num">₹${money(rate)}</td><td class="num">₹${money(amount)}</td></tr>`;
+        }).join("") : `<tr><td colspan="5" style="text-align:center">No items added</td></tr>`;
+        const title = isQ ? "QUOTATION" : "INVOICE";
+        const number = isQ ? doc.quotation_number : doc.invoice_number;
+        const issue = isQ ? new Date() : doc.issue_date;
+        const dueOrValid = isQ ? doc.valid_until : doc.due_date;
+        const terms = doc.notes || "1. This document is valid for the stated validity period.\n2. Work will begin after confirmation and applicable advance payment.\n3. Any additional requirements outside the agreed scope will be charged separately.";
+        return `<div class="premium-document" id="premiumPrintableDocument">
+            <div class="premium-doc-head">
+                <div class="premium-brand"><img src="logo.png" alt="NextTech Labs"><div><h1>NextTech Labs</h1><p>Engineering Smart Digital Solutions</p></div></div>
+                <div class="premium-company"><strong>NextTech Labs</strong><br>Adil Nagar, Kursi Road<br>Lucknow, Uttar Pradesh – 226022, India<br>☎ +91 8354027338<br>✉ info.nexttechlabs@gmail.com<br>🌐 nexttech-labs.vercel.app</div>
+            </div>
+            <div class="premium-doc-title"><div><h2>${title}</h2><div class="premium-doc-sub">Building Digital Solutions for a Better Tomorrow</div></div><div class="premium-doc-meta"><div>${isQ?"Quotation":"Invoice"} No. <strong>${escapeHtml(number || "—")}</strong></div><div>Date <strong>${docDate(issue)}</strong></div><div>${isQ?"Valid Until":"Due Date"} <strong>${docDate(dueOrValid)}</strong></div><div>Status <strong>${escapeHtml(doc.status || "Draft")}</strong></div></div></div>
+            <div class="premium-client-grid">${clientBlock(client,"Bill To / Prepared For")}${clientBlock({name:"NextTech Labs",company:"Technology Partner",email:"info.nexttechlabs@gmail.com",phone:"+91 8354027338",address:"Adil Nagar, Kursi Road\nLucknow, Uttar Pradesh – 226022, India"},"From")}</div>
+            ${doc.description ? `<div style="font-size:11px;color:#475569;margin-bottom:15px"><strong>Project / Service:</strong> ${escapeHtml(doc.description)}</div>` : ""}
+            <table class="premium-items"><thead><tr><th>#</th><th>Service / Description</th><th class="qty">Qty</th><th class="num">Rate (₹)</th><th class="num">Amount (₹)</th></tr></thead><tbody>${rows}</tbody></table>
+            <div class="premium-totals"><div class="premium-total-row"><span>Subtotal</span><strong>₹${money(doc.subtotal)}</strong></div><div class="premium-total-row"><span>Discount</span><strong>− ₹${money(doc.discount)}</strong></div><div class="premium-total-row"><span>GST / Tax</span><strong>₹${money(doc.tax)}</strong></div><div class="premium-total-row premium-grand"><span>Grand Total</span><strong>₹${money(doc.total)}</strong></div></div>
+            <div class="premium-terms"><h4>${isQ?"Terms & Conditions":"Notes / Terms & Conditions"}</h4>${escapeHtml(terms).replace(/\n/g,"<br>")}</div>
+            <div class="premium-sign"><div class="premium-stamp-wrap"><div class="premium-stamp"><span>NTL</span></div><strong style="font-size:10px">Authorized Signatory</strong><div style="font-size:9px;color:#64748b">For NextTech Labs</div></div></div>
+            <div class="premium-footer"><span>Thank you for choosing NextTech Labs.</span><span>${title} • Generated digitally</span></div>
+        </div>`;
+    }
+    function docText(type, doc){
+        const isQ = type === "quotation";
+        const num = isQ ? doc.quotation_number : doc.invoice_number;
+        const items = parseItems(doc.items).map(i=>`${i.name || i.service || "Item"} — ${i.quantity ?? i.qty ?? 1} × ₹${money(i.rate)}`).join("\n");
+        return `${isQ?"QUOTATION":"INVOICE"} ${num}\nNextTech Labs\nAdil Nagar, Kursi Road, Lucknow – 226022, India\n+91 8354027338 | info.nexttechlabs@gmail.com\n\nClient: ${doc.client_company || doc.client_name || "Client"}\nTitle: ${doc.title || ""}\n\nItems:\n${items || "No items"}\n\nSubtotal: ₹${money(doc.subtotal)}\nDiscount: ₹${money(doc.discount)}\nGST/Tax: ₹${money(doc.tax)}\nTotal: ₹${money(doc.total)}`;
+    }
+    function getDoc(type,id){
+        return type === "quotation" ? (typeof allQuotations !== "undefined" ? allQuotations.find(x=>Number(x.id)===Number(id)) : null) : (typeof allInvoices !== "undefined" ? allInvoices.find(x=>Number(x.id)===Number(id)) : null);
+    }
+    function openPreview(type,id){
+        const doc=getDoc(type,id); if(!doc) return alert("Document not found.");
+        activeShareType=type; activeShareId=id;
+        document.getElementById("premiumDocumentTitle").textContent=`${type === "quotation" ? "Quotation" : "Invoice"} Preview • ${type === "quotation" ? doc.quotation_number : doc.invoice_number}`;
+        document.getElementById("premiumDocumentBody").innerHTML=documentHTML(type,doc);
+        document.getElementById("premiumDocumentModal").classList.add("active");
+    }
+    function closePreview(){ document.getElementById("premiumDocumentModal").classList.remove("active"); }
+    function shareDocument(type,id){
+        const doc=getDoc(type,id); if(!doc) return alert("Document not found.");
+        activeShareType=type; activeShareId=id;
+        document.getElementById("premiumShareTitle").textContent=`Share ${type === "quotation" ? doc.quotation_number : doc.invoice_number}`;
+        document.getElementById("premiumShareModal").classList.add("active");
+    }
+    function shareWhatsApp(){
+        const doc=getDoc(activeShareType,activeShareId); if(!doc) return;
+        const text=`Hello,\n\nPlease find the ${activeShareType === "quotation" ? "quotation" : "invoice"} from NextTech Labs.\n\nDocument: ${activeShareType === "quotation" ? doc.quotation_number : doc.invoice_number}\nClient: ${doc.client_company || doc.client_name || "Client"}\nTotal: ₹${money(doc.total)}\n\nThank you.\nNextTech Labs`;
+        window.open("https://wa.me/?text="+encodeURIComponent(text),"_blank");
+    }
+    function shareEmail(){
+        const doc=getDoc(activeShareType,activeShareId); if(!doc) return;
+        const subject=`${activeShareType === "quotation" ? "Quotation" : "Invoice"} ${activeShareType === "quotation" ? doc.quotation_number : doc.invoice_number} - NextTech Labs`;
+        window.location.href="mailto:?subject="+encodeURIComponent(subject)+"&body="+encodeURIComponent(docText(activeShareType,doc));
+    }
+    async function copyDetails(){
+        const doc=getDoc(activeShareType,activeShareId); if(!doc) return;
+        try{await navigator.clipboard.writeText(docText(activeShareType,doc));alert("Document details copied.");}catch{alert(docText(activeShareType,doc));}
+    }
+    async function nativeShare(){
+        const doc=getDoc(activeShareType,activeShareId); if(!doc) return;
+        if(navigator.share){try{await navigator.share({title:`${activeShareType === "quotation" ? "Quotation" : "Invoice"} ${activeShareType === "quotation" ? doc.quotation_number : doc.invoice_number}`,text:docText(activeShareType,doc)});}catch{}}
+        else alert("Native sharing is not supported in this browser.");
+    }
+    function printPreview(){
+        const body=document.getElementById("premiumDocumentBody").innerHTML;
+        const win=window.open("","_blank","width=900,height=1000");
+        if(!win) return alert("Please allow pop-ups for PDF/print.");
+        win.document.write(`<!doctype html><html><head><title>NextTech Labs Document</title><style>${document.querySelector("style").textContent}</style></head><body>${body}</body></html>`);
+        win.document.close(); setTimeout(()=>win.print(),350);
+    }
+
+    window.viewQuotation=function(id){openPreview("quotation",id);};
+    window.viewInvoice=function(id){openPreview("invoice",id);};
+    window.shareQuotation=function(id){shareDocument("quotation",id);};
+    window.shareInvoice=function(id){shareDocument("invoice",id);};
+
+    function setQuotationNumber(){
+        const el=document.getElementById("quotationNumber"); if(!el) return;
+        el.value=nextNumber("NTQ",typeof allQuotations!=="undefined"?allQuotations:[],"quotation_number"); el.readOnly=true; el.classList.add("auto-number");
+    }
+    function setInvoiceNumber(){
+        const el=document.getElementById("invoiceNumber"); if(!el) return;
+        el.value=nextNumber("NTL-INV",typeof allInvoices!=="undefined"?allInvoices:[],"invoice_number"); el.readOnly=true; el.classList.add("auto-number");
+    }
+
+    // Invoice service selector using the same master service catalog.
+    window.addInvoiceItem=function(item={}){
+        const container=document.getElementById("invoiceItems"); if(!container) return;
+        const row=document.createElement("div"); row.className="invoice-item-row service-row-grid";
+        let selected=serviceItems.find(s=>String(s.id)===String(item.service_id||""));
+        if(!selected) selected=serviceItems.find(s=>String(s.name).toLowerCase()===String(item.name||item.service||"").toLowerCase());
+        const options=serviceItems.map(s=>`<option value="${escapeHtml(String(s.id))}" ${selected&&String(selected.id)===String(s.id)?"selected":""}>${escapeHtml(s.name)} — ₹${money(s.price)}/${escapeHtml(s.unit||"Project")}</option>`).join("");
+        row.innerHTML=`<select class="invoice-service-select"><option value="">Select service</option>${options}<option value="__custom__" ${selected?"":"selected"}>Custom Item</option></select><input type="number" class="invoice-item-qty" min="1" step="1" value="${Number(item.qty||item.quantity||1)}"><input type="number" class="invoice-item-rate" min="0" step="0.01" value="${Number(item.rate||selected?.price||0)}"><div class="invoice-item-total service-row-total">₹0.00</div><button type="button" class="remove-invoice-item" title="Remove">×</button>`;
+        const select=row.querySelector(".invoice-service-select"), rate=row.querySelector(".invoice-item-rate");
+        select.addEventListener("change",()=>{const s=serviceItems.find(x=>String(x.id)===String(select.value)); if(s){rate.value=Number(s.price||0);row.dataset.description=s.description||"";row.dataset.serviceId=s.id;}calculateInvoiceTotals();});
+        row.querySelectorAll("input").forEach(x=>x.addEventListener("input",calculateInvoiceTotals));
+        row.querySelector(".remove-invoice-item").addEventListener("click",()=>{row.remove();calculateInvoiceTotals();});
+        row.dataset.serviceId=selected?.id||item.service_id||""; row.dataset.description=selected?.description||item.description||"";
+        container.appendChild(row); calculateInvoiceTotals();
+    };
+    window.getInvoiceItems=function(){
+        return [...document.querySelectorAll(".invoice-item-row")].map(row=>{const s=row.querySelector(".invoice-service-select");const selected=serviceItems.find(x=>String(x.id)===String(s?.value));const name=selected?.name || (s?.value==="__custom__" ? "Custom Item" : "");const qty=Number(row.querySelector(".invoice-item-qty")?.value||0);const rate=Number(row.querySelector(".invoice-item-rate")?.value||0);return {service_id:selected?.id||null,name,description:selected?.description||row.dataset.description||"",unit:selected?.unit||"Project",qty,quantity:qty,rate,amount:qty*rate};}).filter(x=>x.name);
+    };
+
+    document.addEventListener("DOMContentLoaded",()=>{
+        const qn=document.getElementById("quotationNumber"); if(qn){qn.readOnly=true;qn.classList.add("auto-number");}
+        const inv=document.getElementById("invoiceNumber"); if(inv){inv.readOnly=true;inv.classList.add("auto-number");}
+        document.getElementById("addQuotationBtn")?.addEventListener("click",()=>setTimeout(setQuotationNumber,20));
+        document.getElementById("addInvoiceBtn")?.addEventListener("click",()=>setTimeout(setInvoiceNumber,20));
+        document.getElementById("premiumCloseBtn")?.addEventListener("click",closePreview);
+        document.getElementById("premiumPdfBtn")?.addEventListener("click",printPreview);
+        document.getElementById("premiumWhatsAppBtn")?.addEventListener("click",shareWhatsApp);
+        document.getElementById("premiumEmailBtn")?.addEventListener("click",shareEmail);
+        document.getElementById("premiumCopyBtn")?.addEventListener("click",copyDetails);
+        document.getElementById("shareWhatsAppOption")?.addEventListener("click",shareWhatsApp);
+        document.getElementById("shareEmailOption")?.addEventListener("click",shareEmail);
+        document.getElementById("shareCopyOption")?.addEventListener("click",copyDetails);
+        document.getElementById("shareNativeOption")?.addEventListener("click",nativeShare);
+        document.getElementById("shareCancelOption")?.addEventListener("click",()=>document.getElementById("premiumShareModal").classList.remove("active"));
+        document.getElementById("premiumShareModal")?.addEventListener("click",e=>{if(e.target.id==="premiumShareModal")e.currentTarget.classList.remove("active")});
+        document.getElementById("premiumDocumentModal")?.addEventListener("click",e=>{if(e.target.id==="premiumDocumentModal")closePreview()});
+    });
+})();
+</script>
 
 </body>
 
