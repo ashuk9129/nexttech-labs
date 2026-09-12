@@ -1462,6 +1462,73 @@
 </style>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<style>
+/* ===== FINAL RESPONSIVE / VIEW FIXES ===== */
+.client-view-card{
+    width:min(900px,calc(100vw - 40px));
+    margin:24px auto;
+    background:#fff;
+    border-radius:18px;
+    padding:28px;
+    box-shadow:0 12px 40px rgba(15,23,42,.12);
+    color:#0f172a;
+}
+.client-view-head{
+    display:flex;
+    align-items:center;
+    gap:16px;
+    padding-bottom:20px;
+    border-bottom:1px solid #e2e8f0;
+}
+.client-view-head h2{margin:0;font-size:24px}
+.client-view-head p{margin:4px 0 0;color:#64748b}
+.client-view-avatar{
+    width:58px;height:58px;border-radius:16px;
+    display:grid;place-items:center;
+    background:linear-gradient(135deg,#2563eb,#7c3aed);
+    color:#fff;font-size:23px;font-weight:800;flex:none;
+}
+.client-view-status{
+    margin-left:auto;
+    padding:7px 12px;border-radius:999px;
+    background:#dcfce7;color:#166534;font-weight:800;font-size:12px;
+}
+.client-view-grid{
+    display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-top:20px;
+}
+.client-view-grid>div{
+    background:#f8fafc;border:1px solid #e2e8f0;border-radius:12px;padding:13px;
+    min-width:0;
+}
+.client-view-grid .full{grid-column:1/-1}
+.client-view-grid span{
+    display:block;color:#64748b;font-size:11px;font-weight:700;text-transform:uppercase;
+    letter-spacing:.7px;margin-bottom:5px;
+}
+.client-view-grid strong{font-size:13px;line-height:1.5;overflow-wrap:anywhere}
+
+@media (max-width:700px){
+    .premium-document-modal{padding:0}
+    .premium-document-shell{width:100%;height:100vh;max-height:100vh;border-radius:0}
+    .premium-document-toolbar{align-items:flex-start;flex-direction:column}
+    .premium-toolbar-actions{width:100%;display:grid;grid-template-columns:repeat(2,1fr)}
+    .premium-toolbar-btn{width:100%}
+    .premium-document{width:100%;min-height:0;margin:0;padding:22px 18px;box-shadow:none}
+    .premium-doc-head{flex-direction:column;gap:12px}
+    .premium-company{text-align:left}
+    .premium-doc-title{flex-direction:column;gap:10px;margin:16px 0}
+    .premium-doc-meta{min-width:0;width:100%}
+    .premium-client-grid{grid-template-columns:1fr;gap:10px}
+    .premium-totals{width:100%}
+    .premium-sign{justify-content:center}
+    .premium-footer{flex-direction:column;gap:6px}
+    .client-view-card{width:calc(100vw - 24px);padding:18px;margin:12px auto}
+    .client-view-head{align-items:flex-start}
+    .client-view-status{margin-left:0}
+    .client-view-grid{grid-template-columns:1fr}
+    .client-view-grid .full{grid-column:auto}
+}
+</style>
 </head>
 
 <body>
@@ -1472,7 +1539,7 @@
 
         <div class="brand">
 
-            <img class="sidebar-logo" src="logo.png" alt="NextTech Labs">
+            <img class="sidebar-logo" src="images/logo.png" alt="NextTech Labs">
 
             <h2>NextTech Labs</h2>
 
@@ -6254,7 +6321,7 @@ function generateQuotationPDF(id) {
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 <script>
-const NEXTTECH_LOGO_DATA = "logo.png";
+const NEXTTECH_LOGO_DATA = "images/logo.png";
 const NEXTTECH_STAMP_DATA = "nexttech-stamp.webp";
 (function(){
     let activeShareType = null;
@@ -6398,6 +6465,61 @@ const NEXTTECH_STAMP_DATA = "nexttech-stamp.webp";
         win.document.close(); setTimeout(()=>win.print(),350);
     }
 
+
+
+window.viewClient = function(id) {
+    const client = (typeof allClients !== "undefined" ? allClients : [])
+        .find(item => Number(item.id) === Number(id));
+
+    if (!client) {
+        alert("Client not found. Please refresh the Clients section.");
+        return;
+    }
+
+    const modal = document.getElementById("premiumDocumentModal");
+    const body = document.getElementById("premiumDocumentBody");
+    const title = document.getElementById("premiumDocumentTitle");
+
+    if (!modal || !body || !title) {
+        alert("Client view panel is unavailable. Please refresh the dashboard.");
+        return;
+    }
+
+    title.textContent = `Client Details • ${client.name || client.company || "Client"}`;
+
+    const esc = value => typeof escapeHtml === "function"
+        ? escapeHtml(value ?? "")
+        : String(value ?? "").replace(/[&<>"']/g, c => ({
+            "&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#039;"
+        }[c]));
+
+    body.innerHTML = `
+        <div class="client-view-card">
+            <div class="client-view-head">
+                <div class="client-view-avatar">${esc((client.name || "C").charAt(0).toUpperCase())}</div>
+                <div>
+                    <h2>${esc(client.name || "Client")}</h2>
+                    <p>${esc(client.company || "Independent Client")}</p>
+                </div>
+                <span class="client-view-status">${esc(client.status || "Active")}</span>
+            </div>
+
+            <div class="client-view-grid">
+                <div><span>Client ID</span><strong>#${esc(client.id)}</strong></div>
+                <div><span>Email</span><strong>${esc(client.email || "—")}</strong></div>
+                <div><span>Phone</span><strong>${esc(client.phone || "—")}</strong></div>
+                <div><span>Company</span><strong>${esc(client.company || "—")}</strong></div>
+                <div class="full"><span>Address</span><strong>${esc(client.address || "—").replace(/\n/g,"<br>")}</strong></div>
+                <div class="full"><span>Notes</span><strong>${esc(client.notes || "—").replace(/\n/g,"<br>")}</strong></div>
+            </div>
+        </div>
+    `;
+
+    activeShareType = null;
+    activeShareId = null;
+    modal.classList.add("active");
+    document.body.classList.add("document-preview-open");
+};
 
     // ===== NextTech Labs Premium Document Actions (final) =====
     function resolveDocument(type, id){
