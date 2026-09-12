@@ -1,0 +1,6711 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Admin Dashboard | NextTech Labs</title>
+
+    <link rel="icon" href="favicon.png">
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #f5f7fb;
+            color: #111827;
+        }
+
+        /* =========================
+           Sidebar
+        ========================= */
+
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 240px;
+            height: 100vh;
+            background: #111827;
+            color: white;
+            padding: 25px 18px;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 40px;
+        }
+
+        .brand img {
+            width: 48px;
+            height: 48px;
+            object-fit: contain;
+        }
+
+        .brand h2 {
+            font-size: 18px;
+        }
+
+        .nav-item {
+            display: block;
+            padding: 13px 15px;
+            margin-bottom: 8px;
+            border-radius: 10px;
+            color: #d1d5db;
+            text-decoration: none;
+            transition: 0.2s;
+        }
+
+        .nav-item:hover,
+        .nav-item.active {
+            background: #2563eb;
+            color: white;
+        }
+
+        /* =========================
+           Main
+        ========================= */
+
+        .main {
+            margin-left: 240px;
+            padding: 30px;
+        }
+
+        .topbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .topbar h1 {
+            font-size: 28px;
+        }
+
+        .topbar p {
+            margin-top: 5px;
+            color: #6b7280;
+        }
+
+        .logout-btn {
+            border: none;
+            background: #ef4444;
+            color: white;
+            padding: 11px 18px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        /* =========================
+           Stats
+        ========================= */
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 22px;
+            border-radius: 16px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.05);
+        }
+
+        .stat-card span {
+            color: #6b7280;
+            font-size: 14px;
+        }
+
+        .stat-card h2 {
+            margin-top: 10px;
+            font-size: 30px;
+        }
+
+        /* =========================
+           Leads
+        ========================= */
+
+        .leads-box {
+            background: white;
+            border-radius: 16px;
+            padding: 25px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.05);
+        }
+
+        .leads-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .refresh-btn {
+            border: none;
+            background: #2563eb;
+            color: white;
+            padding: 10px 16px;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
+        .table-wrapper {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th,
+        td {
+            padding: 14px 12px;
+            border-bottom: 1px solid #e5e7eb;
+            text-align: left;
+            white-space: nowrap;
+        }
+
+        th {
+            font-size: 13px;
+            color: #6b7280;
+        }
+
+        td {
+            font-size: 14px;
+        }
+
+        .status {
+            display: inline-block;
+            padding: 5px 10px;
+            border-radius: 20px;
+            background: #dbeafe;
+            color: #1d4ed8;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .empty {
+            text-align: center;
+            padding: 40px;
+            color: #6b7280;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #6b7280;
+        }
+
+        /* =========================
+           Responsive
+        ========================= */
+
+        @media (max-width: 1000px) {
+
+            .stats {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+        }
+
+        @media (max-width: 700px) {
+
+            .sidebar {
+                position: relative;
+                width: 100%;
+                height: auto;
+            }
+
+            .main {
+                margin-left: 0;
+                padding: 20px;
+            }
+
+            .stats {
+                grid-template-columns: 1fr;
+            }
+
+            .topbar {
+                align-items: flex-start;
+                gap: 15px;
+                flex-direction: column;
+            }
+
+        }
+        .status-select {
+    padding: 7px 10px;
+    border: 1px solid #d1d5db;
+    border-radius: 7px;
+    background: white;
+    cursor: pointer;
+    font-size: 13px;
+}
+
+.lead-filters {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.lead-filters input,
+.lead-filters select {
+    padding: 11px 13px;
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+    background: white;
+    font-size: 14px;
+    outline: none;
+}
+
+.lead-filters input {
+    flex: 1;
+}
+
+.lead-filters input:focus,
+.lead-filters select:focus {
+    border-color: #2563eb;
+}
+
+@media (max-width: 700px) {
+
+    .lead-filters {
+        flex-direction: column;
+    }
+
+}
+.view-btn,
+.delete-btn {
+    border: none;
+    padding: 7px 11px;
+    border-radius: 7px;
+    cursor: pointer;
+    font-size: 12px;
+    font-weight: 600;
+    margin-right: 5px;
+}
+
+.view-btn {
+    background: #e0e7ff;
+    color: #3730a3;
+}
+
+.delete-btn {
+    background: #fee2e2;
+    color: #b91c1c;
+}
+
+.edit-btn {
+    border: none;
+    padding: 7px 11px;
+    border-radius: 7px;
+    cursor: pointer;
+    font-size: 12px;
+    font-weight: 600;
+    margin-right: 5px;
+    background: #fef3c7;
+    color: #92400e;
+}
+
+.edit-btn:hover {
+    opacity: 0.8;
+}
+
+.view-btn:hover,
+.edit-btn:hover,
+.delete-btn:hover {
+    opacity: 0.8;
+}
+/* =========================
+   Clients Section
+========================= */
+
+.clients-section {
+    margin-top: 35px;
+}
+
+.section-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    margin-bottom: 20px;
+}
+
+.section-header h2 {
+    margin: 0 0 5px;
+}
+
+.section-header p {
+    margin: 0;
+    color: #6b7280;
+    font-size: 14px;
+}
+
+.add-client-btn {
+    border: none;
+    padding: 11px 16px;
+    border-radius: 8px;
+    background: #2563eb;
+    color: white;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.add-client-btn:hover {
+    opacity: 0.9;
+}
+
+.client-filters {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 18px;
+}
+
+.client-filters input,
+.client-filters select {
+    padding: 11px 13px;
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+    background: white;
+    font-size: 14px;
+    outline: none;
+}
+
+.client-filters input {
+    flex: 1;
+}
+
+.clients-table-wrapper {
+    width: 100%;
+    overflow-x: auto;
+    background: white;
+    border-radius: 12px;
+}
+
+.clients-table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 850px;
+}
+
+.clients-table th,
+.clients-table td {
+    padding: 13px 14px;
+    text-align: left;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.clients-table th {
+    font-size: 13px;
+    color: #6b7280;
+    font-weight: 600;
+}
+
+.clients-table td {
+    font-size: 14px;
+    color: #111827;
+}
+
+@media (max-width: 700px) {
+
+    .section-header {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .client-filters {
+        flex-direction: column;
+    }
+
+}
+/* Add Client Modal */
+
+.client-modal {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.55);
+    backdrop-filter: blur(6px);
+    z-index: 9999;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+.client-modal.active {
+    display: flex;
+}
+
+.client-modal-content {
+    width: 100%;
+    max-width: 650px;
+    max-height: 90vh;
+    overflow-y: auto;
+    background: #ffffff;
+    border-radius: 18px;
+    padding: 28px;
+    box-shadow: 0 25px 70px rgba(0, 0, 0, 0.25);
+    animation: clientModalIn 0.25s ease;
+}
+
+@keyframes clientModalIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px) scale(0.98);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+.client-modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 25px;
+}
+
+.client-modal-header h2 {
+    margin: 0 0 6px;
+    font-size: 24px;
+}
+
+.client-modal-header p {
+    margin: 0;
+    color: #777;
+    font-size: 14px;
+}
+
+.close-client-modal {
+    border: none;
+    background: #f3f4f6;
+    width: 38px;
+    height: 38px;
+    border-radius: 10px;
+    font-size: 25px;
+    cursor: pointer;
+    color: #555;
+}
+
+.close-client-modal:hover {
+    background: #e5e7eb;
+}
+
+.client-form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 18px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+}
+
+.form-group.full-width {
+    grid-column: 1 / -1;
+}
+
+.form-group label {
+    font-size: 13px;
+    font-weight: 600;
+    color: #333;
+}
+
+.form-group input,
+.form-group textarea,
+.form-group select {
+    width: 100%;
+    box-sizing: border-box;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    padding: 12px 13px;
+    font-size: 14px;
+    outline: none;
+    font-family: inherit;
+    background: #fff;
+}
+
+.form-group input:focus,
+.form-group textarea:focus,
+.form-group select:focus {
+    border-color: #6c63ff;
+    box-shadow: 0 0 0 3px rgba(108, 99, 255, 0.10);
+}
+
+.client-form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    margin-top: 25px;
+}
+
+.cancel-client-btn,
+.save-client-btn {
+    border: none;
+    padding: 12px 20px;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.cancel-client-btn {
+    background: #f1f1f1;
+    color: #444;
+}
+
+.save-client-btn {
+    background: #6c63ff;
+    color: white;
+}
+
+.save-client-btn:hover {
+    opacity: 0.9;
+}
+
+@media (max-width: 600px) {
+    .client-form-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .form-group.full-width {
+        grid-column: auto;
+    }
+
+    .client-modal-content {
+        padding: 20px;
+    }
+}
+    
+/* =========================
+   Projects Section
+========================= */
+
+.projects-section {
+    margin-top: 35px;
+}
+
+.projects-table-wrapper {
+    width: 100%;
+    overflow-x: auto;
+    background: white;
+    border-radius: 12px;
+}
+
+.projects-table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 1050px;
+}
+
+.projects-table th,
+.projects-table td {
+    padding: 13px 14px;
+    text-align: left;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.projects-table th {
+    font-size: 13px;
+    color: #6b7280;
+    font-weight: 600;
+}
+
+.projects-table td {
+    font-size: 14px;
+}
+
+.add-project-btn {
+    border: none;
+    padding: 11px 16px;
+    border-radius: 8px;
+    background: #2563eb;
+    color: white;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.project-status-badge {
+    display: inline-block;
+    padding: 5px 10px;
+    border-radius: 20px;
+    background: #dbeafe;
+    color: #1d4ed8;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.project-modal {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 10001;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    background: rgba(0,0,0,0.55);
+    backdrop-filter: blur(6px);
+}
+
+.project-modal.active {
+    display: flex;
+}
+
+.project-modal-content {
+    width: 100%;
+    max-width: 700px;
+    max-height: 90vh;
+    overflow-y: auto;
+    background: white;
+    border-radius: 18px;
+    padding: 28px;
+    box-shadow: 0 25px 70px rgba(0,0,0,0.25);
+}
+
+.project-modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 24px;
+}
+
+.close-project-modal {
+    border: none;
+    background: #f3f4f6;
+    width: 38px;
+    height: 38px;
+    border-radius: 10px;
+    font-size: 25px;
+    cursor: pointer;
+}
+
+.project-form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 18px;
+}
+
+.project-form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+}
+
+.project-form-group.full-width {
+    grid-column: 1 / -1;
+}
+
+.project-form-group label {
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.project-form-group input,
+.project-form-group textarea,
+.project-form-group select {
+    width: 100%;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    padding: 12px 13px;
+    font-size: 14px;
+    outline: none;
+    font-family: inherit;
+}
+
+.project-form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    margin-top: 25px;
+}
+
+.cancel-project-btn,
+.save-project-btn {
+    border: none;
+    padding: 12px 20px;
+    border-radius: 10px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.cancel-project-btn {
+    background: #f1f1f1;
+    color: #444;
+}
+
+.save-project-btn {
+    background: #2563eb;
+    color: white;
+}
+
+@media (max-width: 600px) {
+    .project-form-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .project-form-group.full-width {
+        grid-column: auto;
+    }
+}
+
+    
+/* =========================
+   Quotations Section
+========================= */
+
+.quotations-section {
+    margin-top: 35px;
+}
+
+.quotations-table-wrapper {
+    width: 100%;
+    overflow-x: auto;
+    background: white;
+    border-radius: 12px;
+}
+
+.quotations-table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 1000px;
+}
+
+.quotations-table th,
+.quotations-table td {
+    padding: 13px 14px;
+    text-align: left;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.quotations-table th {
+    font-size: 13px;
+    color: #6b7280;
+    font-weight: 600;
+}
+
+.quotations-table td {
+    font-size: 14px;
+}
+
+.add-quotation-btn {
+    border: none;
+    padding: 11px 16px;
+    border-radius: 8px;
+    background: #2563eb;
+    color: white;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.add-quotation-btn:hover {
+    opacity: 0.9;
+}
+
+.quotation-status-badge {
+    display: inline-block;
+    padding: 5px 10px;
+    border-radius: 20px;
+    background: #dbeafe;
+    color: #1d4ed8;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.quotation-modal {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 10002;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    background: rgba(0,0,0,0.55);
+    backdrop-filter: blur(6px);
+}
+
+.quotation-modal.active {
+    display: flex;
+}
+
+.quotation-modal-content {
+    width: 100%;
+    max-width: 760px;
+    max-height: 92vh;
+    overflow-y: auto;
+    background: white;
+    border-radius: 18px;
+    padding: 28px;
+    box-shadow: 0 25px 70px rgba(0,0,0,0.25);
+}
+
+.quotation-modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 24px;
+}
+
+.close-quotation-modal {
+    border: none;
+    background: #f3f4f6;
+    width: 38px;
+    height: 38px;
+    border-radius: 10px;
+    font-size: 25px;
+    cursor: pointer;
+}
+
+.quotation-form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 18px;
+}
+
+.quotation-form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+}
+
+.quotation-form-group.full-width {
+    grid-column: 1 / -1;
+}
+
+.quotation-form-group label {
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.quotation-form-group input,
+.quotation-form-group textarea,
+.quotation-form-group select {
+    width: 100%;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    padding: 12px 13px;
+    font-size: 14px;
+    outline: none;
+    font-family: inherit;
+}
+
+.quotation-items-box {
+    grid-column: 1 / -1;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    padding: 15px;
+    background: #f9fafb;
+}
+
+.quotation-items-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+}
+
+.add-item-btn {
+    border: none;
+    background: #111827;
+    color: white;
+    padding: 7px 11px;
+    border-radius: 7px;
+    cursor: pointer;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.quotation-item-row {
+    display: grid;
+    grid-template-columns: minmax(220px, 2fr) 90px 130px 130px 36px;
+    gap: 8px;
+    margin-bottom: 9px;
+    align-items: center;
+}
+.quotation-item-row select,
+.quotation-item-row input {
+    width: 100%;
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+    padding: 10px;
+    font-size: 13px;
+    background: #fff;
+    box-sizing: border-box;
+}
+.quotation-item-row select:focus,
+.quotation-item-row input:focus {
+    border-color: #2563eb;
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(37,99,235,.08);
+}
+.quotation-item-amount {
+    font-weight: 700;
+    text-align: right;
+    white-space: nowrap;
+}
+@media (max-width: 750px) {
+    .quotation-item-row {
+        grid-template-columns: 1fr 75px 110px 110px 36px;
+        min-width: 620px;
+    }
+    .quotation-items-box {
+        overflow-x: auto;
+    }
+}
+
+.quotation-item-row {
+    display: grid;
+    grid-template-columns: 2fr 0.7fr 1fr 36px;
+    gap: 8px;
+    margin-bottom: 9px;
+}
+
+.quotation-item-row input {
+    width: 100%;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 9px;
+    font-size: 13px;
+}
+
+.remove-item-btn {
+    border: none;
+    background: #fee2e2;
+    color: #b91c1c;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 17px;
+}
+
+.quotation-total-box {
+    grid-column: 1 / -1;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+}
+
+.quotation-total-box input {
+    background: #f9fafb;
+}
+
+.quotation-final-total {
+    font-weight: 700;
+    font-size: 16px !important;
+}
+
+.quotation-form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    margin-top: 25px;
+}
+
+.cancel-quotation-btn,
+.save-quotation-btn {
+    border: none;
+    padding: 12px 20px;
+    border-radius: 10px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.cancel-quotation-btn {
+    background: #f1f1f1;
+    color: #444;
+}
+
+.save-quotation-btn {
+    background: #2563eb;
+    color: white;
+}
+
+@media (max-width: 650px) {
+    .quotation-form-grid,
+    .quotation-total-box {
+        grid-template-columns: 1fr;
+    }
+
+    .quotation-form-group.full-width,
+    .quotation-items-box {
+        grid-column: auto;
+    }
+
+    .quotation-item-row {
+        grid-template-columns: 1fr 0.6fr 1fr 36px;
+    }
+}
+
+    
+
+.convert-invoice-btn {
+    background: #dcfce7 !important;
+    color: #166534 !important;
+}
+
+/* =========================
+   INVOICE MODULE
+========================= */
+
+.invoice-modal-content {
+    max-width: 900px;
+}
+
+.invoice-view-content {
+    max-width: 760px;
+}
+
+.invoice-total-box {
+    background: #f8fafc;
+    border: 1px solid #e5e7eb;
+    border-radius: 14px;
+    padding: 18px;
+}
+
+.invoice-total-box > div {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 12px;
+}
+
+.invoice-total-box > div:last-child {
+    margin-bottom: 0;
+}
+
+.invoice-total-box input {
+    width: 140px;
+    box-sizing: border-box;
+    border: 1px solid #ddd;
+    border-radius: 9px;
+    padding: 9px 10px;
+}
+
+.invoice-grand-total {
+    border-top: 1px solid #ddd;
+    padding-top: 14px;
+    font-size: 18px;
+}
+
+.invoice-grand-total strong {
+    font-size: 22px;
+}
+
+.invoice-item-row {
+    display: grid;
+    grid-template-columns: minmax(180px, 1fr) 90px 120px 120px 42px;
+    gap: 8px;
+    margin-bottom: 10px;
+    align-items: center;
+}
+
+.invoice-item-row input {
+    width: 100%;
+    box-sizing: border-box;
+    border: 1px solid #ddd;
+    border-radius: 9px;
+    padding: 10px;
+}
+
+.invoice-item-total {
+    font-weight: 700;
+    text-align: right;
+}
+
+.remove-invoice-item {
+    border: none;
+    background: #fee2e2;
+    color: #b91c1c;
+    width: 38px;
+    height: 38px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 18px;
+}
+
+.invoice-view-header {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #eee;
+}
+
+.invoice-view-header h2 {
+    margin: 0 0 5px;
+}
+
+.invoice-view-header p {
+    margin: 0;
+    color: #777;
+}
+
+.invoice-view-meta {
+    text-align: right;
+}
+
+.invoice-view-meta strong {
+    font-size: 20px;
+}
+
+.invoice-view-client {
+    margin: 20px 0;
+    padding: 16px;
+    background: #f8fafc;
+    border-radius: 12px;
+}
+
+.invoice-view-items {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+}
+
+.invoice-view-items th,
+.invoice-view-items td {
+    padding: 10px;
+    border-bottom: 1px solid #eee;
+    text-align: left;
+}
+
+.invoice-view-summary {
+    margin: 20px 0 0 auto;
+    max-width: 300px;
+}
+
+.invoice-view-summary div {
+    display: flex;
+    justify-content: space-between;
+    padding: 6px 0;
+}
+
+.invoice-view-summary .grand {
+    border-top: 1px solid #ddd;
+    margin-top: 7px;
+    padding-top: 12px;
+    font-size: 18px;
+    font-weight: 700;
+}
+
+.invoice-status-badge {
+    display: inline-block;
+    padding: 5px 10px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 700;
+    background: #eef2ff;
+    color: #3730a3;
+}
+
+.invoice-status-paid {
+    background: #dcfce7;
+    color: #166534;
+}
+
+.invoice-status-overdue {
+    background: #fee2e2;
+    color: #b91c1c;
+}
+
+.invoice-status-sent {
+    background: #dbeafe;
+    color: #1d4ed8;
+}
+
+.invoice-status-cancelled {
+    background: #f3f4f6;
+    color: #4b5563;
+}
+
+.invoice-view-notes {
+    margin-top: 20px;
+    padding: 15px;
+    background: #fff7ed;
+    border-radius: 10px;
+}
+
+@media (max-width: 700px) {
+    .invoice-item-row {
+        grid-template-columns: 1fr 80px 100px;
+    }
+
+    .invoice-item-row .invoice-item-total {
+        text-align: left;
+    }
+
+    .invoice-view-header {
+        flex-direction: column;
+    }
+
+    .invoice-view-meta {
+        text-align: left;
+    }
+}
+
+    
+/* =========================
+   INVOICE PDF / PRINT
+========================= */
+
+.invoice-pdf-btn {
+    background: #e0f2fe !important;
+    color: #075985 !important;
+}
+
+@media print {
+    body * {
+        visibility: hidden !important;
+    }
+
+    #invoicePrintArea,
+    #invoicePrintArea * {
+        visibility: visible !important;
+    }
+
+    #invoicePrintArea {
+        position: absolute !important;
+        left: 0 !important;
+        top: 0 !important;
+        width: 100% !important;
+        background: #fff !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        box-shadow: none !important;
+    }
+
+    @page {
+        size: A4;
+        margin: 14mm;
+    }
+}
+
+    
+/* =========================
+   QUOTATION PDF / PRINT
+========================= */
+
+.quotation-pdf-btn {
+    background: #ede9fe !important;
+    color: #6d28d9 !important;
+}
+
+@media print {
+    body * {
+        visibility: hidden !important;
+    }
+
+    #quotationPrintArea,
+    #quotationPrintArea * {
+        visibility: visible !important;
+    }
+
+    #quotationPrintArea {
+        position: absolute !important;
+        left: 0 !important;
+        top: 0 !important;
+        width: 100% !important;
+        background: #fff !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        box-shadow: none !important;
+    }
+
+    @page {
+        size: A4;
+        margin: 14mm;
+    }
+}
+
+    
+/* =========================================================
+   NEXTTECH LABS PREMIUM QUOTATION / INVOICE UI
+========================================================= */
+.premium-actions{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.premium-action{border:0;border-radius:8px;padding:7px 9px;font-size:12px;font-weight:700;cursor:pointer;transition:.2s;white-space:nowrap}
+.premium-action:hover{transform:translateY(-1px);filter:brightness(.98)}
+.premium-view{background:#e0f2fe;color:#075985}.premium-pdf{background:#ede9fe;color:#6d28d9}.premium-share{background:#dcfce7;color:#166534}.premium-invoice{background:#dbeafe;color:#1d4ed8}.premium-edit{background:#f3f4f6;color:#374151}.premium-delete{background:#fee2e2;color:#b91c1c}
+.premium-document-modal{display:none;position:fixed;inset:0;z-index:30000;background:rgba(15,23,42,.68);backdrop-filter:blur(8px);padding:18px;align-items:center;justify-content:center}.premium-document-modal.active{display:flex}.premium-document-shell{width:min(1100px,100%);max-height:94vh;overflow:auto;background:#eef2f7;border-radius:20px;box-shadow:0 30px 100px rgba(0,0,0,.35)}.premium-document-toolbar{position:sticky;top:0;z-index:2;display:flex;justify-content:space-between;align-items:center;gap:12px;padding:13px 16px;background:#0f172a;color:#fff}.premium-document-toolbar h3{font-size:15px;margin:0}.premium-toolbar-actions{display:flex;gap:7px;flex-wrap:wrap}.premium-toolbar-btn{border:0;border-radius:8px;padding:8px 11px;font-weight:700;cursor:pointer}.premium-toolbar-btn.light{background:#fff;color:#111827}.premium-toolbar-btn.green{background:#16a34a;color:#fff}.premium-toolbar-btn.blue{background:#2563eb;color:#fff}.premium-toolbar-btn.purple{background:#7c3aed;color:#fff}.premium-toolbar-btn.close{background:#334155;color:#fff}
+.premium-document{width:min(794px,calc(100vw - 55px));min-height:1123px;margin:22px auto;background:#fff;color:#111827;padding:42px 45px;box-shadow:0 12px 45px rgba(15,23,42,.16);font-family:Arial,Helvetica,sans-serif}.premium-doc-head{display:flex;justify-content:space-between;gap:25px;border-bottom:4px solid #172554;padding-bottom:20px}.premium-brand{display:flex;gap:13px;align-items:center}.premium-brand img{width:74px;height:74px;object-fit:contain}.premium-brand h1{font-size:26px;margin:0;color:#0f172a}.premium-brand p{margin:4px 0 0;color:#64748b;font-size:11px}.premium-company{text-align:right;font-size:10.5px;line-height:1.65;color:#334155}.premium-company strong{color:#0f172a}.premium-doc-title{display:flex;justify-content:space-between;gap:20px;align-items:flex-start;margin:26px 0 22px}.premium-doc-title h2{font-size:30px;letter-spacing:3px;color:#1d4ed8;margin:0}.premium-doc-sub{color:#64748b;font-size:11px;margin-top:6px}.premium-doc-meta{border:1px solid #dbeafe;background:#f8fbff;border-radius:10px;padding:11px 14px;min-width:200px;font-size:11px;line-height:1.8}.premium-doc-meta strong{float:right}.premium-client-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-bottom:22px}.premium-client-box{border:1px solid #e2e8f0;border-radius:10px;padding:13px;background:#fbfdff;min-height:95px}.premium-client-box h4{font-size:10px;text-transform:uppercase;letter-spacing:1px;color:#64748b;margin:0 0 8px}.premium-client-box strong{font-size:14px}.premium-client-box div{font-size:10.5px;line-height:1.55;color:#334155}.premium-items{width:100%;border-collapse:collapse;margin-top:12px;font-size:10.5px}.premium-items th{background:#172554;color:#fff;padding:9px 8px;text-align:left}.premium-items td{padding:9px 8px;border-bottom:1px solid #e2e8f0;vertical-align:top}.premium-items .num{text-align:right}.premium-items .qty{text-align:center}.premium-totals{width:310px;margin:18px 0 0 auto;font-size:11px}.premium-total-row{display:flex;justify-content:space-between;padding:5px 0}.premium-grand{margin-top:6px;padding:11px 0;border-top:2px solid #172554;background:#eff6ff;color:#1d4ed8;font-size:15px;font-weight:800}.premium-terms{margin-top:28px;padding:15px;background:#f8fafc;border:1px solid #e2e8f0;border-radius:10px;font-size:10.5px;line-height:1.65}.premium-terms h4{margin:0 0 7px;font-size:11px;color:#0f172a}.premium-sign{display:flex;justify-content:flex-end;margin-top:25px}.premium-stamp-wrap{text-align:center;width:150px}.premium-stamp{width:132px;height:132px;margin:0 auto 6px;object-fit:contain;display:block}.premium-stamp-wrap strong{display:block;margin-top:2px}.premium-footer{margin-top:30px;padding-top:12px;border-top:2px solid #e2e8f0;display:flex;justify-content:space-between;color:#64748b;font-size:9px}
+.premium-share-modal{display:none;position:fixed;inset:0;z-index:31000;background:rgba(15,23,42,.6);backdrop-filter:blur(7px);align-items:center;justify-content:center;padding:18px}.premium-share-modal.active{display:flex}.premium-share-card{width:min(460px,100%);background:#fff;border-radius:18px;padding:22px;box-shadow:0 25px 80px rgba(0,0,0,.3)}.premium-share-card h3{margin:0 0 5px}.premium-share-card p{color:#64748b;font-size:13px;margin:0 0 18px}.share-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.share-option{border:0;border-radius:10px;padding:12px;font-weight:700;cursor:pointer}.share-wa{background:#dcfce7;color:#166534}.share-email{background:#dbeafe;color:#1d4ed8}.share-copy{background:#f1f5f9;color:#334155}.share-native{background:#ede9fe;color:#6d28d9}.share-cancel{width:100%;margin-top:12px;border:0;background:#e5e7eb;padding:11px;border-radius:10px;font-weight:700;cursor:pointer}.service-row-grid{display:grid!important;grid-template-columns:minmax(260px,1.8fr) 80px 125px 125px 42px!important;gap:8px!important;align-items:center!important}.service-row-grid select{width:100%;border:1px solid #ddd;border-radius:9px;padding:10px;background:#fff!important;color:#111827!important}.service-row-grid select option{background:#fff!important;color:#111827!important}.service-row-description{font-size:10px;color:#64748b;margin-top:3px}.service-row-total{font-weight:800;text-align:right}.auto-number{background:#f8fafc!important;color:#1d4ed8!important;font-weight:800!important;border-color:#bfdbfe!important}
+@media(max-width:760px){.premium-document{padding:25px 20px;width:calc(100vw - 30px)}.premium-doc-head,.premium-doc-title{flex-direction:column}.premium-company{text-align:left}.premium-client-grid{grid-template-columns:1fr}.premium-doc-meta{width:100%;box-sizing:border-box}.premium-items{font-size:9px}.premium-totals{width:100%}.premium-document-toolbar{align-items:flex-start;flex-direction:column}.service-row-grid{grid-template-columns:1fr 70px 110px 110px 40px!important}.premium-actions{gap:4px}}
+@media print{.premium-document{box-shadow:none;margin:0;width:100%;min-height:auto}.premium-document-modal,.premium-document-toolbar,.premium-share-modal{display:none!important}}
+
+
+.sidebar-logo { width: 150px; height: 60px; object-fit: contain; object-position: left center; display: block; }
+</style>
+
+<style>
+/* ===== ONE-PAGE A4 PDF MODE ===== */
+.pdf-compact .premium-document{
+    width:794px !important;
+    min-height:0 !important;
+    height:auto !important;
+    margin:0 !important;
+    padding:24px 30px !important;
+    box-shadow:none !important;
+}
+.pdf-compact .premium-doc-head{
+    gap:16px !important;
+    padding-bottom:10px !important;
+    border-bottom-width:3px !important;
+}
+.pdf-compact .premium-brand{gap:9px !important}
+.pdf-compact .premium-brand img{width:48px !important;height:48px !important}
+.pdf-compact .premium-brand h1{font-size:20px !important}
+.pdf-compact .premium-brand p{font-size:9px !important}
+.pdf-compact .premium-company{font-size:8.5px !important;line-height:1.35 !important}
+.pdf-compact .premium-doc-title{
+    margin:12px 0 10px !important;
+    gap:12px !important;
+}
+.pdf-compact .premium-doc-title h2{font-size:20px !important}
+.pdf-compact .premium-doc-sub{font-size:8px !important;margin-top:2px !important}
+.pdf-compact .premium-doc-meta{
+    min-width:175px !important;
+    padding:6px 9px !important;
+    font-size:8.5px !important;
+    line-height:1.45 !important;
+}
+.pdf-compact .premium-client-grid{
+    gap:10px !important;
+    margin-bottom:10px !important;
+}
+.pdf-compact .premium-client-box{
+    min-height:0 !important;
+    padding:8px 10px !important;
+    font-size:8.5px !important;
+    line-height:1.35 !important;
+}
+.pdf-compact .premium-client-box h4{
+    font-size:8px !important;
+    margin-bottom:3px !important;
+}
+.pdf-compact .premium-client-box strong{font-size:10px !important}
+.pdf-compact .premium-items{
+    margin-top:6px !important;
+    font-size:8.5px !important;
+}
+.pdf-compact .premium-items th,
+.pdf-compact .premium-items td{
+    padding:5px 6px !important;
+}
+.pdf-compact .service-row-description{
+    font-size:7.5px !important;
+    margin-top:1px !important;
+}
+.pdf-compact .premium-document > div[style*="grid-template-columns"]{
+    gap:10px !important;
+    margin-top:9px !important;
+}
+.pdf-compact .premium-document > div[style*="grid-template-columns"] > div:first-child{
+    padding:8px 10px !important;
+    font-size:8px !important;
+    line-height:1.4 !important;
+}
+.pdf-compact .premium-document > div[style*="grid-template-columns"] > div:first-child strong{
+    font-size:9px !important;
+}
+.pdf-compact .premium-totals{font-size:9px !important}
+.pdf-compact .premium-total-row{padding:3px 0 !important}
+.pdf-compact .premium-grand{
+    margin-top:3px !important;
+    padding:7px 0 !important;
+    font-size:12px !important;
+}
+.pdf-compact .premium-terms{
+    margin-top:10px !important;
+    padding:8px 10px !important;
+    font-size:7.7px !important;
+    line-height:1.32 !important;
+}
+.pdf-compact .premium-terms h4{
+    font-size:9px !important;
+    margin-bottom:3px !important;
+}
+.pdf-compact .premium-sign{
+    margin-top:8px !important;
+}
+.pdf-compact .premium-stamp-wrap{width:92px !important}
+.pdf-compact .premium-stamp{
+    width:78px !important;
+    height:78px !important;
+    margin-bottom:2px !important;
+}
+.pdf-compact .premium-stamp-wrap strong{font-size:7.5px !important}
+.pdf-compact .premium-stamp-wrap div{font-size:7px !important}
+.pdf-compact .premium-footer{
+    margin-top:8px !important;
+    padding-top:5px !important;
+    font-size:7px !important;
+    border-top-width:1px !important;
+}
+.pdf-compact .premium-document *{
+    break-inside:avoid;
+}
+</style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+</head>
+
+<body>
+
+    <!-- Sidebar -->
+
+    <aside class="sidebar">
+
+        <div class="brand">
+
+            <img class="sidebar-logo" src="logo.png" alt="NextTech Labs">
+
+            <h2>NextTech Labs</h2>
+
+        </div>
+
+        <a href="#" class="nav-item active">
+            📊 Dashboard
+        </a>
+
+        <a href="#" class="nav-item">
+            📩 Leads
+        </a>
+
+        <a href="#clientsSection" class="nav-item">
+    👥 Clients
+</a>
+
+        <a href="#projectsSection" class="nav-item">
+            💼 Projects
+        </a>
+
+        <a href="#quotationsSection" class="nav-item">
+            📄 Quotations
+        </a>
+
+        <a href="#invoicesSection" class="nav-item">
+            🧾 Invoices
+        </a>
+
+    </aside>
+
+
+    <!-- Main -->
+
+    <main class="main">
+
+        <div class="topbar">
+
+            <div>
+
+                <h1>Dashboard</h1>
+
+                <p id="welcomeText">
+                    Welcome back, Admin
+                </p>
+
+            </div>
+
+            <button
+                class="logout-btn"
+                id="logoutBtn"
+            >
+                Logout
+            </button>
+
+        </div>
+
+
+        <!-- Stats -->
+
+        <section class="stats">
+
+            <div class="stat-card">
+
+                <span>Total Leads</span>
+
+                <h2 id="totalLeads">
+                    0
+                </h2>
+
+            </div>
+
+
+            <div class="stat-card">
+
+                <span>New Leads</span>
+
+                <h2 id="newLeads">
+                    0
+                </h2>
+
+            </div>
+
+
+            <div class="stat-card">
+
+                <span>Clients</span>
+
+                <h2 id="totalClients">
+                    0
+                </h2>
+
+            </div>
+
+
+            <div class="stat-card">
+
+                <span>Projects</span>
+
+                <h2 id="totalProjects">
+                    0
+                </h2>
+
+            </div>
+
+        </section>
+
+
+        <!-- Leads -->
+
+        <section class="leads-box">
+
+            <div class="leads-header">
+
+    <h2>
+        Recent Leads
+    </h2>
+
+    <button
+        class="refresh-btn"
+        id="refreshBtn"
+    >
+        Refresh
+    </button>
+
+</div>
+
+<div class="lead-filters">
+
+    <input
+        type="text"
+        id="searchLead"
+        placeholder="Search by name, email or phone..."
+    >
+
+    <select id="filterStatus">
+
+        <option value="All">All Status</option>
+        <option value="New">New</option>
+        <option value="Contacted">Contacted</option>
+        <option value="In Discussion">In Discussion</option>
+        <option value="Converted">Converted</option>
+        <option value="Closed">Closed</option>
+
+    </select>
+
+</div>
+
+
+            <div class="table-wrapper">
+
+                <table>
+
+                    <thead>
+
+                        <tr>
+
+                            <th>ID</th>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Phone</th>
+                            <th>Subject</th>
+                            <th>Status</th>
+                            <th>Date</th>
+                            <th>Actions</th>
+
+                        </tr>
+
+                    </thead>
+
+                    <tbody id="leadsTable">
+
+                        <tr>
+
+                            <td
+                                colspan="8"
+                                class="loading"
+                            >
+                                Loading leads...
+                            </td>
+
+                        </tr>
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </section>
+        <!-- =========================
+     Clients Section
+========================= -->
+
+<section class="clients-section" id="clientsSection">
+
+    <div class="section-header">
+
+        <div>
+            <h2>Clients</h2>
+            <p>Manage your clients</p>
+        </div>
+
+        <button
+            class="add-client-btn"
+            id="addClientBtn"
+        >
+            + Add Client
+        </button>
+
+    </div>
+
+    <div class="client-filters">
+
+        <input
+            type="text"
+            id="searchClient"
+            placeholder="Search client..."
+        >
+
+        <select id="filterClientStatus">
+
+            <option value="All">
+                All Status
+            </option>
+
+            <option value="Active">
+                Active
+            </option>
+
+            <option value="Inactive">
+                Inactive
+            </option>
+
+        </select>
+
+    </div>
+
+    <div class="clients-table-wrapper">
+
+        <table class="clients-table">
+
+            <thead>
+
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Company</th>
+                    <th>Email</th>
+                    <th>Phone</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+
+            </thead>
+
+            <tbody id="clientsTable">
+
+                <tr>
+                    <td colspan="7">
+                        Loading clients...
+                    </td>
+                </tr>
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</section>
+
+
+<!-- =========================
+     Projects Section
+========================= -->
+
+<section class="projects-section" id="projectsSection">
+
+    <div class="section-header">
+
+        <div>
+            <h2>Projects</h2>
+            <p>Manage your client projects</p>
+        </div>
+
+        <button class="add-project-btn" id="addProjectBtn">
+            + Add Project
+        </button>
+
+    </div>
+
+    <div class="client-filters">
+
+        <input
+            type="text"
+            id="searchProject"
+            placeholder="Search project, client or technology..."
+        >
+
+        <select id="filterProjectStatus">
+            <option value="All">All Status</option>
+            <option value="Planning">Planning</option>
+            <option value="In Progress">In Progress</option>
+            <option value="On Hold">On Hold</option>
+            <option value="Completed">Completed</option>
+            <option value="Cancelled">Cancelled</option>
+        </select>
+
+    </div>
+
+    <div class="projects-table-wrapper">
+
+        <table class="projects-table">
+
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Project</th>
+                    <th>Client</th>
+                    <th>Technology</th>
+                    <th>Status</th>
+                    <th>Deadline</th>
+                    <th>Budget</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+
+            <tbody id="projectsTable">
+                <tr>
+                    <td colspan="8">Loading projects...</td>
+                </tr>
+            </tbody>
+
+        </table>
+
+    </div>
+
+</section>
+
+
+<!-- =========================
+     Quotations Section
+========================= -->
+
+<section class="quotations-section" id="quotationsSection">
+
+    <div class="section-header">
+
+        <div>
+            <h2>Quotations</h2>
+            <p>Create and manage client quotations</p>
+        </div>
+
+        <button class="add-quotation-btn" id="addQuotationBtn">
+            + Add Quotation
+        </button>
+
+    </div>
+
+    <div class="client-filters">
+
+        <input
+            type="text"
+            id="searchQuotation"
+            placeholder="Search quotation, client or title..."
+        >
+
+        <select id="filterQuotationStatus">
+            <option value="All">All Status</option>
+            <option value="Draft">Draft</option>
+            <option value="Sent">Sent</option>
+            <option value="Accepted">Accepted</option>
+            <option value="Rejected">Rejected</option>
+            <option value="Expired">Expired</option>
+        </select>
+
+    </div>
+
+    <div class="quotations-table-wrapper">
+
+        <table class="quotations-table">
+
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Quotation No.</th>
+                    <th>Title</th>
+                    <th>Client</th>
+                    <th>Total</th>
+                    <th>Status</th>
+                    <th>Valid Until</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+
+            <tbody id="quotationsTable">
+                <tr>
+                    <td colspan="8">Loading quotations...</td>
+                </tr>
+            </tbody>
+
+        </table>
+
+    </div>
+
+</section>
+
+    
+<!-- =========================
+     INVOICES SECTION
+========================= -->
+<section class="dashboard-section" id="invoicesSection">
+
+    <div class="section-header">
+        <div>
+            <h2>Invoices</h2>
+            <p>Manage invoices, payments and billing.</p>
+        </div>
+
+        <button class="primary-btn" id="addInvoiceBtn">
+            + Add Invoice
+        </button>
+    </div>
+
+    <div class="filter-bar">
+        <input type="text" id="invoiceSearch" placeholder="Search invoice, client or title...">
+
+        <select id="invoiceStatusFilter">
+            <option value="">All Status</option>
+            <option value="Draft">Draft</option>
+            <option value="Sent">Sent</option>
+            <option value="Paid">Paid</option>
+            <option value="Overdue">Overdue</option>
+            <option value="Cancelled">Cancelled</option>
+        </select>
+    </div>
+
+    <div class="clients-table-wrapper">
+        <table class="clients-table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Invoice</th>
+                    <th>Client</th>
+                    <th>Issue Date</th>
+                    <th>Due Date</th>
+                    <th>Total</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+
+            <tbody id="invoicesTable">
+                <tr>
+                    <td colspan="8" class="loading">Loading invoices...</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+</section>
+
+<!-- Invoice Modal -->
+<div class="client-modal" id="invoiceModal">
+
+    <div class="client-modal-content invoice-modal-content">
+
+        <button class="client-modal-close" id="closeInvoiceModal">&times;</button>
+
+        <div class="modal-header">
+            <h2 id="invoiceModalTitle">Add Invoice</h2>
+            <p>Create and manage a professional invoice.</p>
+        </div>
+
+        <form id="invoiceForm">
+
+            <input type="hidden" id="invoiceId">
+
+            <div class="client-form-grid">
+
+                <div class="form-group">
+                    <label>Client *</label>
+                    <select id="invoiceClient" required>
+                        <option value="">Select Client</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Quotation</label>
+                    <select id="invoiceQuotation">
+                        <option value="">No Quotation</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Invoice Number <span style="color:#2563eb">(Auto)</span></label>
+                    <input type="text" id="invoiceNumber" class="auto-number" readonly required>
+                </div>
+
+                <div class="form-group">
+                    <label>Title *</label>
+                    <input type="text" id="invoiceTitle" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Status</label>
+                    <select id="invoiceStatus">
+                        <option>Draft</option>
+                        <option>Sent</option>
+                        <option>Paid</option>
+                        <option>Overdue</option>
+                        <option>Cancelled</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Payment Method</label>
+                    <select id="invoicePaymentMethod">
+                        <option value="">Select Method</option>
+                        <option>UPI</option>
+                        <option>Bank Transfer</option>
+                        <option>Cash</option>
+                        <option>Card</option>
+                        <option>Other</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Issue Date</label>
+                    <input type="date" id="invoiceIssueDate">
+                </div>
+
+                <div class="form-group">
+                    <label>Due Date</label>
+                    <input type="date" id="invoiceDueDate">
+                </div>
+
+                <div class="form-group full-width">
+                    <label>Description</label>
+                    <textarea id="invoiceDescription" rows="3"></textarea>
+                </div>
+
+                <div class="form-group full-width">
+                    <label>Invoice Items</label>
+
+                    <div id="invoiceItems"></div>
+
+                    <button type="button" class="secondary-btn" id="addInvoiceItemBtn">
+                        + Add Item
+                    </button>
+                </div>
+
+                <div class="invoice-total-box full-width">
+
+                    <div>
+                        <span>Subtotal</span>
+                        <strong>₹<span id="invoiceSubtotal">0.00</span></strong>
+                    </div>
+
+                    <div>
+                        <label>Discount</label>
+                        <input type="number" id="invoiceDiscount" min="0" step="0.01" value="0">
+                    </div>
+
+                    <div>
+                        <label>Tax (%)</label>
+                        <input type="number" id="invoiceTax" min="0" step="0.01" value="0">
+                    </div>
+
+                    <div class="invoice-grand-total">
+                        <span>Total</span>
+                        <strong>₹<span id="invoiceTotal">0.00</span></strong>
+                    </div>
+
+                </div>
+
+                <div class="form-group full-width">
+                    <label>Notes</label>
+                    <textarea id="invoiceNotes" rows="3"></textarea>
+                </div>
+
+            </div>
+
+            <div class="client-form-actions">
+                <button type="button" class="cancel-client-btn" id="cancelInvoiceBtn">
+                    Cancel
+                </button>
+
+                <button type="submit" class="save-client-btn" id="saveInvoiceBtn">
+                    Save Invoice
+                </button>
+            </div>
+
+        </form>
+
+    </div>
+</div>
+
+<!-- Invoice View Modal -->
+<div class="client-modal" id="invoiceViewModal">
+
+    <div class="client-modal-content invoice-view-content">
+
+        <button class="client-modal-close" onclick="closeInvoiceView()">&times;</button>
+
+        <div id="invoiceViewBody"></div>
+
+        <div class="client-form-actions">
+            <button type="button" class="cancel-client-btn" onclick="closeInvoiceView()">
+                Close
+            </button>
+            <button type="button" class="save-client-btn" id="invoiceViewEditBtn">
+                Edit Invoice
+            </button>
+        </div>
+
+    </div>
+</div>
+
+    </main>
+
+
+<!-- Add Client Modal -->
+<div class="client-modal" id="clientModal">
+    <div class="client-modal-content">
+
+        <div class="client-modal-header">
+            <div>
+                <h2>Add New Client</h2>
+                <p>Enter client details below</p>
+            </div>
+
+            <button type="button" class="close-client-modal" id="closeClientModal">
+                &times;
+            </button>
+        </div>
+
+        <form id="clientForm">
+
+            <div class="client-form-grid">
+
+                <div class="form-group">
+                    <label>Client Name *</label>
+                    <input type="text" id="clientName" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Company Name</label>
+                    <input type="text" id="clientCompany">
+                </div>
+
+                <div class="form-group">
+                    <label>Email</label>
+                    <input type="email" id="clientEmail">
+                </div>
+
+                <div class="form-group">
+                    <label>Phone</label>
+                    <input type="text" id="clientPhone">
+                </div>
+
+                <div class="form-group full-width">
+                    <label>Address</label>
+                    <textarea id="clientAddress" rows="3"></textarea>
+                </div>
+
+                <div class="form-group full-width">
+                    <label>Notes</label>
+                    <textarea id="clientNotes" rows="3"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label>Status</label>
+                    <select id="clientStatus">
+                        <option value="Active">Active</option>
+                        <option value="Inactive">Inactive</option>
+                    </select>
+                </div>
+
+            </div>
+
+            <div class="client-form-actions">
+                <button type="button" class="cancel-client-btn" id="cancelClientBtn">
+                    Cancel
+                </button>
+
+                <button type="submit" class="save-client-btn">
+                    Save Client
+                </button>
+            </div>
+
+        </form>
+
+    </div>
+</div>
+
+
+<!-- Project Add/Edit Modal -->
+<div class="project-modal" id="projectModal">
+
+    <div class="project-modal-content">
+
+        <div class="project-modal-header">
+
+            <div>
+                <h2 id="projectModalTitle">Add New Project</h2>
+                <p id="projectModalSubtitle">Enter project details below</p>
+            </div>
+
+            <button
+                type="button"
+                class="close-project-modal"
+                id="closeProjectModal"
+            >
+                &times;
+            </button>
+
+        </div>
+
+        <form id="projectForm">
+
+            <div class="project-form-grid">
+
+                <div class="project-form-group">
+                    <label>Project Name *</label>
+                    <input type="text" id="projectName" required>
+                </div>
+
+                <div class="project-form-group">
+                    <label>Client</label>
+                    <select id="projectClient">
+                        <option value="">No Client</option>
+                    </select>
+                </div>
+
+                <div class="project-form-group">
+                    <label>Technology</label>
+                    <input type="text" id="projectTechnology"
+                           placeholder="HTML, CSS, JavaScript...">
+                </div>
+
+                <div class="project-form-group">
+                    <label>Status</label>
+                    <select id="projectStatus">
+                        <option value="Planning">Planning</option>
+                        <option value="In Progress">In Progress</option>
+                        <option value="On Hold">On Hold</option>
+                        <option value="Completed">Completed</option>
+                        <option value="Cancelled">Cancelled</option>
+                    </select>
+                </div>
+
+                <div class="project-form-group">
+                    <label>Start Date</label>
+                    <input type="date" id="projectStartDate">
+                </div>
+
+                <div class="project-form-group">
+                    <label>Deadline</label>
+                    <input type="date" id="projectDeadline">
+                </div>
+
+                <div class="project-form-group">
+                    <label>Budget</label>
+                    <input type="number" id="projectBudget"
+                           min="0" step="0.01" placeholder="0.00">
+                </div>
+
+                <div class="project-form-group full-width">
+                    <label>Description</label>
+                    <textarea id="projectDescription" rows="3"></textarea>
+                </div>
+
+                <div class="project-form-group full-width">
+                    <label>Notes</label>
+                    <textarea id="projectNotes" rows="3"></textarea>
+                </div>
+
+            </div>
+
+            <div class="project-form-actions">
+
+                <button
+                    type="button"
+                    class="cancel-project-btn"
+                    id="cancelProjectBtn"
+                >
+                    Cancel
+                </button>
+
+                <button
+                    type="submit"
+                    class="save-project-btn"
+                >
+                    Save Project
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+
+<!-- Quotation Add/Edit Modal -->
+<div class="quotation-modal" id="quotationModal">
+
+    <div class="quotation-modal-content">
+
+        <div class="quotation-modal-header">
+
+            <div>
+                <h2 id="quotationModalTitle">Add New Quotation</h2>
+                <p id="quotationModalSubtitle">Enter quotation details below</p>
+            </div>
+
+            <button
+                type="button"
+                class="close-quotation-modal"
+                id="closeQuotationModal"
+            >
+                &times;
+            </button>
+
+        </div>
+
+        <form id="quotationForm">
+
+            <div class="quotation-form-grid">
+
+                <div class="quotation-form-group">
+                    <label>Quotation Number <span style="color:#2563eb">(Auto)</span></label>
+                    <input type="text" id="quotationNumber" class="auto-number" readonly required>
+                </div>
+
+                <div class="quotation-form-group">
+                    <label>Client</label>
+                    <select id="quotationClient">
+                        <option value="">No Client</option>
+                    </select>
+                </div>
+
+                <div class="quotation-form-group full-width">
+                    <label>Title *</label>
+                    <input type="text" id="quotationTitle" required>
+                </div>
+
+                <div class="quotation-form-group">
+                    <label>Status</label>
+                    <select id="quotationStatus">
+                        <option value="Draft">Draft</option>
+                        <option value="Sent">Sent</option>
+                        <option value="Accepted">Accepted</option>
+                        <option value="Rejected">Rejected</option>
+                        <option value="Expired">Expired</option>
+                    </select>
+                </div>
+
+                <div class="quotation-form-group">
+                    <label>Valid Until</label>
+                    <input type="date" id="quotationValidUntil">
+                </div>
+
+                <div class="quotation-items-box">
+
+                    <div class="quotation-items-header">
+                        <strong>Quotation Items</strong>
+
+                        <button
+                            type="button"
+                            class="add-item-btn"
+                            id="addQuotationItemBtn"
+                        >
+                            + Add Item
+                        </button>
+                    </div>
+
+                    <div id="quotationItems"></div>
+
+                </div>
+
+                <div class="quotation-total-box">
+
+                    <div class="quotation-form-group">
+                        <label>Subtotal</label>
+                        <input type="number" id="quotationSubtotal"
+                               value="0" readonly>
+                    </div>
+
+                    <div class="quotation-form-group">
+                        <label>Discount</label>
+                        <input type="number" id="quotationDiscount"
+                               value="0" min="0" step="0.01">
+                    </div>
+
+                    <div class="quotation-form-group">
+                        <label>Tax</label>
+                        <input type="number" id="quotationTax"
+                               value="0" min="0" step="0.01"
+                               placeholder="Tax amount">
+                    </div>
+
+                    <div class="quotation-form-group">
+                        <label>Total</label>
+                        <input type="number" id="quotationTotal"
+                               class="quotation-final-total"
+                               value="0" readonly>
+                    </div>
+
+                </div>
+
+                <div class="quotation-form-group full-width">
+                    <label>Description</label>
+                    <textarea id="quotationDescription" rows="3"></textarea>
+                </div>
+
+                <div class="quotation-form-group full-width">
+                    <label>Notes</label>
+                    <textarea id="quotationNotes" rows="3"></textarea>
+                </div>
+
+            </div>
+
+            <div class="quotation-form-actions">
+
+                <button
+                    type="button"
+                    class="cancel-quotation-btn"
+                    id="cancelQuotationBtn"
+                >
+                    Cancel
+                </button>
+
+                <button
+                    type="submit"
+                    class="save-quotation-btn"
+                >
+                    Save Quotation
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+
+<!-- Lead View Modal -->
+<div class="client-modal" id="leadModal">
+    <div class="client-modal-content" style="max-width:650px;">
+        <div class="client-modal-header">
+            <div>
+                <h2>Lead Details</h2>
+                <p>Complete enquiry information</p>
+            </div>
+            <button type="button" class="close-client-modal" onclick="closeLeadModal()">&times;</button>
+        </div>
+        <div id="leadDetails"></div>
+        <div class="client-form-actions">
+            <button type="button" class="cancel-client-btn" onclick="closeLeadModal()">Close</button>
+        </div>
+    </div>
+</div>
+<style>
+#leadDetails .detail-row{
+    display:flex;justify-content:space-between;gap:20px;
+    padding:13px 0;border-bottom:1px solid #e5e7eb;
+}
+#leadDetails .detail-row strong{color:#374151;min-width:100px}
+#leadDetails .detail-row span{color:#111827;text-align:right;word-break:break-word}
+#leadDetails .detail-message{
+    margin-top:18px;padding:15px;background:#f8fafc;border-radius:10px;
+}
+#leadDetails .detail-message strong{display:block;margin-bottom:8px}
+#leadDetails .detail-message p{color:#374151;line-height:1.6;white-space:pre-wrap}
+</style>
+    <script>
+
+        // =========================
+        // Authentication
+        // =========================
+
+        const token =
+            localStorage.getItem("nexttech_admin_token");
+
+        const adminData =
+            localStorage.getItem("nexttech_admin");
+
+
+        // Login nahi hai
+        if (!token) {
+
+            window.location.href = "admin.html";
+
+        }
+
+
+        // =========================
+        // Admin Information
+        // =========================
+
+        if (adminData) {
+
+            try {
+
+                const admin =
+                    JSON.parse(adminData);
+
+                document.getElementById("welcomeText").textContent =
+                    `Welcome back, ${admin.name}`;
+
+            } catch (error) {
+
+                console.error(error);
+
+            }
+
+        }
+
+let allLeads = [];
+let filteredLeads = [];
+        // =========================
+        // Load Leads
+        // =========================
+
+        async function loadLeads() {
+
+            const table =
+                document.getElementById("leadsTable");
+
+            table.innerHTML = `
+                <tr>
+                    <td colspan="8" class="loading">
+                        Loading leads...
+                    </td>
+                </tr>
+            `;
+
+            try {
+
+                const response = await fetch(
+                    "https://nexttech-backend-euka.onrender.com/api/admin/leads",
+                    {
+                        method: "GET",
+
+                        headers: {
+                            "Authorization":
+                                `Bearer ${token}`
+                        }
+                    }
+                );
+
+
+                const data =
+                    await response.json();
+
+
+                // Token expired / invalid
+                if (response.status === 401 ||
+                    response.status === 403) {
+
+                    localStorage.removeItem(
+                        "nexttech_admin_token"
+                    );
+
+                    localStorage.removeItem(
+                        "nexttech_admin"
+                    );
+
+                    window.location.href =
+                        "admin.html";
+
+                    return;
+
+                }
+
+
+                if (!response.ok || !data.success) {
+
+                    throw new Error(
+                        data.message ||
+                        "Failed to load leads."
+                    );
+
+                }
+
+
+                // Total leads
+
+                document.getElementById(
+                    "totalLeads"
+                ).textContent = data.count;
+
+
+                // New leads
+
+                const newLeadCount =
+                    data.leads.filter(
+                        lead =>
+                            !lead.status ||
+                            lead.status.toLowerCase() === "new"
+                    ).length;
+
+                document.getElementById(
+                    "newLeads"
+                ).textContent = newLeadCount;
+                allLeads = data.leads;
+filteredLeads = [...allLeads];
+
+renderLeads(filteredLeads);
+
+
+                // No leads
+
+                if (!data.leads.length) {
+
+                    table.innerHTML = `
+                        <tr>
+                            <td
+                                colspan="8"
+                                class="empty"
+                            >
+                                No leads found.
+                            </td>
+                        </tr>
+                    `;
+
+                    return;
+
+                }
+
+
+                // Render leads
+
+                // Render leads
+
+renderLeads(filteredLeads);
+
+
+            } catch (error) {
+
+                console.error(
+                    "Dashboard Error:",
+                    error
+                );
+
+                table.innerHTML = `
+                    <tr>
+                        <td
+                            colspan="8"
+                            class="empty"
+                        >
+                            Failed to load leads.
+                        </td>
+                    </tr>
+                `;
+
+            }
+
+        }
+
+// =========================
+// Render Leads
+// =========================
+
+function renderLeads(leads) {
+
+    const table =
+        document.getElementById("leadsTable");
+
+    if (!leads.length) {
+
+        table.innerHTML = `
+            <tr>
+                <td
+                    colspan="8"
+                    class="empty"
+                >
+                    No matching leads found.
+                </td>
+            </tr>
+        `;
+
+        return;
+    }
+
+    table.innerHTML =
+        leads.map(lead => {
+
+            const date =
+                lead.created_at
+                    ? new Date(
+                        lead.created_at
+                    ).toLocaleString()
+                    : "-";
+
+            return `
+                <tr>
+
+                    <td>
+                        ${lead.id}
+                    </td>
+
+                    <td>
+                        ${escapeHtml(lead.name)}
+                    </td>
+
+                    <td>
+                        ${escapeHtml(lead.email)}
+                    </td>
+
+                    <td>
+                        ${escapeHtml(
+                            lead.phone || "-"
+                        )}
+                    </td>
+
+                    <td>
+                        ${escapeHtml(
+                            lead.subject || "-"
+                        )}
+                    </td>
+
+                    <td>
+
+                        <select
+                            class="status-select"
+                            data-id="${lead.id}"
+                            onchange="updateLeadStatus(this)"
+                        >
+
+                            <option value="New"
+                                ${lead.status === "New" || !lead.status ? "selected" : ""}>
+                                New
+                            </option>
+
+                            <option value="Contacted"
+                                ${lead.status === "Contacted" ? "selected" : ""}>
+                                Contacted
+                            </option>
+
+                            <option value="In Discussion"
+                                ${lead.status === "In Discussion" ? "selected" : ""}>
+                                In Discussion
+                            </option>
+
+                            <option value="Converted"
+                                ${lead.status === "Converted" ? "selected" : ""}>
+                                Converted
+                            </option>
+
+                            <option value="Closed"
+                                ${lead.status === "Closed" ? "selected" : ""}>
+                                Closed
+                            </option>
+
+                        </select>
+
+                    </td>
+
+                    <td>
+                        ${date}
+                    </td>
+<td>
+    <button
+        class="view-btn"
+        onclick="viewLead(${lead.id})"
+    >
+        View
+    </button>
+
+    <button
+        class="delete-btn"
+        onclick="deleteLead(${lead.id})"
+    >
+        Delete
+    </button>
+</td>
+                </tr>
+            `;
+
+        }).join("");
+}
+        // =========================
+        // HTML Security
+        // =========================
+
+        function escapeHtml(value) {
+
+            const div =
+                document.createElement("div");
+
+            div.textContent = value;
+
+            return div.innerHTML;
+
+        }
+
+
+        // =========================
+// Update Lead Status
+// =========================
+
+window.updateLeadStatus = async function(select) {
+
+    const leadId = select.dataset.id;
+    const newStatus = select.value;
+
+    try {
+
+        const response = await fetch(
+            `https://nexttech-backend-euka.onrender.com/api/admin/leads/${leadId}/status`,
+            {
+                method: "PATCH",
+
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${token}`
+                },
+
+                body: JSON.stringify({
+                    status: newStatus
+                })
+            }
+        );
+
+        const data = await response.json();
+
+        if (!response.ok || !data.success) {
+            throw new Error(
+                data.message || "Failed to update status."
+            );
+        }
+
+        console.log(
+            `Lead #${leadId} status updated to ${newStatus}`
+        );
+
+    } catch (error) {
+
+        console.error(
+            "Status Update Error:",
+            error
+        );
+
+        alert(
+            "Failed to update lead status."
+        );
+
+        loadLeads();
+
+    }
+
+}
+// =========================
+// View Lead
+// =========================
+
+window.viewLead = function(id) {
+
+    const lead = allLeads.find(
+        item => Number(item.id) === Number(id)
+    );
+
+    if (!lead) {
+        alert("Lead not found.");
+        return;
+    }
+
+    const date = lead.created_at
+        ? new Date(lead.created_at).toLocaleString()
+        : "-";
+
+    document.getElementById("leadDetails").innerHTML = `
+        <div class="detail-row">
+            <strong>Name</strong>
+            <span>${escapeHtml(lead.name || "-")}</span>
+        </div>
+
+        <div class="detail-row">
+            <strong>Email</strong>
+            <span>${escapeHtml(lead.email || "-")}</span>
+        </div>
+
+        <div class="detail-row">
+            <strong>Phone</strong>
+            <span>${escapeHtml(lead.phone || "-")}</span>
+        </div>
+
+        <div class="detail-row">
+            <strong>Subject</strong>
+            <span>${escapeHtml(lead.subject || "-")}</span>
+        </div>
+
+        <div class="detail-row">
+            <strong>Status</strong>
+            <span>${escapeHtml(lead.status || "New")}</span>
+        </div>
+
+        <div class="detail-row">
+            <strong>Date</strong>
+            <span>${date}</span>
+        </div>
+
+        <div class="detail-message">
+            <strong>Message</strong>
+            <p>${escapeHtml(lead.message || "No message provided.")}</p>
+        </div>
+    `;
+
+    document.getElementById("leadModal").classList.add("active");
+}
+
+
+// =========================
+// Close Lead Modal
+// =========================
+
+function closeLeadModal() {
+
+    document
+        .getElementById("leadModal")
+        .classList.remove("active");
+
+}
+
+
+// =========================
+// Delete Lead
+// =========================
+
+window.deleteLead = async function(id) {
+
+    const lead = allLeads.find(
+        item => Number(item.id) === Number(id)
+    );
+
+    if (!lead) {
+        alert("Lead not found.");
+        return;
+    }
+
+    const confirmed = confirm(
+        `Delete lead from ${lead.name}?`
+    );
+
+    if (!confirmed) {
+        return;
+    }
+
+    try {
+
+        const response = await fetch(
+            `https://nexttech-backend-euka.onrender.com/api/admin/leads/${id}`,
+            {
+                method: "DELETE",
+
+                headers: {
+                    "Authorization":
+                        `Bearer ${token}`
+                }
+            }
+        );
+
+        const data = await response.json();
+
+        if (!response.ok || !data.success) {
+            throw new Error(
+                data.message || "Failed to delete lead."
+            );
+        }
+
+        // Remove from local arrays
+        allLeads = allLeads.filter(
+            item => Number(item.id) !== Number(id)
+        );
+
+        filteredLeads = filteredLeads.filter(
+            item => Number(item.id) !== Number(id)
+        );
+
+        // Update count
+        document.getElementById("totalLeads").textContent =
+            allLeads.length;
+
+        const newLeadCount = allLeads.filter(
+            lead =>
+                !lead.status ||
+                lead.status.toLowerCase() === "new"
+        ).length;
+
+        document.getElementById("newLeads").textContent =
+            newLeadCount;
+
+        renderLeads(filteredLeads);
+
+        alert("Lead deleted successfully.");
+
+    } catch (error) {
+
+        console.error(
+            "Delete Lead Error:",
+            error
+        );
+
+        alert(
+            error.message ||
+            "Failed to delete lead."
+        );
+
+    }
+
+}
+// =========================
+// Search + Status Filter
+// =========================
+
+function filterLeads() {
+
+    const search =
+        document.getElementById("searchLead")
+            .value
+            .toLowerCase()
+            .trim();
+
+    const status =
+        document.getElementById("filterStatus")
+            .value;
+
+    filteredLeads = allLeads.filter(lead => {
+
+        const matchesSearch =
+            !search ||
+            (lead.name || "").toLowerCase().includes(search) ||
+            (lead.email || "").toLowerCase().includes(search) ||
+            (lead.phone || "").toLowerCase().includes(search);
+
+        const leadStatus =
+            lead.status || "New";
+
+        const matchesStatus =
+            status === "All" ||
+            leadStatus === status;
+
+        return matchesSearch && matchesStatus;
+
+    });
+
+    renderLeads(filteredLeads);
+}
+
+
+// Search input
+document
+    .getElementById("searchLead")
+    .addEventListener("input", filterLeads);
+
+
+// Status filter
+document
+    .getElementById("filterStatus")
+    .addEventListener("change", filterLeads);
+        // =========================
+        // Refresh
+        // =========================
+
+        document
+            .getElementById("refreshBtn")
+            .addEventListener(
+                "click",
+                loadLeads
+            );
+
+
+        // =========================
+        // Logout
+        // =========================
+
+        document
+            .getElementById("logoutBtn")
+            .addEventListener(
+                "click",
+                () => {
+
+                    localStorage.removeItem(
+                        "nexttech_admin_token"
+                    );
+
+                    localStorage.removeItem(
+                        "nexttech_admin"
+                    );
+
+                    window.location.href =
+                        "admin.html";
+
+                }
+            );
+
+
+        // =========================
+        // Initial Load
+        // =========================
+
+        if (token) {
+            loadLeads();
+        }
+
+        // =========================
+// Clients Management
+// =========================
+
+let allClients = [];
+let filteredClients = [];
+
+
+// Load Clients
+async function loadClients() {
+
+    try {
+
+        const response = await fetch(
+            "https://nexttech-backend-euka.onrender.com/api/admin/clients",
+            {
+                method: "GET",
+                headers: {
+                    "Authorization": `Bearer ${token}`
+                }
+            }
+        );
+
+        const data = await response.json();
+
+        if (!response.ok || !data.success) {
+            throw new Error(
+                data.message || "Failed to load clients."
+            );
+        }
+
+        allClients = data.clients || [];
+        filteredClients = [...allClients];
+
+        renderClients(filteredClients);
+
+        const clientCount =
+            document.getElementById("totalClients");
+
+        if (clientCount) {
+            clientCount.textContent = allClients.length;
+        }
+
+    } catch (error) {
+
+        console.error("Load Clients Error:", error);
+
+        const table =
+            document.getElementById("clientsTable");
+
+        if (table) {
+
+            table.innerHTML = `
+                <tr>
+                    <td colspan="7">
+                        Failed to load clients.
+                    </td>
+                </tr>
+            `;
+
+        }
+
+    }
+
+}
+
+
+// Render Clients
+function renderClients(clients) {
+
+    const table =
+        document.getElementById("clientsTable");
+
+    if (!table) return;
+
+    if (!clients.length) {
+
+        table.innerHTML = `
+            <tr>
+                <td colspan="7">
+                    No clients found.
+                </td>
+            </tr>
+        `;
+
+        return;
+    }
+
+    table.innerHTML = clients.map(client => `
+
+        <tr>
+
+            <td>
+                #${client.id}
+            </td>
+
+            <td>
+                ${escapeHtml(client.name || "-")}
+            </td>
+
+            <td>
+                ${escapeHtml(client.company || "-")}
+            </td>
+
+            <td>
+                ${escapeHtml(client.email || "-")}
+            </td>
+
+            <td>
+                ${escapeHtml(client.phone || "-")}
+            </td>
+
+            <td>
+                ${escapeHtml(client.status || "Active")}
+            </td>
+
+            <td>
+
+                <button
+    class="view-btn"
+    onclick="viewClient(${client.id})"
+>
+    View
+</button>
+
+<button
+    class="edit-btn"
+    onclick="editClient(${client.id})"
+>
+    Edit
+</button>
+
+<button
+    class="delete-btn"
+    onclick="deleteClient(${client.id})"
+>
+    Delete
+</button>
+
+            </td>
+
+        </tr>
+
+    `).join("");
+
+}
+
+
+// Search Clients
+function filterClients() {
+
+
+    const search =
+        document
+            .getElementById("searchClient")
+            .value
+            .toLowerCase()
+            .trim();
+
+    const status =
+        document.getElementById(
+            "filterClientStatus"
+        ).value;
+
+    filteredClients = allClients.filter(client => {
+
+        const matchesSearch =
+            !search ||
+            (client.name || "")
+                .toLowerCase()
+                .includes(search) ||
+            (client.email || "")
+                .toLowerCase()
+                .includes(search) ||
+            (client.phone || "")
+                .toLowerCase()
+                .includes(search) ||
+            (client.company || "")
+                .toLowerCase()
+                .includes(search);
+
+        const matchesStatus =
+            status === "All" ||
+            (client.status || "Active") === status;
+
+        return matchesSearch && matchesStatus;
+
+    });
+
+    renderClients(filteredClients);
+
+}
+// =========================
+// Client Add / Edit Modal
+// =========================
+
+const clientModal = document.getElementById("clientModal");
+const addClientBtn = document.getElementById("addClientBtn");
+const closeClientModal = document.getElementById("closeClientModal");
+const cancelClientBtn = document.getElementById("cancelClientBtn");
+const clientForm = document.getElementById("clientForm");
+
+let editingClientId = null;
+
+
+// Open Add Client
+addClientBtn?.addEventListener("click", () => {
+
+    editingClientId = null;
+
+    clientForm.reset();
+
+    document.querySelector(".client-modal-header h2").textContent =
+        "Add New Client";
+
+    document.querySelector(".client-modal-header p").textContent =
+        "Enter client details below";
+
+    document.querySelector(".save-client-btn").textContent =
+        "Save Client";
+
+    clientModal.classList.add("active");
+});
+
+
+// Open Edit Client
+window.editClient = function(id) {
+
+    const client = allClients.find(
+        item => Number(item.id) === Number(id)
+    );
+
+    if (!client) {
+        alert("Client not found.");
+        return;
+    }
+
+    editingClientId = id;
+
+    document.getElementById("clientName").value =
+        client.name || "";
+
+    document.getElementById("clientCompany").value =
+        client.company || "";
+
+    document.getElementById("clientEmail").value =
+        client.email || "";
+
+    document.getElementById("clientPhone").value =
+        client.phone || "";
+
+    document.getElementById("clientAddress").value =
+        client.address || "";
+
+    document.getElementById("clientNotes").value =
+        client.notes || "";
+
+    document.getElementById("clientStatus").value =
+        client.status || "Active";
+
+    document.querySelector(".client-modal-header h2").textContent =
+        "Edit Client";
+
+    document.querySelector(".client-modal-header p").textContent =
+        "Update client information";
+
+    document.querySelector(".save-client-btn").textContent =
+        "Save Changes";
+
+    clientModal.classList.add("active");
+};
+
+
+// Close Modal
+closeClientModal?.addEventListener("click", () => {
+
+    clientModal.classList.remove("active");
+
+    clientForm.reset();
+
+    editingClientId = null;
+
+});
+
+
+// Cancel
+cancelClientBtn?.addEventListener("click", () => {
+
+    clientModal.classList.remove("active");
+
+    clientForm.reset();
+
+    editingClientId = null;
+
+});
+
+
+// Click outside modal
+clientModal?.addEventListener("click", (event) => {
+
+    if (event.target === clientModal) {
+
+        clientModal.classList.remove("active");
+
+        clientForm.reset();
+
+        editingClientId = null;
+
+    }
+
+});
+
+
+// Save Add / Edit Client
+clientForm?.addEventListener("submit", async (event) => {
+
+    event.preventDefault();
+
+    const clientData = {
+
+        name: document.getElementById("clientName").value.trim(),
+
+        email: document.getElementById("clientEmail").value.trim(),
+
+        phone: document.getElementById("clientPhone").value.trim(),
+
+        company: document.getElementById("clientCompany").value.trim(),
+
+        address: document.getElementById("clientAddress").value.trim(),
+
+        notes: document.getElementById("clientNotes").value.trim(),
+
+        status: document.getElementById("clientStatus").value
+
+    };
+
+
+    try {
+
+        const isEditing = editingClientId !== null;
+
+        const url = isEditing
+            ? `https://nexttech-backend-euka.onrender.com/api/admin/clients/${editingClientId}`
+            : "https://nexttech-backend-euka.onrender.com/api/admin/clients";
+
+        const method = isEditing ? "PATCH" : "POST";
+
+
+        const response = await fetch(url, {
+
+            method: method,
+
+            headers: {
+
+                "Content-Type": "application/json",
+
+                "Authorization": `Bearer ${token}`
+
+            },
+
+            body: JSON.stringify(clientData)
+
+        });
+
+
+        const data = await response.json();
+
+
+        if (!response.ok || !data.success) {
+
+            throw new Error(
+                data.message ||
+                (isEditing
+                    ? "Failed to update client."
+                    : "Failed to add client.")
+            );
+
+        }
+
+
+        alert(
+            isEditing
+                ? "Client updated successfully!"
+                : "Client added successfully!"
+        );
+
+
+        clientForm.reset();
+
+        clientModal.classList.remove("active");
+
+        editingClientId = null;
+
+        await loadClients();
+
+
+    } catch (error) {
+
+        console.error(
+            "Client Save Error:",
+            error
+        );
+
+        alert(
+            error.message ||
+            "Something went wrong."
+        );
+
+    }
+
+});
+
+
+// =========================
+// Initialize Clients
+// =========================
+
+document.addEventListener("DOMContentLoaded", () => {
+
+    const searchClient =
+        document.getElementById("searchClient");
+
+    const filterStatus =
+        document.getElementById("filterClientStatus");
+
+
+    if (searchClient) {
+
+        searchClient.addEventListener(
+            "input",
+            filterClients
+        );
+
+    }
+
+
+    if (filterStatus) {
+
+        filterStatus.addEventListener(
+            "change",
+            filterClients
+        );
+
+    }
+
+
+    loadClients();
+
+});
+
+// =========================
+// Delete Client
+// =========================
+
+window.deleteClient = async function(id) {
+
+    const client = allClients.find(
+        item => Number(item.id) === Number(id)
+    );
+
+    if (!client) {
+        alert("Client not found.");
+        return;
+    }
+
+    const confirmed = confirm(
+        `Delete client "${client.name}"?`
+    );
+
+    if (!confirmed) return;
+
+    try {
+
+        const response = await fetch(
+            `https://nexttech-backend-euka.onrender.com/api/admin/clients/${id}`,
+            {
+                method: "DELETE",
+                headers: {
+                    "Authorization": `Bearer ${token}`
+                }
+            }
+        );
+
+        const data = await response.json();
+
+        if (!response.ok || !data.success) {
+            throw new Error(
+                data.message || "Failed to delete client."
+            );
+        }
+
+        allClients = allClients.filter(
+            item => Number(item.id) !== Number(id)
+        );
+
+        filteredClients = filteredClients.filter(
+            item => Number(item.id) !== Number(id)
+        );
+
+        renderClients(filteredClients);
+
+        const clientCount =
+            document.getElementById("totalClients");
+
+        if (clientCount) {
+            clientCount.textContent = allClients.length;
+        }
+
+        alert("Client deleted successfully.");
+
+    } catch (error) {
+
+        console.error("Delete Client Error:", error);
+        alert(error.message || "Failed to delete client.");
+
+    }
+};
+
+// Initialize Clients
+document.addEventListener("DOMContentLoaded", () => {
+
+    const searchClient =
+        document.getElementById("searchClient");
+
+    const filterStatus =
+        document.getElementById(
+            "filterClientStatus"
+        );
+
+    if (searchClient) {
+        searchClient.addEventListener(
+            "input",
+            filterClients
+        );
+    }
+
+    if (filterStatus) {
+        filterStatus.addEventListener(
+            "change",
+            filterClients
+        );
+    }
+
+    loadClients();
+
+});
+
+// =========================
+// Projects Management
+// =========================
+
+let allProjects = [];
+let filteredProjects = [];
+let editingProjectId = null;
+
+
+// Load Projects
+async function loadProjects() {
+
+    const table = document.getElementById("projectsTable");
+
+    if (!table) return;
+
+    table.innerHTML = `
+        <tr>
+            <td colspan="8" class="loading">
+                Loading projects...
+            </td>
+        </tr>
+    `;
+
+    try {
+
+        const response = await fetch(
+            "https://nexttech-backend-euka.onrender.com/api/admin/projects",
+            {
+                method: "GET",
+                headers: {
+                    "Authorization": `Bearer ${token}`
+                }
+            }
+        );
+
+        const data = await response.json();
+
+        if (!response.ok || !data.success) {
+            throw new Error(
+                data.message || "Failed to load projects."
+            );
+        }
+
+        allProjects = data.projects || [];
+        filteredProjects = [...allProjects];
+
+        renderProjects(filteredProjects);
+
+        const projectCount =
+            document.getElementById("totalProjects");
+
+        if (projectCount) {
+            projectCount.textContent = allProjects.length;
+        }
+
+    } catch (error) {
+
+        console.error("Load Projects Error:", error);
+
+        table.innerHTML = `
+            <tr>
+                <td colspan="8" class="empty">
+                    Failed to load projects.
+                </td>
+            </tr>
+        `;
+    }
+}
+
+
+// Render Projects
+function renderProjects(projects) {
+
+    const table = document.getElementById("projectsTable");
+
+    if (!table) return;
+
+    if (!projects.length) {
+        table.innerHTML = `
+            <tr>
+                <td colspan="8" class="empty">
+                    No projects found.
+                </td>
+            </tr>
+        `;
+        return;
+    }
+
+    table.innerHTML = projects.map(project => {
+
+        const deadline = project.deadline
+            ? new Date(project.deadline).toLocaleDateString()
+            : "-";
+
+        const budget = project.budget
+            ? `₹${Number(project.budget).toLocaleString("en-IN")}`
+            : "-";
+
+        return `
+            <tr>
+
+                <td>#${project.id}</td>
+
+                <td>
+                    <strong>${escapeHtml(project.name || "-")}</strong>
+                </td>
+
+                <td>
+                    ${escapeHtml(
+                        project.client_company ||
+                        project.client_name ||
+                        "-"
+                    )}
+                </td>
+
+                <td>
+                    ${escapeHtml(project.technology || "-")}
+                </td>
+
+                <td>
+                    <span class="project-status-badge">
+                        ${escapeHtml(project.status || "Planning")}
+                    </span>
+                </td>
+
+                <td>${deadline}</td>
+
+                <td>${budget}</td>
+
+                <td>
+
+                    <button
+                        class="view-btn"
+                        onclick="viewProject(${project.id})"
+                    >
+                        View
+                    </button>
+
+                    <button
+                        class="edit-btn"
+                        onclick="editProject(${project.id})"
+                    >
+                        Edit
+                    </button>
+
+                    <button
+                        class="delete-btn"
+                        onclick="deleteProject(${project.id})"
+                    >
+                        Delete
+                    </button>
+
+                </td>
+
+            </tr>
+        `;
+
+    }).join("");
+}
+
+
+// Search + Filter Projects
+function filterProjects() {
+
+    const search =
+        document.getElementById("searchProject")
+            ?.value
+            .toLowerCase()
+            .trim() || "";
+
+    const status =
+        document.getElementById("filterProjectStatus")
+            ?.value || "All";
+
+    filteredProjects = allProjects.filter(project => {
+
+        const searchableText = [
+            project.name,
+            project.client_name,
+            project.client_company,
+            project.technology
+        ]
+            .filter(Boolean)
+            .join(" ")
+            .toLowerCase();
+
+        const matchesSearch =
+            !search ||
+            searchableText.includes(search);
+
+        const matchesStatus =
+            status === "All" ||
+            (project.status || "Planning") === status;
+
+        return matchesSearch && matchesStatus;
+    });
+
+    renderProjects(filteredProjects);
+}
+
+
+// Client options for Project modal
+function populateProjectClients(selectedId = "") {
+
+    const select =
+        document.getElementById("projectClient");
+
+    if (!select) return;
+
+    select.innerHTML = `
+        <option value="">No Client</option>
+    `;
+
+    allClients.forEach(client => {
+
+        const option = document.createElement("option");
+
+        option.value = client.id;
+
+        option.textContent =
+            client.company
+                ? `${client.name} — ${client.company}`
+                : client.name;
+
+        if (
+            selectedId !== "" &&
+            Number(selectedId) === Number(client.id)
+        ) {
+            option.selected = true;
+        }
+
+        select.appendChild(option);
+    });
+}
+
+
+// Open Add Project
+document.getElementById("addProjectBtn")?.addEventListener(
+    "click",
+    () => {
+
+        editingProjectId = null;
+
+        document.getElementById("projectForm").reset();
+
+        populateProjectClients();
+
+        document.getElementById("projectModalTitle").textContent =
+            "Add New Project";
+
+        document.getElementById("projectModalSubtitle").textContent =
+            "Enter project details below";
+
+        document.querySelector(".save-project-btn").textContent =
+            "Save Project";
+
+        document.getElementById("projectModal")
+            .classList.add("active");
+    }
+);
+
+
+// Edit Project
+window.editProject = function(id) {
+
+    const project = allProjects.find(
+        item => Number(item.id) === Number(id)
+    );
+
+    if (!project) {
+        alert("Project not found.");
+        return;
+    }
+
+    editingProjectId = id;
+
+    document.getElementById("projectName").value =
+        project.name || "";
+
+    document.getElementById("projectTechnology").value =
+        project.technology || "";
+
+    document.getElementById("projectStatus").value =
+        project.status || "Planning";
+
+    document.getElementById("projectStartDate").value =
+        project.start_date
+            ? String(project.start_date).substring(0, 10)
+            : "";
+
+    document.getElementById("projectDeadline").value =
+        project.deadline
+            ? String(project.deadline).substring(0, 10)
+            : "";
+
+    document.getElementById("projectBudget").value =
+        project.budget || "";
+
+    document.getElementById("projectDescription").value =
+        project.description || "";
+
+    document.getElementById("projectNotes").value =
+        project.notes || "";
+
+    populateProjectClients(project.client_id || "");
+
+    document.getElementById("projectModalTitle").textContent =
+        "Edit Project";
+
+    document.getElementById("projectModalSubtitle").textContent =
+        "Update project information";
+
+    document.querySelector(".save-project-btn").textContent =
+        "Save Changes";
+
+    document.getElementById("projectModal")
+        .classList.add("active");
+};
+
+
+// View Project
+window.viewProject = function(id) {
+
+    const project = allProjects.find(
+        item => Number(item.id) === Number(id)
+    );
+
+    if (!project) {
+        alert("Project not found.");
+        return;
+    }
+
+    const deadline = project.deadline
+        ? new Date(project.deadline).toLocaleDateString()
+        : "-";
+
+    const budget = project.budget
+        ? `₹${Number(project.budget).toLocaleString("en-IN")}`
+        : "-";
+
+    alert(
+        "Project Details\n\n" +
+        "Project: " + (project.name || "-") + "\n" +
+        "Client: " +
+            (project.client_company ||
+             project.client_name ||
+             "-") + "\n" +
+        "Technology: " + (project.technology || "-") + "\n" +
+        "Status: " + (project.status || "Planning") + "\n" +
+        "Start Date: " +
+            (project.start_date || "-") + "\n" +
+        "Deadline: " + deadline + "\n" +
+        "Budget: " + budget + "\n" +
+        "Description: " +
+            (project.description || "-") + "\n" +
+        "Notes: " + (project.notes || "-")
+    );
+};
+
+
+// Close Project Modal
+function closeProjectModal() {
+
+    const modal =
+        document.getElementById("projectModal");
+
+    if (modal) {
+        modal.classList.remove("active");
+    }
+
+    document.getElementById("projectForm")?.reset();
+
+    editingProjectId = null;
+}
+
+document.getElementById("closeProjectModal")
+    ?.addEventListener("click", closeProjectModal);
+
+document.getElementById("cancelProjectBtn")
+    ?.addEventListener("click", closeProjectModal);
+
+document.getElementById("projectModal")
+    ?.addEventListener("click", event => {
+
+        if (event.target.id === "projectModal") {
+            closeProjectModal();
+        }
+    });
+
+
+// Save Add / Edit Project
+document.getElementById("projectForm")
+    ?.addEventListener("submit", async event => {
+
+        event.preventDefault();
+
+        const projectData = {
+
+            client_id:
+                document.getElementById("projectClient").value || null,
+
+            name:
+                document.getElementById("projectName")
+                    .value.trim(),
+
+            description:
+                document.getElementById("projectDescription")
+                    .value.trim(),
+
+            technology:
+                document.getElementById("projectTechnology")
+                    .value.trim(),
+
+            start_date:
+                document.getElementById("projectStartDate").value || null,
+
+            deadline:
+                document.getElementById("projectDeadline").value || null,
+
+            status:
+                document.getElementById("projectStatus").value,
+
+            budget:
+                document.getElementById("projectBudget").value || null,
+
+            notes:
+                document.getElementById("projectNotes")
+                    .value.trim()
+        };
+
+        try {
+
+            const isEditing =
+                editingProjectId !== null;
+
+            const url = isEditing
+                ? `https://nexttech-backend-euka.onrender.com/api/admin/projects/${editingProjectId}`
+                : "https://nexttech-backend-euka.onrender.com/api/admin/projects";
+
+            const method =
+                isEditing ? "PATCH" : "POST";
+
+            const response = await fetch(url, {
+
+                method,
+
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${token}`
+                },
+
+                body: JSON.stringify(projectData)
+            });
+
+            const data = await response.json();
+
+            if (!response.ok || !data.success) {
+                throw new Error(
+                    data.message ||
+                    (isEditing
+                        ? "Failed to update project."
+                        : "Failed to add project.")
+                );
+            }
+
+            alert(
+                isEditing
+                    ? "Project updated successfully!"
+                    : "Project added successfully!"
+            );
+
+            closeProjectModal();
+
+            await loadProjects();
+
+        } catch (error) {
+
+            console.error(
+                "Project Save Error:",
+                error
+            );
+
+            alert(
+                error.message ||
+                "Something went wrong."
+            );
+        }
+    });
+
+
+// Delete Project
+window.deleteProject = async function(id) {
+
+    const project = allProjects.find(
+        item => Number(item.id) === Number(id)
+    );
+
+    if (!project) {
+        alert("Project not found.");
+        return;
+    }
+
+    const confirmed = confirm(
+        `Delete project "${project.name}"?`
+    );
+
+    if (!confirmed) return;
+
+    try {
+
+        const response = await fetch(
+            `https://nexttech-backend-euka.onrender.com/api/admin/projects/${id}`,
+            {
+                method: "DELETE",
+                headers: {
+                    "Authorization": `Bearer ${token}`
+                }
+            }
+        );
+
+        const data = await response.json();
+
+        if (!response.ok || !data.success) {
+            throw new Error(
+                data.message || "Failed to delete project."
+            );
+        }
+
+        allProjects = allProjects.filter(
+            item => Number(item.id) !== Number(id)
+        );
+
+        filteredProjects = filteredProjects.filter(
+            item => Number(item.id) !== Number(id)
+        );
+
+        renderProjects(filteredProjects);
+
+        const projectCount =
+            document.getElementById("totalProjects");
+
+        if (projectCount) {
+            projectCount.textContent = allProjects.length;
+        }
+
+        alert("Project deleted successfully.");
+
+    } catch (error) {
+
+        console.error(
+            "Delete Project Error:",
+            error
+        );
+
+        alert(
+            error.message ||
+            "Failed to delete project."
+        );
+    }
+};
+
+
+// Project filters
+document.getElementById("searchProject")
+    ?.addEventListener("input", filterProjects);
+
+document.getElementById("filterProjectStatus")
+    ?.addEventListener("change", filterProjects);
+
+
+// Load projects after clients are loaded
+document.addEventListener("DOMContentLoaded", () => {
+    loadProjects();
+});
+
+
+// =========================
+// Quotations Management
+// =========================
+
+let allQuotations = [];
+let filteredQuotations = [];
+let editingQuotationId = null;
+
+
+// Load Quotations
+async function loadQuotations() {
+
+    const table = document.getElementById("quotationsTable");
+
+    if (!table) return;
+
+    try {
+
+        const response = await fetch(
+            "https://nexttech-backend-euka.onrender.com/api/admin/quotations",
+            {
+                headers: {
+                    "Authorization": `Bearer ${token}`
+                }
+            }
+        );
+
+        const data = await response.json();
+
+        if (!response.ok || !data.success) {
+            throw new Error(
+                data.message || "Failed to load quotations."
+            );
+        }
+
+        allQuotations = data.quotations || [];
+        filteredQuotations = [...allQuotations];
+
+        renderQuotations(filteredQuotations);
+
+
+    } catch (error) {
+
+        console.error("Load Quotations Error:", error);
+
+        table.innerHTML = `
+            <tr>
+                <td colspan="8" class="empty">
+                    Failed to load quotations.
+                </td>
+            </tr>
+        `;
+    }
+}
+
+
+// Render Quotations
+function renderQuotations(quotations) {
+
+    const table = document.getElementById("quotationsTable");
+
+    if (!table) return;
+
+    if (!quotations.length) {
+        table.innerHTML = `
+            <tr>
+                <td colspan="8" class="empty">
+                    No quotations found.
+                </td>
+            </tr>
+        `;
+        return;
+    }
+
+    table.innerHTML = quotations.map(quotation => {
+
+        const validUntil = quotation.valid_until
+            ? new Date(quotation.valid_until).toLocaleDateString()
+            : "-";
+
+        const total = Number(quotation.total || 0)
+            .toLocaleString("en-IN", {
+                style: "currency",
+                currency: "INR",
+                maximumFractionDigits: 2
+            });
+
+        return `
+            <tr>
+
+                <td>#${quotation.id}</td>
+
+                <td>
+                    <strong>
+                        ${escapeHtml(quotation.quotation_number || "-")}
+                    </strong>
+                </td>
+
+                <td>
+                    ${escapeHtml(quotation.title || "-")}
+                </td>
+
+                <td>
+                    ${escapeHtml(
+                        quotation.client_company ||
+                        quotation.client_name ||
+                        "-"
+                    )}
+                </td>
+
+                <td>${total}</td>
+
+                <td>
+                    <span class="quotation-status-badge">
+                        ${escapeHtml(quotation.status || "Draft")}
+                    </span>
+                </td>
+
+                <td>${validUntil}</td>
+
+                <td>
+
+                    <button
+                        class="view-btn"
+                        onclick="viewQuotation(${quotation.id})"
+                    >
+                        View
+                    </button>
+
+                    <button
+                        class="edit-btn convert-invoice-btn"
+                        onclick="convertQuotationToInvoice(${quotation.id})"
+                    >
+                        Invoice
+                    </button>
+
+                    <button
+                        class="edit-btn"
+                        onclick="editQuotation(${quotation.id})"
+                    >
+                        Edit
+                    </button>
+
+                    <button
+                        class="delete-btn"
+                        onclick="deleteQuotation(${quotation.id})"
+                    >
+                        Delete
+                    </button>
+
+                </td>
+
+            </tr>
+        `;
+
+    }).join("");
+}
+
+
+// Client options
+function populateQuotationClients(selectedId = "") {
+
+    const select = document.getElementById("quotationClient");
+
+    if (!select) return;
+
+    select.innerHTML = `<option value="">No Client</option>`;
+
+    allClients.forEach(client => {
+
+        const option = document.createElement("option");
+
+        option.value = client.id;
+        option.textContent = client.company
+            ? `${client.name} — ${client.company}`
+            : client.name;
+
+        if (
+            selectedId !== "" &&
+            Number(selectedId) === Number(client.id)
+        ) {
+            option.selected = true;
+        }
+
+        select.appendChild(option);
+    });
+}
+
+
+// Add quotation item
+let serviceItems = [];
+
+const fallbackServiceItems = [
+    {id:"local-1",name:"Business Website",price:15000,unit:"Project",description:"Modern responsive business website"},
+    {id:"local-2",name:"E-commerce Website",price:25000,unit:"Project",description:"Professional online store / e-commerce website"},
+    {id:"local-3",name:"Landing Page",price:5000,unit:"Project",description:"Professional conversion-focused landing page"},
+    {id:"local-4",name:"Website Maintenance",price:999,unit:"Month",description:"Website maintenance and technical support"},
+    {id:"local-5",name:"SEO",price:5000,unit:"Month",description:"Search engine optimization service"},
+    {id:"local-6",name:"Google Business Profile",price:3000,unit:"Project",description:"Google Business Profile setup and optimization"},
+    {id:"local-7",name:"Social Media Management",price:5000,unit:"Month",description:"Social media management and content support"},
+    {id:"local-8",name:"WhatsApp Automation",price:7500,unit:"Project",description:"WhatsApp automation using official API"},
+    {id:"local-9",name:"AI Automation",price:10000,unit:"Project",description:"AI-powered business workflow automation"},
+    {id:"local-10",name:"Domain",price:1000,unit:"Year",description:"Domain registration"},
+    {id:"local-11",name:"Hosting",price:3000,unit:"Year",description:"Web hosting service"},
+    {id:"local-12",name:"Logo Design",price:2500,unit:"Project",description:"Professional business logo design"},
+    {id:"local-13",name:"UI/UX Design",price:5000,unit:"Project",description:"Professional UI/UX design service"},
+    {id:"local-14",name:"Custom Software",price:30000,unit:"Project",description:"Custom software / web application development"}
+];
+
+async function loadServiceItems() {
+    try {
+        const response = await fetch(
+            "https://nexttech-backend-euka.onrender.com/api/admin/service-items",
+            {headers:{Authorization:`Bearer ${token}`}}
+        );
+        const data = await response.json();
+        if (!response.ok || !data.success) throw new Error(data.message || "Catalog unavailable");
+        serviceItems = data.items || data.serviceItems || [];
+        if (!serviceItems.length) serviceItems = fallbackServiceItems;
+    } catch (error) {
+        console.warn("Using local service catalog:", error);
+        serviceItems = fallbackServiceItems;
+    }
+}
+
+function addQuotationItem(item = {}) {
+    const container = document.getElementById("quotationItems");
+    if (!container) return;
+
+    const row = document.createElement("div");
+    row.className = "quotation-item-row";
+
+    const selected = serviceItems.find(x =>
+        String(x.id) === String(item.service_id) || x.name === item.name
+    );
+
+    const selectedId = selected?.id || item.service_id || "";
+    const rate = item.rate ?? selected?.price ?? 0;
+    const description = item.description ?? selected?.description ?? "";
+    const unit = item.unit ?? selected?.unit ?? "Project";
+
+    row.innerHTML = `
+        <div>
+            <select class="quotation-item-service">
+                <option value="">Select Service / Item</option>
+                ${serviceItems.map(service => `
+                    <option value="${escapeHtml(String(service.id))}"
+                        ${String(service.id) === String(selectedId) ? "selected" : ""}>
+                        ${escapeHtml(service.name)} — ₹${Number(service.price || 0).toLocaleString("en-IN")}/${escapeHtml(service.unit || "Project")}
+                    </option>
+                `).join("")}
+            </select>
+            <input type="text" class="quotation-item-description"
+                   placeholder="Description"
+                   value="${escapeHtml(description)}"
+                   style="margin-top:6px;">
+        </div>
+
+        <input type="number" class="quotation-item-qty"
+               min="1" step="1" value="${item.quantity || item.qty || 1}">
+
+        <div>
+            <input type="number" class="quotation-item-rate"
+                   min="0" step="0.01" value="${rate}">
+            <small class="quotation-item-unit"
+                   style="display:block;color:#6b7280;margin-top:4px;">
+                ${escapeHtml(unit)}
+            </small>
+        </div>
+
+        <div class="quotation-item-amount">₹0.00</div>
+
+        <button type="button" class="remove-item-btn">&times;</button>
+    `;
+
+    row.querySelector(".quotation-item-service").addEventListener("change", e => {
+        const service = serviceItems.find(x => String(x.id) === String(e.target.value));
+        if (!service) return;
+        row.querySelector(".quotation-item-rate").value = Number(service.price || 0);
+        row.querySelector(".quotation-item-description").value = service.description || "";
+        row.querySelector(".quotation-item-unit").textContent = service.unit || "Project";
+        calculateQuotationTotals();
+    });
+
+    row.querySelector(".remove-item-btn").addEventListener("click", () => {
+        row.remove();
+        calculateQuotationTotals();
+    });
+
+    row.querySelectorAll("input").forEach(input =>
+        input.addEventListener("input", calculateQuotationTotals)
+    );
+
+    container.appendChild(row);
+    calculateQuotationTotals();
+}
+
+// Get items
+function getQuotationItems() {
+    return [...document.querySelectorAll(".quotation-item-row")]
+        .map(row => {
+            const select = row.querySelector(".quotation-item-service");
+            const service = serviceItems.find(x => String(x.id) === String(select?.value));
+            const name = service?.name || "";
+            const quantity = Number(row.querySelector(".quotation-item-qty").value || 0);
+            const rate = Number(row.querySelector(".quotation-item-rate").value || 0);
+            const description = row.querySelector(".quotation-item-description").value.trim();
+            const unit = service?.unit || row.querySelector(".quotation-item-unit").textContent.trim() || "Project";
+
+            return {
+                service_id: service?.id || null,
+                name,
+                description,
+                unit,
+                quantity,
+                rate,
+                amount: quantity * rate
+            };
+        })
+        .filter(item => item.name);
+}
+
+// Calculate totals
+function calculateQuotationTotals() {
+
+    const items = getQuotationItems();
+
+    const subtotal = items.reduce(
+        (sum, item) => sum + item.amount,
+        0
+    );
+    document.querySelectorAll(".quotation-item-row").forEach(row => {
+        const qty = Number(row.querySelector(".quotation-item-qty")?.value || 0);
+        const rate = Number(row.querySelector(".quotation-item-rate")?.value || 0);
+        const amount = row.querySelector(".quotation-item-amount");
+        if (amount) amount.textContent = `₹${(qty * rate).toLocaleString("en-IN",{minimumFractionDigits:2,maximumFractionDigits:2})}`;
+    });
+
+    const discount =
+        Number(document.getElementById("quotationDiscount")?.value || 0);
+
+    const tax =
+        Number(document.getElementById("quotationTax")?.value || 0);
+
+    const total =
+        Math.max(0, subtotal - discount + tax);
+
+    document.getElementById("quotationSubtotal").value =
+        subtotal.toFixed(2);
+
+    document.getElementById("quotationTotal").value =
+        total.toFixed(2);
+}
+
+
+// Open Add
+document.getElementById("addQuotationBtn")
+    ?.addEventListener("click", () => {
+
+        editingQuotationId = null;
+
+        document.getElementById("quotationForm").reset();
+
+        document.getElementById("quotationItems").innerHTML = "";
+
+        populateQuotationClients();
+
+        addQuotationItem();
+
+        document.getElementById("quotationModalTitle").textContent =
+            "Add New Quotation";
+
+        document.getElementById("quotationModalSubtitle").textContent =
+            "Create a quotation for your client";
+
+        document.querySelector(".save-quotation-btn").textContent =
+            "Save Quotation";
+
+        document.getElementById("quotationModal")
+            .classList.add("active");
+
+        calculateQuotationTotals();
+    });
+
+
+// Add Item
+document.getElementById("addQuotationItemBtn")
+    ?.addEventListener("click", () => {
+        addQuotationItem();
+    });
+
+
+// Discount/Tax
+document.getElementById("quotationDiscount")
+    ?.addEventListener("input", calculateQuotationTotals);
+
+document.getElementById("quotationTax")
+    ?.addEventListener("input", calculateQuotationTotals);
+
+
+// Edit quotation
+window.editQuotation = function(id) {
+
+    const quotation = allQuotations.find(
+        item => Number(item.id) === Number(id)
+    );
+
+    if (!quotation) {
+        alert("Quotation not found.");
+        return;
+    }
+
+    editingQuotationId = id;
+
+    document.getElementById("quotationNumber").value =
+        quotation.quotation_number || "";
+
+    document.getElementById("quotationTitle").value =
+        quotation.title || "";
+
+    document.getElementById("quotationStatus").value =
+        quotation.status || "Draft";
+
+    document.getElementById("quotationValidUntil").value =
+        quotation.valid_until
+            ? String(quotation.valid_until).substring(0, 10)
+            : "";
+
+    document.getElementById("quotationDescription").value =
+        quotation.description || "";
+
+    document.getElementById("quotationNotes").value =
+        quotation.notes || "";
+
+    document.getElementById("quotationDiscount").value =
+        quotation.discount || 0;
+
+    document.getElementById("quotationTax").value =
+        quotation.tax || 0;
+
+    document.getElementById("quotationItems").innerHTML = "";
+
+    populateQuotationClients(quotation.client_id || "");
+
+    let items = quotation.items;
+
+    if (typeof items === "string") {
+        try {
+            items = JSON.parse(items);
+        } catch {
+            items = [];
+        }
+    }
+
+    if (!Array.isArray(items) || !items.length) {
+        addQuotationItem();
+    } else {
+        items.forEach(item => addQuotationItem(item));
+    }
+
+    calculateQuotationTotals();
+
+    document.getElementById("quotationModalTitle").textContent =
+        "Edit Quotation";
+
+    document.getElementById("quotationModalSubtitle").textContent =
+        "Update quotation information";
+
+    document.querySelector(".save-quotation-btn").textContent =
+        "Save Changes";
+
+    document.getElementById("quotationModal")
+        .classList.add("active");
+};
+
+
+// View quotation
+window.viewQuotation = function(id) {
+
+    const quotation = allQuotations.find(
+        item => Number(item.id) === Number(id)
+    );
+
+    if (!quotation) {
+        alert("Quotation not found.");
+        return;
+    }
+
+    let items = quotation.items;
+
+    if (typeof items === "string") {
+        try {
+            items = JSON.parse(items);
+        } catch {
+            items = [];
+        }
+    }
+
+    const itemText = Array.isArray(items) && items.length
+        ? items.map(item =>
+            `${item.name} — ${item.quantity} × ₹${Number(item.rate || 0).toLocaleString("en-IN")} = ₹${Number(item.amount || 0).toLocaleString("en-IN")}`
+          ).join("\n")
+        : "No items";
+
+    alert(
+        "Quotation Details\n\n" +
+        "Quotation No.: " +
+            (quotation.quotation_number || "-") + "\n" +
+        "Title: " +
+            (quotation.title || "-") + "\n" +
+        "Client: " +
+            (quotation.client_company ||
+             quotation.client_name ||
+             "-") + "\n" +
+        "Status: " +
+            (quotation.status || "Draft") + "\n" +
+        "Items:\n" + itemText + "\n\n" +
+        "Subtotal: ₹" +
+            Number(quotation.subtotal || 0).toLocaleString("en-IN") + "\n" +
+        "Discount: ₹" +
+            Number(quotation.discount || 0).toLocaleString("en-IN") + "\n" +
+        "Tax: ₹" +
+            Number(quotation.tax || 0).toLocaleString("en-IN") + "\n" +
+        "Total: ₹" +
+            Number(quotation.total || 0).toLocaleString("en-IN") + "\n" +
+        "Valid Until: " +
+            (quotation.valid_until || "-") + "\n\n" +
+        "Description: " +
+            (quotation.description || "-") + "\n" +
+        "Notes: " +
+            (quotation.notes || "-")
+    );
+};
+
+
+// Close quotation modal
+function closeQuotationModal() {
+
+    document.getElementById("quotationModal")
+        ?.classList.remove("active");
+
+    document.getElementById("quotationForm")?.reset();
+
+    document.getElementById("quotationItems").innerHTML = "";
+
+    editingQuotationId = null;
+}
+
+document.getElementById("closeQuotationModal")
+    ?.addEventListener("click", closeQuotationModal);
+
+document.getElementById("cancelQuotationBtn")
+    ?.addEventListener("click", closeQuotationModal);
+
+document.getElementById("quotationModal")
+    ?.addEventListener("click", event => {
+
+        if (event.target.id === "quotationModal") {
+            closeQuotationModal();
+        }
+    });
+
+
+// Save quotation
+document.getElementById("quotationForm")
+    ?.addEventListener("submit", async event => {
+
+        event.preventDefault();
+
+        calculateQuotationTotals();
+
+        const quotationData = {
+
+            client_id:
+                document.getElementById("quotationClient").value || null,
+
+            quotation_number:
+                document.getElementById("quotationNumber")
+                    .value.trim(),
+
+            title:
+                document.getElementById("quotationTitle")
+                    .value.trim(),
+
+            description:
+                document.getElementById("quotationDescription")
+                    .value.trim(),
+
+            items:
+                getQuotationItems(),
+
+            subtotal:
+                Number(document.getElementById("quotationSubtotal").value || 0),
+
+            discount:
+                Number(document.getElementById("quotationDiscount").value || 0),
+
+            tax:
+                Number(document.getElementById("quotationTax").value || 0),
+
+            total:
+                Number(document.getElementById("quotationTotal").value || 0),
+
+            status:
+                document.getElementById("quotationStatus").value,
+
+            valid_until:
+                document.getElementById("quotationValidUntil").value || null,
+
+            notes:
+                document.getElementById("quotationNotes")
+                    .value.trim()
+        };
+
+        try {
+
+            const isEditing =
+                editingQuotationId !== null;
+
+            const url = isEditing
+                ? `https://nexttech-backend-euka.onrender.com/api/admin/quotations/${editingQuotationId}`
+                : "https://nexttech-backend-euka.onrender.com/api/admin/quotations";
+
+            const method =
+                isEditing ? "PATCH" : "POST";
+
+            const response = await fetch(url, {
+
+                method,
+
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${token}`
+                },
+
+                body: JSON.stringify(quotationData)
+            });
+
+            const data = await response.json();
+
+            if (!response.ok || !data.success) {
+                throw new Error(
+                    data.message ||
+                    (isEditing
+                        ? "Failed to update quotation."
+                        : "Failed to add quotation.")
+                );
+            }
+
+            alert(
+                isEditing
+                    ? "Quotation updated successfully!"
+                    : "Quotation added successfully!"
+            );
+
+            closeQuotationModal();
+
+            await loadQuotations();
+
+        } catch (error) {
+
+            console.error(
+                "Quotation Save Error:",
+                error
+            );
+
+            alert(
+                error.message ||
+                "Something went wrong."
+            );
+        }
+    });
+
+
+// Delete quotation
+window.deleteQuotation = async function(id) {
+
+    const quotation = allQuotations.find(
+        item => Number(item.id) === Number(id)
+    );
+
+    if (!quotation) {
+        alert("Quotation not found.");
+        return;
+    }
+
+    const confirmed = confirm(
+        `Delete quotation "${quotation.quotation_number}"?`
+    );
+
+    if (!confirmed) return;
+
+    try {
+
+        const response = await fetch(
+            `https://nexttech-backend-euka.onrender.com/api/admin/quotations/${id}`,
+            {
+                method: "DELETE",
+                headers: {
+                    "Authorization": `Bearer ${token}`
+                }
+            }
+        );
+
+        const data = await response.json();
+
+        if (!response.ok || !data.success) {
+            throw new Error(
+                data.message || "Failed to delete quotation."
+            );
+        }
+
+        allQuotations = allQuotations.filter(
+            item => Number(item.id) !== Number(id)
+        );
+
+        filteredQuotations = filteredQuotations.filter(
+            item => Number(item.id) !== Number(id)
+        );
+
+        renderQuotations(filteredQuotations);
+
+        alert("Quotation deleted successfully.");
+
+    } catch (error) {
+
+        console.error(
+            "Delete Quotation Error:",
+            error
+        );
+
+        alert(
+            error.message ||
+            "Failed to delete quotation."
+        );
+    }
+};
+
+
+// Quotation filters
+document.getElementById("searchQuotation")
+    ?.addEventListener("input", () => {
+
+        const search =
+            document.getElementById("searchQuotation")
+                .value.toLowerCase().trim();
+
+        const status =
+            document.getElementById("filterQuotationStatus")
+                .value;
+
+        filteredQuotations = allQuotations.filter(quotation => {
+
+            const text = [
+                quotation.quotation_number,
+                quotation.title,
+                quotation.client_name,
+                quotation.client_company
+            ]
+                .filter(Boolean)
+                .join(" ")
+                .toLowerCase();
+
+            return (
+                (!search || text.includes(search)) &&
+                (
+                    status === "All" ||
+                    (quotation.status || "Draft") === status
+                )
+            );
+        });
+
+        renderQuotations(filteredQuotations);
+    });
+
+document.getElementById("filterQuotationStatus")
+    ?.addEventListener("change", () => {
+
+        document.getElementById("searchQuotation")
+            ?.dispatchEvent(new Event("input"));
+    });
+
+
+// Initialize quotations
+document.addEventListener("DOMContentLoaded", async () => {
+    await loadServiceItems();
+    loadQuotations();
+});
+
+    
+
+// =========================
+// QUOTATION → INVOICE
+// =========================
+
+window.convertQuotationToInvoice = function(id) {
+
+    const quotation = allQuotations.find(
+        item => Number(item.id) === Number(id)
+    );
+
+    if (!quotation) {
+        alert("Quotation not found.");
+        return;
+    }
+
+    let items = quotation.items;
+
+    if (typeof items === "string") {
+        try {
+            items = JSON.parse(items);
+        } catch {
+            items = [];
+        }
+    }
+
+    items = Array.isArray(items) ? items : [];
+
+    const invoiceItems = items.map(item => ({
+        name: item.name || item.service || "",
+        qty: Number(item.quantity || item.qty || 1),
+        rate: Number(item.rate || 0)
+    }));
+
+    // Open the existing invoice form.
+    resetInvoiceForm();
+
+    editingInvoiceId = null;
+
+    document.getElementById("invoiceModalTitle").textContent =
+        "Create Invoice from Quotation";
+
+    // Generate a simple unique invoice number.
+    const invoiceNumber =
+        `INV-${new Date().getFullYear()}-${String(allInvoices.length + 1).padStart(3, "0")}`;
+
+    document.getElementById("invoiceNumber").value = invoiceNumber;
+
+    populateInvoiceClients(quotation.client_id);
+    populateInvoiceQuotations(quotation.id);
+
+    document.getElementById("invoiceTitle").value =
+        quotation.title || "";
+
+    document.getElementById("invoiceDescription").value =
+        quotation.description || "";
+
+    document.getElementById("invoiceStatus").value =
+        "Draft";
+
+    document.getElementById("invoiceDiscount").value =
+        Number(quotation.discount || 0);
+
+    // Quotation API stores tax as an amount.
+    // Convert it back to a percentage for the invoice form.
+    const quotationSubtotalAfterDiscount =
+        Math.max(
+            Number(quotation.subtotal || 0) -
+            Number(quotation.discount || 0),
+            0
+        );
+
+    const quotationTaxRate =
+        quotationSubtotalAfterDiscount > 0
+            ? (Number(quotation.tax || 0) /
+               quotationSubtotalAfterDiscount) * 100
+            : 0;
+
+    document.getElementById("invoiceTax").value =
+        quotationTaxRate.toFixed(2);
+
+    document.getElementById("invoiceItems").innerHTML = "";
+
+    if (invoiceItems.length) {
+        invoiceItems.forEach(item => addInvoiceItem(item));
+    } else {
+        addInvoiceItem();
+    }
+
+    calculateInvoiceTotals();
+
+    document.getElementById("invoiceModal").style.display = "flex";
+};
+
+// =========================
+// INVOICES
+// =========================
+
+let allInvoices = [];
+let editingInvoiceId = null;
+
+function invoiceMoney(value) {
+    return Number(value || 0).toLocaleString("en-IN", {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
+    });
+}
+
+function invoiceStatusClass(status) {
+    const s = String(status || "").toLowerCase();
+
+    if (s === "paid") return "invoice-status-paid";
+    if (s === "overdue") return "invoice-status-overdue";
+    if (s === "sent") return "invoice-status-sent";
+    if (s === "cancelled") return "invoice-status-cancelled";
+
+    return "";
+}
+
+async function loadInvoices() {
+    const table = document.getElementById("invoicesTable");
+    if (!table) return;
+
+    table.innerHTML = `
+        <tr><td colspan="8" class="loading">Loading invoices...</td></tr>
+    `;
+
+    try {
+        const response = await fetch(
+            "https://nexttech-backend-euka.onrender.com/api/admin/invoices",
+            {
+                headers: {
+                    "Authorization": `Bearer ${token}`
+                }
+            }
+        );
+
+        const data = await response.json();
+
+        if (response.status === 401 || response.status === 403) {
+            localStorage.removeItem("nexttech_admin_token");
+            localStorage.removeItem("nexttech_admin");
+            window.location.href = "admin.html";
+            return;
+        }
+
+        if (!response.ok || !data.success) {
+            throw new Error(data.message || "Failed to load invoices.");
+        }
+
+        allInvoices = data.invoices || [];
+        renderInvoices(allInvoices);
+
+    } catch (error) {
+        console.error("Invoices error:", error);
+
+        table.innerHTML = `
+            <tr>
+                <td colspan="8" class="empty">
+                    Failed to load invoices.
+                </td>
+            </tr>
+        `;
+    }
+}
+
+function renderInvoices(invoices) {
+    const table = document.getElementById("invoicesTable");
+
+    if (!invoices.length) {
+        table.innerHTML = `
+            <tr>
+                <td colspan="8" class="empty">
+                    No invoices found.
+                </td>
+            </tr>
+        `;
+        return;
+    }
+
+    table.innerHTML = invoices.map(invoice => `
+        <tr>
+            <td>${invoice.id}</td>
+            <td>
+                <strong>${escapeHtml(invoice.invoice_number)}</strong><br>
+                <small>${escapeHtml(invoice.title)}</small>
+            </td>
+            <td>${escapeHtml(invoice.client_name || "—")}</td>
+            <td>${invoice.issue_date ? String(invoice.issue_date).slice(0,10) : "—"}</td>
+            <td>${invoice.due_date ? String(invoice.due_date).slice(0,10) : "—"}</td>
+            <td><strong>₹${invoiceMoney(invoice.total)}</strong></td>
+            <td>
+                <span class="invoice-status-badge ${invoiceStatusClass(invoice.status)}">
+                    ${escapeHtml(invoice.status || "Draft")}
+                </span>
+            </td>
+            <td>
+                <button class="view-btn" onclick="viewInvoice(${invoice.id})">View</button>
+                <button class="edit-btn" onclick="editInvoice(${invoice.id})">Edit</button>
+                <button class="edit-btn invoice-pdf-btn" onclick="generateInvoicePDF(${invoice.id})">PDF</button>
+                <button class="delete-btn" onclick="deleteInvoice(${invoice.id})">Delete</button>
+            </td>
+        </tr>
+    `).join("");
+}
+
+function populateInvoiceClients(selected = "") {
+    const select = document.getElementById("invoiceClient");
+    if (!select) return;
+
+    const clients = typeof allClients !== "undefined" ? allClients : [];
+
+    select.innerHTML = `
+        <option value="">Select Client</option>
+        ${clients.map(client => `
+            <option value="${client.id}" ${String(client.id) === String(selected) ? "selected" : ""}>
+                ${escapeHtml(client.name)}${client.company ? " — " + escapeHtml(client.company) : ""}
+            </option>
+        `).join("")}
+    `;
+}
+
+function populateInvoiceQuotations(selected = "") {
+    const select = document.getElementById("invoiceQuotation");
+    if (!select) return;
+
+    const quotations = typeof allQuotations !== "undefined" ? allQuotations : [];
+
+    select.innerHTML = `
+        <option value="">No Quotation</option>
+        ${quotations.map(q => `
+            <option value="${q.id}" ${String(q.id) === String(selected) ? "selected" : ""}>
+                ${escapeHtml(q.quotation_number)} — ${escapeHtml(q.title)}
+            </option>
+        `).join("")}
+    `;
+}
+
+function addInvoiceItem(item = {}) {
+    const container = document.getElementById("invoiceItems");
+
+    const row = document.createElement("div");
+    row.className = "invoice-item-row";
+
+    row.innerHTML = `
+        <input type="text" class="invoice-item-name" placeholder="Service / Item"
+               value="${escapeHtml(item.name || item.service || "")}">
+
+        <input type="number" class="invoice-item-qty" min="1" step="1"
+               placeholder="Qty" value="${item.qty || 1}">
+
+        <input type="number" class="invoice-item-rate" min="0" step="0.01"
+               placeholder="Rate" value="${item.rate || 0}">
+
+        <div class="invoice-item-total">₹0.00</div>
+
+        <button type="button" class="remove-invoice-item" title="Remove">
+            ×
+        </button>
+    `;
+
+    container.appendChild(row);
+
+    row.querySelectorAll("input").forEach(input => {
+        input.addEventListener("input", calculateInvoiceTotals);
+    });
+
+    row.querySelector(".remove-invoice-item").addEventListener("click", () => {
+        row.remove();
+        calculateInvoiceTotals();
+    });
+
+    calculateInvoiceTotals();
+}
+
+function getInvoiceItems() {
+    return [...document.querySelectorAll(".invoice-item-row")]
+        .map(row => ({
+            name: row.querySelector(".invoice-item-name").value.trim(),
+            qty: Number(row.querySelector(".invoice-item-qty").value || 0),
+            rate: Number(row.querySelector(".invoice-item-rate").value || 0)
+        }))
+        .filter(item => item.name);
+}
+
+function calculateInvoiceTotals() {
+    let subtotal = 0;
+
+    document.querySelectorAll(".invoice-item-row").forEach(row => {
+        const qty = Number(row.querySelector(".invoice-item-qty").value || 0);
+        const rate = Number(row.querySelector(".invoice-item-rate").value || 0);
+        const itemTotal = qty * rate;
+
+        subtotal += itemTotal;
+
+        row.querySelector(".invoice-item-total").textContent =
+            `₹${invoiceMoney(itemTotal)}`;
+    });
+
+    const discount = Number(document.getElementById("invoiceDiscount").value || 0);
+    const taxRate = Number(document.getElementById("invoiceTax").value || 0);
+
+    const taxable = Math.max(subtotal - discount, 0);
+    const taxAmount = taxable * taxRate / 100;
+    const total = taxable + taxAmount;
+
+    document.getElementById("invoiceSubtotal").textContent = invoiceMoney(subtotal);
+    document.getElementById("invoiceTotal").textContent = invoiceMoney(total);
+
+    return { subtotal, discount, taxRate, taxAmount, total };
+}
+
+function resetInvoiceForm() {
+    document.getElementById("invoiceForm").reset();
+    document.getElementById("invoiceId").value = "";
+    editingInvoiceId = null;
+
+    document.getElementById("invoiceModalTitle").textContent = "Add Invoice";
+
+    const today = new Date().toISOString().slice(0, 10);
+    document.getElementById("invoiceIssueDate").value = today;
+
+    document.getElementById("invoiceItems").innerHTML = "";
+    addInvoiceItem();
+
+    document.getElementById("invoiceDiscount").value = 0;
+    document.getElementById("invoiceTax").value = 0;
+
+    populateInvoiceClients();
+    populateInvoiceQuotations();
+    calculateInvoiceTotals();
+}
+
+function openInvoiceModal() {
+    resetInvoiceForm();
+
+    const nextNumber = `INV-${new Date().getFullYear()}-${String(allInvoices.length + 1).padStart(3, "0")}`;
+    document.getElementById("invoiceNumber").value = nextNumber;
+
+    document.getElementById("invoiceModal").style.display = "flex";
+}
+
+function closeInvoiceModal() {
+    document.getElementById("invoiceModal").style.display = "none";
+}
+
+async function saveInvoice(event) {
+    event.preventDefault();
+
+    const totals = calculateInvoiceTotals();
+
+    const payload = {
+        client_id: document.getElementById("invoiceClient").value || null,
+        quotation_id: document.getElementById("invoiceQuotation").value || null,
+        invoice_number: document.getElementById("invoiceNumber").value.trim(),
+        title: document.getElementById("invoiceTitle").value.trim(),
+        description: document.getElementById("invoiceDescription").value.trim(),
+        items: getInvoiceItems(),
+        subtotal: totals.subtotal,
+        discount: totals.discount,
+        tax: totals.taxAmount,
+        total: totals.total,
+        status: document.getElementById("invoiceStatus").value,
+        issue_date: document.getElementById("invoiceIssueDate").value || null,
+        due_date: document.getElementById("invoiceDueDate").value || null,
+        payment_method: document.getElementById("invoicePaymentMethod").value || null,
+        notes: document.getElementById("invoiceNotes").value.trim()
+    };
+
+    if (!payload.invoice_number || !payload.title) {
+        alert("Invoice number and title are required.");
+        return;
+    }
+
+    if (!payload.client_id) {
+        alert("Please select a client.");
+        return;
+    }
+
+    const url = editingInvoiceId
+        ? `https://nexttech-backend-euka.onrender.com/api/admin/invoices/${editingInvoiceId}`
+        : "https://nexttech-backend-euka.onrender.com/api/admin/invoices";
+
+    try {
+        const response = await fetch(url, {
+            method: editingInvoiceId ? "PATCH" : "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${token}`
+            },
+            body: JSON.stringify(payload)
+        });
+
+        const data = await response.json();
+
+        if (!response.ok || !data.success) {
+            throw new Error(data.message || "Failed to save invoice.");
+        }
+
+        alert(editingInvoiceId
+            ? "Invoice updated successfully."
+            : "Invoice created successfully."
+        );
+
+        closeInvoiceModal();
+        await loadInvoices();
+
+    } catch (error) {
+        console.error(error);
+        alert(error.message);
+    }
+}
+
+function editInvoice(id) {
+    const invoice = allInvoices.find(item => Number(item.id) === Number(id));
+    if (!invoice) return;
+
+    editingInvoiceId = invoice.id;
+
+    document.getElementById("invoiceModalTitle").textContent = "Edit Invoice";
+    document.getElementById("invoiceId").value = invoice.id;
+
+    populateInvoiceClients(invoice.client_id);
+    populateInvoiceQuotations(invoice.quotation_id);
+
+    document.getElementById("invoiceNumber").value = invoice.invoice_number || "";
+    document.getElementById("invoiceTitle").value = invoice.title || "";
+    document.getElementById("invoiceDescription").value = invoice.description || "";
+    document.getElementById("invoiceStatus").value = invoice.status || "Draft";
+    document.getElementById("invoiceIssueDate").value = invoice.issue_date ? String(invoice.issue_date).slice(0,10) : "";
+    document.getElementById("invoiceDueDate").value = invoice.due_date ? String(invoice.due_date).slice(0,10) : "";
+    document.getElementById("invoicePaymentMethod").value = invoice.payment_method || "";
+    document.getElementById("invoiceNotes").value = invoice.notes || "";
+
+    const items = Array.isArray(invoice.items) ? invoice.items : [];
+
+    document.getElementById("invoiceItems").innerHTML = "";
+
+    if (items.length) {
+        items.forEach(item => addInvoiceItem(item));
+    } else {
+        addInvoiceItem();
+    }
+
+    document.getElementById("invoiceDiscount").value = invoice.discount || 0;
+
+    // Backend stores tax amount; convert it to a rate for editing.
+    const subtotalAfterDiscount =
+        Math.max(Number(invoice.subtotal || 0) - Number(invoice.discount || 0), 0);
+
+    const taxRate = subtotalAfterDiscount > 0
+        ? (Number(invoice.tax || 0) / subtotalAfterDiscount) * 100
+        : 0;
+
+    document.getElementById("invoiceTax").value = taxRate.toFixed(2);
+
+    calculateInvoiceTotals();
+
+    document.getElementById("invoiceModal").style.display = "flex";
+}
+
+async function deleteInvoice(id) {
+    const invoice = allInvoices.find(item => Number(item.id) === Number(id));
+
+    if (!invoice) return;
+
+    if (!confirm(`Delete ${invoice.invoice_number}?`)) {
+        return;
+    }
+
+    try {
+        const response = await fetch(
+            `https://nexttech-backend-euka.onrender.com/api/admin/invoices/${id}`,
+            {
+                method: "DELETE",
+                headers: {
+                    "Authorization": `Bearer ${token}`
+                }
+            }
+        );
+
+        const data = await response.json();
+
+        if (!response.ok || !data.success) {
+            throw new Error(data.message || "Failed to delete invoice.");
+        }
+
+        alert("Invoice deleted successfully.");
+        loadInvoices();
+
+    } catch (error) {
+        console.error(error);
+        alert(error.message);
+    }
+}
+
+function viewInvoice(id) {
+    const invoice = allInvoices.find(item => Number(item.id) === Number(id));
+    if (!invoice) return;
+
+    const items = Array.isArray(invoice.items) ? invoice.items : [];
+
+    document.getElementById("invoiceViewBody").innerHTML = `
+        <div class="invoice-view-header">
+            <div>
+                <h2>${escapeHtml(invoice.title || "Invoice")}</h2>
+                <p>${escapeHtml(invoice.invoice_number || "")}</p>
+            </div>
+
+            <div class="invoice-view-meta">
+                <strong>₹${invoiceMoney(invoice.total)}</strong><br>
+                <span class="invoice-status-badge ${invoiceStatusClass(invoice.status)}">
+                    ${escapeHtml(invoice.status || "Draft")}
+                </span>
+            </div>
+        </div>
+
+        <div class="invoice-view-client">
+            <strong>${escapeHtml(invoice.client_name || "Client")}</strong>
+            ${invoice.client_company ? `<br>${escapeHtml(invoice.client_company)}` : ""}
+            <br>
+            <small>Issue: ${invoice.issue_date ? String(invoice.issue_date).slice(0,10) : "—"} |
+            Due: ${invoice.due_date ? String(invoice.due_date).slice(0,10) : "—"}</small>
+        </div>
+
+        <table class="invoice-view-items">
+            <thead>
+                <tr>
+                    <th>Item</th>
+                    <th>Qty</th>
+                    <th>Rate</th>
+                    <th>Total</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                ${items.length ? items.map(item => `
+                    <tr>
+                        <td>${escapeHtml(item.name || item.service || "Item")}</td>
+                        <td>${Number(item.qty || 0)}</td>
+                        <td>₹${invoiceMoney(item.rate)}</td>
+                        <td>₹${invoiceMoney(Number(item.qty || 0) * Number(item.rate || 0))}</td>
+                    </tr>
+                `).join("") : `
+                    <tr><td colspan="4">No items.</td></tr>
+                `}
+            </tbody>
+        </table>
+
+        <div class="invoice-view-summary">
+            <div><span>Subtotal</span><strong>₹${invoiceMoney(invoice.subtotal)}</strong></div>
+            <div><span>Discount</span><strong>₹${invoiceMoney(invoice.discount)}</strong></div>
+            <div><span>Tax</span><strong>₹${invoiceMoney(invoice.tax)}</strong></div>
+            <div class="grand"><span>Total</span><strong>₹${invoiceMoney(invoice.total)}</strong></div>
+        </div>
+
+        ${invoice.description ? `
+            <div class="invoice-view-notes">
+                <strong>Description</strong>
+                <p>${escapeHtml(invoice.description)}</p>
+            </div>
+        ` : ""}
+
+        ${invoice.notes ? `
+            <div class="invoice-view-notes">
+                <strong>Notes</strong>
+                <p>${escapeHtml(invoice.notes)}</p>
+            </div>
+        ` : ""}
+    `;
+
+    document.getElementById("invoiceViewEditBtn").onclick = () => {
+        closeInvoiceView();
+        editInvoice(invoice.id);
+    };
+
+    document.getElementById("invoiceViewModal").style.display = "flex";
+}
+
+function closeInvoiceView() {
+    document.getElementById("invoiceViewModal").style.display = "none";
+}
+
+// Invoice filters
+document.getElementById("invoiceSearch")?.addEventListener("input", filterInvoices);
+document.getElementById("invoiceStatusFilter")?.addEventListener("change", filterInvoices);
+
+function filterInvoices() {
+    const search = document.getElementById("invoiceSearch").value.toLowerCase().trim();
+    const status = document.getElementById("invoiceStatusFilter").value;
+
+    const filtered = allInvoices.filter(invoice => {
+        const text = [
+            invoice.invoice_number,
+            invoice.title,
+            invoice.client_name,
+            invoice.client_company
+        ].join(" ").toLowerCase();
+
+        return (!search || text.includes(search)) &&
+               (!status || invoice.status === status);
+    });
+
+    renderInvoices(filtered);
+}
+
+// Invoice events
+document.getElementById("addInvoiceBtn")?.addEventListener("click", openInvoiceModal);
+document.getElementById("closeInvoiceModal")?.addEventListener("click", closeInvoiceModal);
+document.getElementById("cancelInvoiceBtn")?.addEventListener("click", closeInvoiceModal);
+document.getElementById("invoiceForm")?.addEventListener("submit", saveInvoice);
+
+document.getElementById("addInvoiceItemBtn")?.addEventListener("click", () => {
+    addInvoiceItem();
+});
+
+document.getElementById("invoiceDiscount")?.addEventListener("input", calculateInvoiceTotals);
+document.getElementById("invoiceTax")?.addEventListener("input", calculateInvoiceTotals);
+
+// Load invoices after dashboard initializes
+setTimeout(() => {
+    if (document.getElementById("invoicesSection")) {
+        loadInvoices();
+    }
+}, 300);
+
+    
+// =========================
+// PROFESSIONAL INVOICE PDF
+// =========================
+
+function formatInvoiceDate(dateValue) {
+    if (!dateValue) return "—";
+
+    const date = new Date(String(dateValue).slice(0, 10) + "T00:00:00");
+
+    if (Number.isNaN(date.getTime())) {
+        return String(dateValue).slice(0, 10);
+    }
+
+    return date.toLocaleDateString("en-IN", {
+        day: "2-digit",
+        month: "short",
+        year: "numeric"
+    });
+}
+
+function generateInvoicePDF(id) {
+    const invoice = allInvoices.find(
+        item => Number(item.id) === Number(id)
+    );
+
+    if (!invoice) {
+        alert("Invoice not found.");
+        return;
+    }
+
+    let items = invoice.items;
+
+    if (typeof items === "string") {
+        try {
+            items = JSON.parse(items);
+        } catch {
+            items = [];
+        }
+    }
+
+    items = Array.isArray(items) ? items : [];
+
+    const rows = items.length
+        ? items.map(item => {
+            const qty = Number(item.qty || item.quantity || 0);
+            const rate = Number(item.rate || 0);
+            const total = qty * rate;
+
+            return `
+                <tr>
+                    <td>${escapeHtml(item.name || item.service || "Item")}</td>
+                    <td style="text-align:center;">${qty}</td>
+                    <td style="text-align:right;">₹${invoiceMoney(rate)}</td>
+                    <td style="text-align:right;">₹${invoiceMoney(total)}</td>
+                </tr>
+            `;
+        }).join("")
+        : `
+            <tr>
+                <td colspan="4" style="text-align:center;">No items</td>
+            </tr>
+        `;
+
+    const statusClass = invoiceStatusClass(invoice.status);
+
+    const printArea = document.getElementById("invoicePrintArea");
+
+    printArea.innerHTML = `
+        <div style="
+            font-family: Arial, Helvetica, sans-serif;
+            color:#111827;
+            background:#fff;
+            min-height:100vh;
+            padding:32px;
+            box-sizing:border-box;
+        ">
+
+            <div style="
+                display:flex;
+                justify-content:space-between;
+                align-items:flex-start;
+                gap:30px;
+                padding-bottom:25px;
+                border-bottom:3px solid #111827;
+            ">
+
+                <div>
+                    <div style="
+                        font-size:28px;
+                        font-weight:800;
+                        letter-spacing:-.5px;
+                        margin-bottom:6px;
+                    ">
+                        NextTech Labs
+                    </div>
+
+                    <div style="font-size:13px;color:#6b7280;">
+                        Technology • Web Development • AI Automation
+                    </div>
+                </div>
+
+                <div style="text-align:right;">
+                    <div style="
+                        font-size:30px;
+                        font-weight:800;
+                        margin-bottom:5px;
+                    ">
+                        INVOICE
+                    </div>
+
+                    <div style="font-size:14px;">
+                        <strong>${escapeHtml(invoice.invoice_number || "")}</strong>
+                    </div>
+
+                    <div style="
+                        display:inline-block;
+                        margin-top:9px;
+                        padding:6px 12px;
+                        border-radius:20px;
+                        font-size:12px;
+                        font-weight:700;
+                        background:#eef2ff;
+                        color:#3730a3;
+                    ">
+                        ${escapeHtml(invoice.status || "Draft")}
+                    </div>
+                </div>
+
+            </div>
+
+            <div style="
+                display:grid;
+                grid-template-columns:1fr 1fr;
+                gap:25px;
+                margin:28px 0;
+            ">
+
+                <div>
+                    <div style="
+                        text-transform:uppercase;
+                        font-size:11px;
+                        font-weight:700;
+                        color:#6b7280;
+                        letter-spacing:.7px;
+                        margin-bottom:8px;
+                    ">
+                        Bill To
+                    </div>
+
+                    <div style="font-size:17px;font-weight:700;">
+                        ${escapeHtml(invoice.client_name || "Client")}
+                    </div>
+
+                    <div style="font-size:13px;color:#6b7280;margin-top:4px;">
+                        ${escapeHtml(invoice.client_company || "")}
+                    </div>
+                </div>
+
+                <div style="text-align:right;">
+                    <div style="font-size:13px;margin-bottom:6px;">
+                        <strong>Issue Date:</strong>
+                        ${formatInvoiceDate(invoice.issue_date)}
+                    </div>
+
+                    <div style="font-size:13px;">
+                        <strong>Due Date:</strong>
+                        ${formatInvoiceDate(invoice.due_date)}
+                    </div>
+
+                    ${invoice.payment_method ? `
+                        <div style="font-size:13px;margin-top:6px;">
+                            <strong>Payment:</strong>
+                            ${escapeHtml(invoice.payment_method)}
+                        </div>
+                    ` : ""}
+                </div>
+
+            </div>
+
+            ${invoice.description ? `
+                <div style="
+                    background:#f8fafc;
+                    border-radius:8px;
+                    padding:13px 15px;
+                    margin-bottom:20px;
+                    font-size:13px;
+                    line-height:1.6;
+                ">
+                    ${escapeHtml(invoice.description)}
+                </div>
+            ` : ""}
+
+            <table style="
+                width:100%;
+                border-collapse:collapse;
+                font-size:13px;
+                margin-top:10px;
+            ">
+                <thead>
+                    <tr style="background:#111827;color:#fff;">
+                        <th style="padding:12px;text-align:left;">Item / Service</th>
+                        <th style="padding:12px;text-align:center;width:70px;">Qty</th>
+                        <th style="padding:12px;text-align:right;width:120px;">Rate</th>
+                        <th style="padding:12px;text-align:right;width:130px;">Amount</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    ${rows}
+                </tbody>
+            </table>
+
+            <div style="
+                width:330px;
+                margin:25px 0 0 auto;
+                font-size:13px;
+            ">
+
+                <div style="
+                    display:flex;
+                    justify-content:space-between;
+                    padding:7px 0;
+                ">
+                    <span>Subtotal</span>
+                    <strong>₹${invoiceMoney(invoice.subtotal)}</strong>
+                </div>
+
+                <div style="
+                    display:flex;
+                    justify-content:space-between;
+                    padding:7px 0;
+                ">
+                    <span>Discount</span>
+                    <strong>− ₹${invoiceMoney(invoice.discount)}</strong>
+                </div>
+
+                <div style="
+                    display:flex;
+                    justify-content:space-between;
+                    padding:7px 0;
+                ">
+                    <span>Tax</span>
+                    <strong>₹${invoiceMoney(invoice.tax)}</strong>
+                </div>
+
+                <div style="
+                    display:flex;
+                    justify-content:space-between;
+                    padding:13px 0 0;
+                    margin-top:6px;
+                    border-top:2px solid #111827;
+                    font-size:18px;
+                ">
+                    <strong>Total</strong>
+                    <strong>₹${invoiceMoney(invoice.total)}</strong>
+                </div>
+
+            </div>
+
+            ${invoice.notes ? `
+                <div style="
+                    margin-top:35px;
+                    padding:15px;
+                    background:#fff7ed;
+                    border-left:4px solid #f59e0b;
+                    font-size:12px;
+                    line-height:1.6;
+                ">
+                    <strong>Notes</strong><br>
+                    ${escapeHtml(invoice.notes)}
+                </div>
+            ` : ""}
+
+            <div style="
+                margin-top:50px;
+                padding-top:16px;
+                border-top:1px solid #e5e7eb;
+                display:flex;
+                justify-content:space-between;
+                gap:20px;
+                color:#6b7280;
+                font-size:11px;
+            ">
+                <span>Thank you for choosing NextTech Labs.</span>
+                <span>Computer-generated invoice</span>
+            </div>
+
+        </div>
+    `;
+
+    // Temporarily show the print area and invoke the browser's
+    // native print dialog, where the user can choose "Save as PDF".
+    printArea.style.display = "block";
+
+    const cleanup = () => {
+        printArea.style.display = "none";
+        window.removeEventListener("afterprint", cleanup);
+    };
+
+    window.addEventListener("afterprint", cleanup);
+
+    setTimeout(() => {
+        window.print();
+    }, 150);
+}
+
+    
+// =========================
+// PROFESSIONAL QUOTATION PDF
+// =========================
+
+function generateQuotationPDF(id) {
+    const quotation = allQuotations.find(
+        item => Number(item.id) === Number(id)
+    );
+
+    if (!quotation) {
+        alert("Quotation not found.");
+        return;
+    }
+
+    let items = quotation.items;
+
+    if (typeof items === "string") {
+        try {
+            items = JSON.parse(items);
+        } catch {
+            items = [];
+        }
+    }
+
+    items = Array.isArray(items) ? items : [];
+
+    const rows = items.length
+        ? items.map(item => {
+            const qty = Number(item.qty || item.quantity || 0);
+            const rate = Number(item.rate || 0);
+            const total = qty * rate;
+
+            return `
+                <tr>
+                    <td>${escapeHtml(item.name || item.service || "Item")}</td>
+                    <td style="text-align:center;">${qty}</td>
+                    <td style="text-align:right;">₹${invoiceMoney(rate)}</td>
+                    <td style="text-align:right;">₹${invoiceMoney(total)}</td>
+                </tr>
+            `;
+        }).join("")
+        : `
+            <tr>
+                <td colspan="4" style="text-align:center;">No items</td>
+            </tr>
+        `;
+
+    const printArea = document.getElementById("quotationPrintArea");
+
+    printArea.innerHTML = `
+        <div style="
+            font-family:Arial,Helvetica,sans-serif;
+            color:#111827;
+            background:#fff;
+            min-height:100vh;
+            padding:32px;
+            box-sizing:border-box;
+        ">
+
+            <div style="
+                display:flex;
+                justify-content:space-between;
+                align-items:flex-start;
+                gap:30px;
+                padding-bottom:25px;
+                border-bottom:3px solid #111827;
+            ">
+
+                <div>
+                    <div style="
+                        font-size:28px;
+                        font-weight:800;
+                        letter-spacing:-.5px;
+                        margin-bottom:6px;
+                    ">
+                        NextTech Labs
+                    </div>
+
+                    <div style="font-size:13px;color:#6b7280;">
+                        Technology • Web Development • AI Automation
+                    </div>
+                </div>
+
+                <div style="text-align:right;">
+                    <div style="
+                        font-size:30px;
+                        font-weight:800;
+                        margin-bottom:5px;
+                    ">
+                        QUOTATION
+                    </div>
+
+                    <div style="font-size:14px;">
+                        <strong>${escapeHtml(quotation.quotation_number || "")}</strong>
+                    </div>
+
+                    <div style="
+                        display:inline-block;
+                        margin-top:9px;
+                        padding:6px 12px;
+                        border-radius:20px;
+                        font-size:12px;
+                        font-weight:700;
+                        background:#eef2ff;
+                        color:#3730a3;
+                    ">
+                        ${escapeHtml(quotation.status || "Draft")}
+                    </div>
+                </div>
+
+            </div>
+
+            <div style="
+                display:grid;
+                grid-template-columns:1fr 1fr;
+                gap:25px;
+                margin:28px 0;
+            ">
+
+                <div>
+                    <div style="
+                        text-transform:uppercase;
+                        font-size:11px;
+                        font-weight:700;
+                        color:#6b7280;
+                        letter-spacing:.7px;
+                        margin-bottom:8px;
+                    ">
+                        Prepared For
+                    </div>
+
+                    <div style="font-size:17px;font-weight:700;">
+                        ${escapeHtml(quotation.client_name || "Client")}
+                    </div>
+
+                    <div style="font-size:13px;color:#6b7280;margin-top:4px;">
+                        ${escapeHtml(quotation.client_company || "")}
+                    </div>
+                </div>
+
+                <div style="text-align:right;">
+                    <div style="font-size:13px;">
+                        <strong>Valid Until:</strong>
+                        ${formatInvoiceDate(quotation.valid_until)}
+                    </div>
+                </div>
+
+            </div>
+
+            <div style="
+                font-size:20px;
+                font-weight:700;
+                margin-bottom:10px;
+            ">
+                ${escapeHtml(quotation.title || "Quotation")}
+            </div>
+
+            ${quotation.description ? `
+                <div style="
+                    background:#f8fafc;
+                    border-radius:8px;
+                    padding:13px 15px;
+                    margin-bottom:20px;
+                    font-size:13px;
+                    line-height:1.6;
+                ">
+                    ${escapeHtml(quotation.description)}
+                </div>
+            ` : ""}
+
+            <table style="
+                width:100%;
+                border-collapse:collapse;
+                font-size:13px;
+                margin-top:10px;
+            ">
+                <thead>
+                    <tr style="background:#111827;color:#fff;">
+                        <th style="padding:12px;text-align:left;">Item / Service</th>
+                        <th style="padding:12px;text-align:center;width:70px;">Qty</th>
+                        <th style="padding:12px;text-align:right;width:120px;">Rate</th>
+                        <th style="padding:12px;text-align:right;width:130px;">Amount</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    ${rows}
+                </tbody>
+            </table>
+
+            <div style="
+                width:330px;
+                margin:25px 0 0 auto;
+                font-size:13px;
+            ">
+
+                <div style="
+                    display:flex;
+                    justify-content:space-between;
+                    padding:7px 0;
+                ">
+                    <span>Subtotal</span>
+                    <strong>₹${invoiceMoney(quotation.subtotal)}</strong>
+                </div>
+
+                <div style="
+                    display:flex;
+                    justify-content:space-between;
+                    padding:7px 0;
+                ">
+                    <span>Discount</span>
+                    <strong>− ₹${invoiceMoney(quotation.discount)}</strong>
+                </div>
+
+                <div style="
+                    display:flex;
+                    justify-content:space-between;
+                    padding:7px 0;
+                ">
+                    <span>Tax</span>
+                    <strong>₹${invoiceMoney(quotation.tax)}</strong>
+                </div>
+
+                <div style="
+                    display:flex;
+                    justify-content:space-between;
+                    padding:13px 0 0;
+                    margin-top:6px;
+                    border-top:2px solid #111827;
+                    font-size:18px;
+                ">
+                    <strong>Estimated Total</strong>
+                    <strong>₹${invoiceMoney(quotation.total)}</strong>
+                </div>
+
+            </div>
+
+            ${quotation.notes ? `
+                <div style="
+                    margin-top:35px;
+                    padding:15px;
+                    background:#fff7ed;
+                    border-left:4px solid #f59e0b;
+                    font-size:12px;
+                    line-height:1.6;
+                ">
+                    <strong>Notes</strong><br>
+                    ${escapeHtml(quotation.notes)}
+                </div>
+            ` : ""}
+
+            <div style="
+                margin-top:50px;
+                padding-top:16px;
+                border-top:1px solid #e5e7eb;
+                display:flex;
+                justify-content:space-between;
+                gap:20px;
+                color:#6b7280;
+                font-size:11px;
+            ">
+                <span>Thank you for considering NextTech Labs.</span>
+                <span>Computer-generated quotation</span>
+            </div>
+
+        </div>
+    `;
+
+    printArea.style.display = "block";
+
+    const cleanupQuotationPrint = () => {
+        printArea.style.display = "none";
+        window.removeEventListener("afterprint", cleanupQuotationPrint);
+    };
+
+    window.addEventListener("afterprint", cleanupQuotationPrint);
+
+    setTimeout(() => {
+        window.print();
+    }, 150);
+}
+
+    </script>
+
+
+<div id="invoicePrintArea" style="display:none;"></div>
+<div id="quotationPrintArea" style="display:none;"></div>
+
+<!-- Premium Document Preview / Share -->
+<div class="premium-document-modal" id="premiumDocumentModal">
+  <div class="premium-document-shell">
+    <div class="premium-document-toolbar">
+      <h3 id="premiumDocumentTitle">Document Preview</h3>
+      <div class="premium-toolbar-actions">
+        <button class="premium-toolbar-btn green" id="premiumWhatsAppBtn">WhatsApp</button>
+        <button class="premium-toolbar-btn blue" id="premiumEmailBtn">Email</button>
+        <button class="premium-toolbar-btn purple" id="premiumPdfBtn">Download / PDF</button>
+        <button class="premium-toolbar-btn light" id="premiumCopyBtn">Copy Details</button>
+        <button class="premium-toolbar-btn close" id="premiumCloseBtn">Close</button>
+      </div>
+    </div>
+    <div id="premiumDocumentBody"></div>
+  </div>
+</div>
+
+<div class="premium-share-modal" id="premiumShareModal">
+  <div class="premium-share-card">
+    <h3 id="premiumShareTitle">Share Document</h3>
+    <p>Select how you want to share this document.</p>
+    <div class="share-grid">
+      <button class="share-option share-wa" id="shareWhatsAppOption">WhatsApp</button>
+      <button class="share-option share-email" id="shareEmailOption">Email</button>
+      <button class="share-option share-copy" id="shareCopyOption">Copy Details</button>
+      <button class="share-option share-native" id="shareNativeOption">More Options</button>
+    </div>
+    <button class="share-cancel" id="shareCancelOption">Cancel</button>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+<script>
+const NEXTTECH_LOGO_DATA = "logo.png";
+const NEXTTECH_STAMP_DATA = "nexttech-stamp.webp";
+(function(){
+    let activeShareType = null;
+    let activeShareId = null;
+
+    function money(v){
+        return Number(v || 0).toLocaleString("en-IN", {minimumFractionDigits:2, maximumFractionDigits:2});
+    }
+    function docDate(v){
+        if(!v) return "—";
+        const d = new Date(v);
+        return Number.isNaN(d.getTime()) ? String(v).slice(0,10) : d.toLocaleDateString("en-IN", {day:"2-digit",month:"short",year:"numeric"});
+    }
+    function getClient(clientId, fallback){
+        const list = typeof allClients !== "undefined" ? allClients : [];
+        return list.find(c => Number(c.id) === Number(clientId)) || fallback || {};
+    }
+    function parseItems(items){
+        if(typeof items === "string") { try { items = JSON.parse(items); } catch { items = []; } }
+        return Array.isArray(items) ? items : [];
+    }
+    function nextNumber(prefix, list, field){
+        const year = new Date().getFullYear();
+        const re = new RegExp("^" + prefix + "-" + year + "-(\\d+)$");
+        let max = 0;
+        (list || []).forEach(x => {
+            const m = String(x[field] || "").match(re);
+            if(m) max = Math.max(max, Number(m[1]) || 0);
+        });
+        return prefix + "-" + year + "-" + String(max + 1).padStart(4,"0");
+    }
+    function clientBlock(client, label){
+        return `<div class="premium-client-box"><h4>${label}</h4><strong>${escapeHtml(client.name || client.company || "Client")}</strong><div>${client.company ? escapeHtml(client.company) + "<br>" : ""}${client.email ? "✉ " + escapeHtml(client.email) + "<br>" : ""}${client.phone ? "☎ " + escapeHtml(client.phone) + "<br>" : ""}${client.address ? escapeHtml(client.address).replace(/\n/g,"<br>") : ""}</div></div>`;
+    }
+    function documentHTML(type, doc){
+        const isQ = type === "quotation";
+        const client = getClient(doc.client_id, {name:doc.client_name, company:doc.client_company});
+        const items = parseItems(doc.items);
+        const rows = items.length ? items.map((item,i)=>{
+            const qty = Number(item.quantity ?? item.qty ?? 1);
+            const rate = Number(item.rate || 0);
+            const amount = Number(item.amount ?? qty * rate);
+            return `<tr><td>${i+1}</td><td><strong>${escapeHtml(item.name || item.service || "Item")}</strong>${item.description ? `<div class="service-row-description">${escapeHtml(item.description)}</div>` : ""}</td><td class="qty">${qty}</td><td class="num">₹${money(rate)}</td><td class="num">₹${money(amount)}</td></tr>`;
+        }).join("") : `<tr><td colspan="5" style="text-align:center">No items added</td></tr>`;
+        const title = isQ ? "QUOTATION" : "INVOICE";
+        const number = isQ ? doc.quotation_number : doc.invoice_number;
+        const issue = isQ ? new Date() : doc.issue_date;
+        const dueOrValid = isQ ? doc.valid_until : doc.due_date;
+        const standardTerms = isQ
+            ? `1. This quotation is valid for 14 days from the date of issue.
+2. 50% advance payment is required to confirm the project and start the work.
+3. The remaining 50% payment is due upon project completion or before final delivery.
+4. Project work/timeline will begin after confirmation of the quotation and receipt of the 50% advance.
+5. Any additional work or requirements outside the approved scope will be charged separately.
+6. Domain, hosting, paid plugins, APIs, third-party tools and other external charges are not included unless specifically mentioned.
+7. Any change in requirements after approval may affect the final cost and delivery timeline.
+8. The client is responsible for providing required content, credentials, approvals and feedback on time.
+9. Final files, credentials or deployment handover will be provided after full payment of the applicable project amount.
+10. By accepting this quotation, the client agrees to the above terms and conditions.`
+            : `1. 50% advance payment is required before commencement of the applicable work.
+2. The remaining 50% payment is due upon project completion or before final delivery.
+3. Invoice payment must be made within the agreed payment period.
+4. Project timeline is subject to advance payment confirmation and timely client approvals.
+5. Additional work outside the approved scope will be billed separately.
+6. Domain, hosting, paid plugins, APIs, third-party tools and other external charges will be charged separately unless included.
+7. Any change in requirements may affect the final cost and delivery timeline.
+8. Final handover/deployment credentials will be provided after applicable dues are cleared.
+9. This invoice is generated digitally by NextTech Labs.
+10. Payment of the applicable amount constitutes acceptance of these payment terms.`;
+
+        const terms = standardTerms + (doc.notes ? `\\n\\nAdditional Notes:\\n${doc.notes}` : "");
+        return `<div class="premium-document" id="premiumPrintableDocument">
+            <div class="premium-doc-head">
+                <div class="premium-brand"><img src="${NEXTTECH_LOGO_DATA}" alt="NextTech Labs"><div><h1>NextTech Labs</h1><p>Engineering Smart Digital Solutions</p></div></div>
+                <div class="premium-company"><strong>NextTech Labs</strong><br>Adil Nagar, Kursi Road<br>Lucknow, Uttar Pradesh – 226022, India<br>☎ +91 8354027338<br>✉ info.nexttechlabs@gmail.com<br>🌐 nexttech-labs.vercel.app</div>
+            </div>
+            <div class="premium-doc-title"><div><h2>${title}</h2><div class="premium-doc-sub">Building Digital Solutions for a Better Tomorrow</div></div><div class="premium-doc-meta"><div>${isQ?"Quotation":"Invoice"} No. <strong>${escapeHtml(number || "—")}</strong></div><div>Date <strong>${docDate(issue)}</strong></div><div>${isQ?"Valid Until":"Due Date"} <strong>${docDate(dueOrValid)}</strong></div><div>Status <strong>${escapeHtml(doc.status || "Draft")}</strong></div></div></div>
+            <div class="premium-client-grid">${clientBlock(client,"Bill To / Prepared For")}${clientBlock({name:"NextTech Labs",company:"Technology Partner",email:"info.nexttechlabs@gmail.com",phone:"+91 8354027338",address:"Adil Nagar, Kursi Road\nLucknow, Uttar Pradesh – 226022, India"},"From")}</div>
+            ${doc.description ? `<div style="font-size:11px;color:#475569;margin-bottom:15px"><strong>Project / Service:</strong> ${escapeHtml(doc.description)}</div>` : ""}
+            <table class="premium-items"><thead><tr><th>#</th><th>Service / Description</th><th class="qty">Qty</th><th class="num">Rate (₹)</th><th class="num">Amount (₹)</th></tr></thead><tbody>${rows}</tbody></table>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:18px;align-items:start;">
+                <div style="border:1px solid #dbeafe;background:#f8fbff;border-radius:10px;padding:13px;font-size:10.5px;line-height:1.6;color:#334155;">
+                    <strong style="display:block;color:#1d4ed8;font-size:11px;margin-bottom:5px;">Payment Terms</strong>
+                    <div><strong>50% Advance:</strong> Required to confirm the project and start work.</div>
+                    <div><strong>Balance 50%:</strong> Due upon completion or before final delivery.</div>
+                    <div style="margin-top:4px;color:#64748b;">Bank/payment details will be shared after confirmation.</div>
+                </div>
+                <div class="premium-totals"><div class="premium-total-row"><span>Subtotal</span><strong>₹${money(doc.subtotal)}</strong></div><div class="premium-total-row"><span>Discount</span><strong>− ₹${money(doc.discount)}</strong></div><div class="premium-total-row"><span>GST / Tax</span><strong>₹${money(doc.tax)}</strong></div><div class="premium-total-row premium-grand"><span>Grand Total</span><strong>₹${money(doc.total)}</strong></div></div></div>
+            <div class="premium-terms"><h4>${isQ?"Terms & Conditions":"Notes / Terms & Conditions"}</h4>${escapeHtml(terms).replace(/\n/g,"<br>")}</div>
+            <div class="premium-sign"><div class="premium-stamp-wrap"><img class="premium-stamp" src="${NEXTTECH_STAMP_DATA}" alt="NextTech Labs Digital Authorized Stamp"><strong style="font-size:10px">Authorized Signatory</strong><div style="font-size:9px;color:#64748b">For NextTech Labs</div></div></div>
+            <div class="premium-footer"><span>Thank you for choosing NextTech Labs.</span><span>${title} • Generated digitally</span></div>
+        </div>`;
+    }
+    function docText(type, doc){
+        const isQ = type === "quotation";
+        const num = isQ ? doc.quotation_number : doc.invoice_number;
+        const items = parseItems(doc.items).map(i=>`${i.name || i.service || "Item"} — ${i.quantity ?? i.qty ?? 1} × ₹${money(i.rate)}`).join("\n");
+        return `${isQ?"QUOTATION":"INVOICE"} ${num}\nNextTech Labs\nAdil Nagar, Kursi Road, Lucknow – 226022, India\n+91 8354027338 | info.nexttechlabs@gmail.com\n\nClient: ${doc.client_company || doc.client_name || "Client"}\nTitle: ${doc.title || ""}\n\nItems:\n${items || "No items"}\n\nSubtotal: ₹${money(doc.subtotal)}\nDiscount: ₹${money(doc.discount)}\nGST/Tax: ₹${money(doc.tax)}\nTotal: ₹${money(doc.total)}`;
+    }
+    function getDoc(type,id){
+        return type === "quotation" ? (typeof allQuotations !== "undefined" ? allQuotations.find(x=>Number(x.id)===Number(id)) : null) : (typeof allInvoices !== "undefined" ? allInvoices.find(x=>Number(x.id)===Number(id)) : null);
+    }
+    function openPreview(type,id){
+        const doc=getDoc(type,id); if(!doc) return alert("Document not found.");
+        activeShareType=type; activeShareId=id;
+        document.getElementById("premiumDocumentTitle").textContent=`${type === "quotation" ? "Quotation" : "Invoice"} Preview • ${type === "quotation" ? doc.quotation_number : doc.invoice_number}`;
+        document.getElementById("premiumDocumentBody").innerHTML=documentHTML(type,doc);
+        document.getElementById("premiumDocumentModal").classList.add("active");
+    }
+    function closePreview(){ document.getElementById("premiumDocumentModal").classList.remove("active"); }
+    function shareDocument(type,id){
+        const doc=getDoc(type,id); if(!doc) return alert("Document not found.");
+        activeShareType=type; activeShareId=id;
+        document.getElementById("premiumShareTitle").textContent=`Share ${type === "quotation" ? doc.quotation_number : doc.invoice_number}`;
+        document.getElementById("premiumShareModal").classList.add("active");
+    }
+    function shareWhatsApp(){
+        const doc=getDoc(activeShareType,activeShareId); if(!doc) return;
+        const text=`Hello,\n\nPlease find the ${activeShareType === "quotation" ? "quotation" : "invoice"} from NextTech Labs.\n\nDocument: ${activeShareType === "quotation" ? doc.quotation_number : doc.invoice_number}\nClient: ${doc.client_company || doc.client_name || "Client"}\nTotal: ₹${money(doc.total)}\n\nThank you.\nNextTech Labs`;
+        window.open("https://wa.me/?text="+encodeURIComponent(text),"_blank");
+    }
+    function shareEmail(){
+        const doc=getDoc(activeShareType,activeShareId); if(!doc) return;
+        const subject=`${activeShareType === "quotation" ? "Quotation" : "Invoice"} ${activeShareType === "quotation" ? doc.quotation_number : doc.invoice_number} - NextTech Labs`;
+        window.location.href="mailto:?subject="+encodeURIComponent(subject)+"&body="+encodeURIComponent(docText(activeShareType,doc));
+    }
+    async function copyDetails(){
+        const doc=getDoc(activeShareType,activeShareId); if(!doc) return;
+        try{await navigator.clipboard.writeText(docText(activeShareType,doc));alert("Document details copied.");}catch{alert(docText(activeShareType,doc));}
+    }
+    async function nativeShare(){
+        const doc=getDoc(activeShareType,activeShareId); if(!doc) return;
+        if(navigator.share){try{await navigator.share({title:`${activeShareType === "quotation" ? "Quotation" : "Invoice"} ${activeShareType === "quotation" ? doc.quotation_number : doc.invoice_number}`,text:docText(activeShareType,doc)});}catch{}}
+        else alert("Native sharing is not supported in this browser.");
+    }
+    function printPreview(){
+        const body=document.getElementById("premiumDocumentBody").innerHTML;
+        const win=window.open("","_blank","width=900,height=1000");
+        if(!win) return alert("Please allow pop-ups for PDF/print.");
+        win.document.write(`<!doctype html><html><head><title>NextTech Labs Document</title><style>${document.querySelector("style").textContent}</style></head><body>${body}</body></html>`);
+        win.document.close(); setTimeout(()=>win.print(),350);
+    }
+
+
+    // ===== NextTech Labs Premium Document Actions (final) =====
+    function resolveDocument(type, id){
+        const list = type === "quotation" ? allQuotations : allInvoices;
+        return Array.isArray(list) ? list.find(x => Number(x.id) === Number(id)) : null;
+    }
+
+    function safeDocumentHTML(type, doc){
+        if (!doc) throw new Error("Document not found.");
+        if (typeof documentHTML !== "function") throw new Error("Document renderer is unavailable.");
+        return documentHTML(type, doc);
+    }
+
+    window.viewQuotation = function(id){
+        try{
+            const doc = resolveDocument("quotation", id);
+            if(!doc) return alert("Quotation not found. Please refresh the Quotations section and try again.");
+            const modal = document.getElementById("premiumDocumentModal");
+            const body = document.getElementById("premiumDocumentBody");
+            const title = document.getElementById("premiumDocumentTitle");
+            if(!modal || !body || !title) throw new Error("Quotation preview panel is missing.");
+            activeShareType = "quotation";
+            activeShareId = doc.id;
+            title.textContent = `Quotation Preview • ${doc.quotation_number || "Draft"}`;
+            body.innerHTML = safeDocumentHTML("quotation", doc);
+            modal.classList.add("active");
+            document.body.classList.add("document-preview-open");
+        }catch(error){
+            console.error("Quotation View Error:", error);
+            alert("Quotation preview could not be opened. Please refresh the dashboard and try again.");
+        }
+    };
+
+    window.viewInvoice = function(id){
+        try{
+            const doc = resolveDocument("invoice", id);
+            if(!doc) return alert("Invoice not found. Please refresh the Invoices section and try again.");
+            const modal = document.getElementById("premiumDocumentModal");
+            const body = document.getElementById("premiumDocumentBody");
+            const title = document.getElementById("premiumDocumentTitle");
+            if(!modal || !body || !title) throw new Error("Invoice preview panel is missing.");
+            activeShareType = "invoice";
+            activeShareId = doc.id;
+            title.textContent = `Invoice Preview • ${doc.invoice_number || "Draft"}`;
+            body.innerHTML = safeDocumentHTML("invoice", doc);
+            modal.classList.add("active");
+            document.body.classList.add("document-preview-open");
+        }catch(error){
+            console.error("Invoice View Error:", error);
+            alert("Invoice preview could not be opened. Please refresh the dashboard and try again.");
+        }
+    };
+
+    function closePremiumPreview(){
+        document.getElementById("premiumDocumentModal")?.classList.remove("active");
+        document.body.classList.remove("document-preview-open");
+    }
+
+    async function renderPremiumPdf(type, id){
+        const doc = resolveDocument(type, id);
+        if(!doc) throw new Error(`${type === "quotation" ? "Quotation" : "Invoice"} not found.`);
+        if(!window.html2canvas) throw new Error("PDF renderer is still loading. Please wait a moment and try again.");
+        if(!window.jspdf || !window.jspdf.jsPDF) throw new Error("PDF engine is still loading. Please wait a moment and try again.");
+
+        const wrapper = document.createElement("div");
+        wrapper.style.position = "fixed";
+        wrapper.style.left = "-100000px";
+        wrapper.style.top = "0";
+        wrapper.style.width = "794px";
+        wrapper.style.background = "#fff";
+        wrapper.style.zIndex = "-1";
+        wrapper.className = "pdf-compact";
+        wrapper.innerHTML = safeDocumentHTML(type, doc);
+        document.body.appendChild(wrapper);
+
+        const printable = wrapper.querySelector(".premium-document") || wrapper.firstElementChild;
+        if(!printable){
+            wrapper.remove();
+            throw new Error("Document content could not be prepared.");
+        }
+
+        printable.style.width = "794px";
+        printable.style.minHeight = "0";
+        printable.style.height = "auto";
+        printable.style.margin = "0";
+        printable.style.boxShadow = "none";
+        printable.style.background = "#fff";
+
+        // Wait for fonts/images before measuring the final document.
+        if(document.fonts?.ready) await document.fonts.ready;
+        const images = Array.from(printable.querySelectorAll("img"));
+        await Promise.all(images.map(img => img.complete ? Promise.resolve() :
+            new Promise(resolve => { img.onload = img.onerror = resolve; })
+        ));
+
+        const canvas = await window.html2canvas(printable, {
+            scale: 2,
+            useCORS: true,
+            allowTaint: false,
+            backgroundColor: "#ffffff",
+            logging: false,
+            width: 794,
+            windowWidth: 794,
+            scrollX: 0,
+            scrollY: 0
+        });
+
+        const { jsPDF } = window.jspdf;
+        const pdf = new jsPDF({unit:"mm", format:"a4", orientation:"portrait", compress:true});
+
+        // Fit the complete rendered document inside ONE A4 page, no matter
+        // how much content it contains. This prevents the header/body split.
+        const pageW = 210, pageH = 297;
+        const margin = 8;
+        const maxW = pageW - margin * 2;
+        const maxH = pageH - margin * 2;
+
+        let w = maxW;
+        let h = (canvas.height / canvas.width) * w;
+        if(h > maxH){
+            h = maxH;
+            w = (canvas.width / canvas.height) * h;
+        }
+
+        const x = (pageW - w) / 2;
+        const y = (pageH - h) / 2;
+
+        pdf.addImage(canvas.toDataURL("image/jpeg", 0.98), "JPEG", x, y, w, h, undefined, "FAST");
+
+        const number = type === "quotation" ? doc.quotation_number : doc.invoice_number;
+        const filename = `${number || type}-NextTech-Labs.pdf`;
+        return {pdf, filename, doc};
+    }
+
+    async function buildPremiumPdf(type, id){
+        const result = await renderPremiumPdf(type, id);
+        result.pdf.save(result.filename);
+        return result;
+    }
+
+    window.generateQuotationPDF = async function(id){
+        try{
+            await buildPremiumPdf("quotation", id);
+            alert("Quotation PDF saved successfully as a single A4 page.");
+        }catch(error){
+            console.error("Quotation PDF Error:", error);
+            alert(error.message || "Quotation PDF could not be saved.");
+        }
+    };
+
+    window.generateInvoicePDF = async function(id){
+        try{
+            await buildPremiumPdf("invoice", id);
+            alert("Invoice PDF saved successfully as a single A4 page.");
+        }catch(error){
+            console.error("Invoice PDF Error:", error);
+            alert(error.message || "Invoice PDF could not be saved.");
+        }
+    };
+
+
+    function professionalWhatsAppMessage(type, doc){
+        const isQ = type === "quotation";
+        const number = isQ ? doc.quotation_number : doc.invoice_number;
+        const client = doc.client_name || doc.client_company || "Client";
+        const total = `₹${money(doc.total)}`;
+        const dateLabel = isQ ? "Valid Until" : "Due Date";
+        const dateValue = isQ ? doc.valid_until : doc.due_date;
+
+        return `Hello ${client},
+
+Greetings from NextTech Labs.
+
+Please find the ${isQ ? "quotation" : "invoice"} details below:
+
+📄 *${isQ ? "Quotation" : "Invoice"} No.:* ${number || "—"}
+🏢 *From:* NextTech Labs
+👤 *Client:* ${doc.client_company || doc.client_name || "—"}
+📌 *Project / Service:* ${doc.title || doc.description || "—"}
+💰 *Total Amount:* ${total}
+📅 *${dateLabel}:* ${docDate(dateValue)}
+
+The professional PDF document has been generated for your reference.
+
+Please let us know if you have any questions or require any clarification.
+
+Regards,
+*NextTech Labs*
+Engineering Smart Digital Solutions
+📞 +91 8354027338
+✉ info.nexttechlabs@gmail.com
+🌐 nexttech-labs.vercel.app`;
+    }
+
+    async function shareProfessionalWhatsApp(type, id){
+        const doc = resolveDocument(type, id);
+        if(!doc) return alert("Document not found.");
+
+        const message = professionalWhatsAppMessage(type, doc);
+
+        // On supported mobile browsers, share the actual generated PDF file to WhatsApp.
+        if(navigator.share && window.html2pdf){
+            try{
+                const result = await createPremiumPdfBlob(type, id);
+                const file = new File([result.blob], result.filename, {type:"application/pdf"});
+                if(navigator.canShare && navigator.canShare({files:[file]})){
+                    await navigator.share({
+                        title: `${type === "quotation" ? "Quotation" : "Invoice"} ${type === "quotation" ? doc.quotation_number : doc.invoice_number}`,
+                        text: message,
+                        files: [file]
+                    });
+                    return;
+                }
+            }catch(error){
+                console.warn("File share fallback:", error);
+            }
+        }
+
+        // Desktop fallback: save the PDF first, then open WhatsApp with a polished message.
+        try{
+            await buildPremiumPdf(type, id);
+        }catch(error){
+            console.warn("PDF generation before WhatsApp failed:", error);
+        }
+
+        const waUrl = "https://wa.me/?text=" + encodeURIComponent(message);
+        window.open(waUrl, "_blank", "noopener,noreferrer");
+    }
+
+    async function createPremiumPdfBlob(type, id){
+        const result = await renderPremiumPdf(type, id);
+        const blob = result.pdf.output("blob");
+        return {blob, filename: result.filename};
+    }
+
+    window.shareQuotation = function(id){
+        shareProfessionalWhatsApp("quotation", id);
+    };
+    window.shareInvoice = function(id){
+        shareProfessionalWhatsApp("invoice", id);
+    };
+
+    // Replace the old preview toolbar behavior with the new real PDF + sharing actions.
+    function bindPremiumDocumentButtons(){
+        document.getElementById("premiumCloseBtn")?.addEventListener("click", closePremiumPreview);
+
+        document.getElementById("premiumPdfBtn")?.addEventListener("click", async ()=>{
+            if(!activeShareType || activeShareId == null) return alert("Open a quotation or invoice first.");
+            try{
+                await buildPremiumPdf(activeShareType, activeShareId);
+                alert(`${activeShareType === "quotation" ? "Quotation" : "Invoice"} PDF saved successfully.`);
+            }catch(error){
+                console.error("Premium PDF Error:", error);
+                alert(error.message || "PDF could not be saved.");
+            }
+        });
+
+        document.getElementById("premiumWhatsAppBtn")?.addEventListener("click", ()=>{
+            if(activeShareType && activeShareId != null) shareProfessionalWhatsApp(activeShareType, activeShareId);
+        });
+
+        document.getElementById("premiumDocumentModal")?.addEventListener("click", e=>{
+            if(e.target.id === "premiumDocumentModal") closePremiumPreview();
+        });
+    }
+
+    document.addEventListener("DOMContentLoaded", bindPremiumDocumentButtons);
+
+    // Invoice service selector using the same master service catalog.
+    window.addInvoiceItem=function(item={}){
+        const container=document.getElementById("invoiceItems"); if(!container) return;
+        const row=document.createElement("div"); row.className="invoice-item-row service-row-grid";
+        let selected=serviceItems.find(s=>String(s.id)===String(item.service_id||""));
+        if(!selected) selected=serviceItems.find(s=>String(s.name).toLowerCase()===String(item.name||item.service||"").toLowerCase());
+        const options=serviceItems.map(s=>`<option value="${escapeHtml(String(s.id))}" ${selected&&String(selected.id)===String(s.id)?"selected":""}>${escapeHtml(s.name)} — ₹${money(s.price)}/${escapeHtml(s.unit||"Project")}</option>`).join("");
+        row.innerHTML=`<select class="invoice-service-select"><option value="">Select service</option>${options}<option value="__custom__" ${selected?"":"selected"}>Custom Item</option></select><input type="number" class="invoice-item-qty" min="1" step="1" value="${Number(item.qty||item.quantity||1)}"><input type="number" class="invoice-item-rate" min="0" step="0.01" value="${Number(item.rate||selected?.price||0)}"><div class="invoice-item-total service-row-total">₹0.00</div><button type="button" class="remove-invoice-item" title="Remove">×</button>`;
+        const select=row.querySelector(".invoice-service-select"), rate=row.querySelector(".invoice-item-rate");
+        select.addEventListener("change",()=>{const s=serviceItems.find(x=>String(x.id)===String(select.value)); if(s){rate.value=Number(s.price||0);row.dataset.description=s.description||"";row.dataset.serviceId=s.id;}calculateInvoiceTotals();});
+        row.querySelectorAll("input").forEach(x=>x.addEventListener("input",calculateInvoiceTotals));
+        row.querySelector(".remove-invoice-item").addEventListener("click",()=>{row.remove();calculateInvoiceTotals();});
+        row.dataset.serviceId=selected?.id||item.service_id||""; row.dataset.description=selected?.description||item.description||"";
+        container.appendChild(row); calculateInvoiceTotals();
+    };
+    window.getInvoiceItems=function(){
+        return [...document.querySelectorAll(".invoice-item-row")].map(row=>{const s=row.querySelector(".invoice-service-select");const selected=serviceItems.find(x=>String(x.id)===String(s?.value));const name=selected?.name || (s?.value==="__custom__" ? "Custom Item" : "");const qty=Number(row.querySelector(".invoice-item-qty")?.value||0);const rate=Number(row.querySelector(".invoice-item-rate")?.value||0);return {service_id:selected?.id||null,name,description:selected?.description||row.dataset.description||"",unit:selected?.unit||"Project",qty,quantity:qty,rate,amount:qty*rate};}).filter(x=>x.name);
+    };
+
+    document.addEventListener("DOMContentLoaded",()=>{
+        const qn=document.getElementById("quotationNumber"); if(qn){qn.readOnly=true;qn.classList.add("auto-number");}
+        const inv=document.getElementById("invoiceNumber"); if(inv){inv.readOnly=true;inv.classList.add("auto-number");}
+        document.getElementById("addQuotationBtn")?.addEventListener("click",()=>setTimeout(setQuotationNumber,20));
+        document.getElementById("addInvoiceBtn")?.addEventListener("click",()=>setTimeout(setInvoiceNumber,20));
+        document.getElementById("premiumCloseBtn")?.addEventListener("click",closePreview);
+        
+        document.getElementById("premiumWhatsAppBtn")?.addEventListener("click",shareWhatsApp);
+        document.getElementById("premiumEmailBtn")?.addEventListener("click",shareEmail);
+        document.getElementById("premiumCopyBtn")?.addEventListener("click",copyDetails);
+        document.getElementById("shareWhatsAppOption")?.addEventListener("click",shareWhatsApp);
+        document.getElementById("shareEmailOption")?.addEventListener("click",shareEmail);
+        document.getElementById("shareCopyOption")?.addEventListener("click",copyDetails);
+        document.getElementById("shareNativeOption")?.addEventListener("click",nativeShare);
+        document.getElementById("shareCancelOption")?.addEventListener("click",()=>document.getElementById("premiumShareModal").classList.remove("active"));
+        document.getElementById("premiumShareModal")?.addEventListener("click",e=>{if(e.target.id==="premiumShareModal")e.currentTarget.classList.remove("active")});
+        document.getElementById("premiumDocumentModal")?.addEventListener("click",e=>{if(e.target.id==="premiumDocumentModal")closePreview()});
+    });
+})();
+</script>
+
+</body>
+
+</html>
