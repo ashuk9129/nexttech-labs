@@ -6616,7 +6616,7 @@ window.viewClient = function(id) {
         ));
 
         const canvas = await window.html2canvas(printable, {
-            scale: 2,
+            scale: 4,
             useCORS: true,
             allowTaint: false,
             backgroundColor: "#ffffff",
@@ -6647,7 +6647,7 @@ window.viewClient = function(id) {
         const x = (pageW - w) / 2;
         const y = (pageH - h) / 2;
 
-        pdf.addImage(canvas.toDataURL("image/jpeg", 0.98), "JPEG", x, y, w, h, undefined, "FAST");
+        pdf.addImage(canvas.toDataURL("image/png"), "PNG", x, y, w, h);
 
         const number = type === "quotation" ? doc.quotation_number : doc.invoice_number;
         const filename = `${number || type}-NextTech-Labs.pdf`;
