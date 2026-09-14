@@ -4631,35 +4631,71 @@ function calculateQuotationTotals() {
 }
 
 
-// Open Add
-document.getElementById("addQuotationBtn")
-    ?.addEventListener("click", () => {
+// =========================
+// Add Quotation
+// =========================
+function getNextQuotationNumber() {
+    const year = new Date().getFullYear();
+    let max = 0;
 
-        editingQuotationId = null;
+    (allQuotations || []).forEach(quotation => {
+        const match = String(quotation.quotation_number || "")
+            .match(new RegExp("^NTQ-" + year + "-(\\d+)$"));
 
-        document.getElementById("quotationForm").reset();
-        setQuotationNumber();
-
-        document.getElementById("quotationItems").innerHTML = "";
-
-        populateQuotationClients();
-
-        addQuotationItem();
-
-        document.getElementById("quotationModalTitle").textContent =
-            "Add New Quotation";
-
-        document.getElementById("quotationModalSubtitle").textContent =
-            "Create a quotation for your client";
-
-        document.querySelector(".save-quotation-btn").textContent =
-            "Save Quotation";
-
-        document.getElementById("quotationModal")
-            .classList.add("active");
-
-        calculateQuotationTotals();
+        if (match) {
+            max = Math.max(max, Number(match[1]) || 0);
+        }
     });
+
+    return `NTQ-${year}-${String(max + 1).padStart(4, "0")}`;
+}
+
+const addQuotationButton = document.getElementById("addQuotationBtn");
+
+if (addQuotationButton) {
+    addQuotationButton.addEventListener("click", () => {
+        try {
+            const form = document.getElementById("quotationForm");
+            const items = document.getElementById("quotationItems");
+            const modal = document.getElementById("quotationModal");
+
+            if (!form || !items || !modal) {
+                console.error("Quotation modal elements are missing.");
+                alert("Quotation form could not be opened. Please refresh the page.");
+                return;
+            }
+
+            editingQuotationId = null;
+            form.reset();
+
+            // Auto-generate quotation number for every new quotation.
+            const numberField = document.getElementById("quotationNumber");
+            if (numberField) {
+                numberField.value = getNextQuotationNumber();
+                numberField.readOnly = true;
+                numberField.classList.add("auto-number");
+            }
+
+            items.innerHTML = "";
+            populateQuotationClients();
+            addQuotationItem();
+
+            document.getElementById("quotationModalTitle").textContent =
+                "Add New Quotation";
+            document.getElementById("quotationModalSubtitle").textContent =
+                "Create a quotation for your client";
+
+            const saveButton = document.querySelector(".save-quotation-btn");
+            if (saveButton) saveButton.textContent = "Save Quotation";
+
+            modal.classList.add("active");
+            calculateQuotationTotals();
+        } catch (error) {
+            console.error("Open Quotation Error:", error);
+            alert("Unable to open quotation form. Please refresh the page and try again.");
+        }
+    });
+}
 
 
 // Add Item
@@ -5109,9 +5145,10 @@ window.convertQuotationToInvoice = function(id) {
     document.getElementById("invoiceModalTitle").textContent =
         "Create Invoice from Quotation";
 
-    // Generate a simple unique invoice number.
-    const invoiceNumber =
-        `INV-${new Date().getFullYear()}-${String(allInvoices.length + 1).padStart(3, "0")}`;
+    // Generate invoice number using the same numbering convention.
+    const invoiceNumber = typeof getNextInvoiceNumber === "function"
+        ? getNextInvoiceNumber()
+        : `NTL-INV-${new Date().getFullYear()}-${String(allInvoices.length + 1).padStart(4, "0")}`;
 
     document.getElementById("invoiceNumber").value = invoiceNumber;
 
