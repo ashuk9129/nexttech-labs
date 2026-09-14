@@ -6811,7 +6811,6 @@ Engineering Smart Digital Solutions
     document.addEventListener("DOMContentLoaded",()=>{
         const qn=document.getElementById("quotationNumber"); if(qn){qn.readOnly=true;qn.classList.add("auto-number");}
         const inv=document.getElementById("invoiceNumber"); if(inv){inv.readOnly=true;inv.classList.add("auto-number");}
-        document.getElementById("addQuotationBtn")?.addEventListener("click",()=>setTimeout(setQuotationNumber,20));
         document.getElementById("addInvoiceBtn")?.addEventListener("click",()=>setTimeout(setInvoiceNumber,20));
         document.getElementById("premiumCloseBtn")?.addEventListener("click",closePreview);
         
