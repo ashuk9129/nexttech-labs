@@ -1561,6 +1561,10 @@
             💼 Projects
         </a>
 
+        <a href="#serviceItemsSection" class="nav-item">
+            🛠️ Services & Pricing
+        </a>
+
         <a href="#quotationsSection" class="nav-item">
             📄 Quotations
         </a>
@@ -1882,6 +1886,116 @@
 
 
 <!-- =========================
+     Services & Pricing Section
+========================= -->
+<section class="dashboard-section" id="serviceItemsSection">
+    <div class="section-header">
+        <div>
+            <h2>Services & Pricing</h2>
+            <p>Manage services, packages and rates used in quotations and invoices.</p>
+        </div>
+        <div style="display:flex;gap:10px;flex-wrap:wrap;">
+            <button class="secondary-btn" id="applyRecommendedPricingBtn">Apply Recommended Pricing</button>
+            <button class="primary-btn" id="addServiceItemBtn">+ Add Service</button>
+        </div>
+    </div>
+
+    <div class="client-filters">
+        <input type="text" id="serviceItemSearch" placeholder="Search service or package...">
+        <select id="serviceItemCategoryFilter">
+            <option value="All">All Categories</option>
+            <option value="Website Development">Website Development</option>
+            <option value="Website Packages">Website Packages</option>
+            <option value="AI & Automation">AI & Automation</option>
+            <option value="Data Analytics">Data Analytics</option>
+            <option value="Setup & Support">Setup & Support</option>
+        </select>
+    </div>
+
+    <div class="projects-table-wrapper">
+        <table class="projects-table">
+            <thead>
+                <tr>
+                    <th>Service</th>
+                    <th>Category</th>
+                    <th>Rate</th>
+                    <th>Unit</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody id="serviceItemsTable">
+                <tr><td colspan="6" class="loading">Loading services...</td></tr>
+            </tbody>
+        </table>
+    </div>
+</section>
+
+<!-- Service Item Modal -->
+<div class="client-modal" id="serviceItemModal">
+    <div class="client-modal-content" style="max-width:720px;">
+        <button class="client-modal-close" id="closeServiceItemModal">&times;</button>
+        <h2 id="serviceItemModalTitle">Add Service</h2>
+        <p>Add or update a service/package rate used in quotations and invoices.</p>
+
+        <form id="serviceItemForm" style="margin-top:20px;">
+            <input type="hidden" id="serviceItemId">
+
+            <div class="quotation-form-grid">
+                <div class="quotation-form-group full-width">
+                    <label>Service / Package Name *</label>
+                    <input type="text" id="serviceItemName" required>
+                </div>
+
+                <div class="quotation-form-group">
+                    <label>Category *</label>
+                    <select id="serviceItemCategory" required>
+                        <option value="Website Development">Website Development</option>
+                        <option value="Website Packages">Website Packages</option>
+                        <option value="AI & Automation">AI & Automation</option>
+                        <option value="Data Analytics">Data Analytics</option>
+                        <option value="Setup & Support">Setup & Support</option>
+                    </select>
+                </div>
+
+                <div class="quotation-form-group">
+                    <label>Rate (₹) *</label>
+                    <input type="number" id="serviceItemPrice" min="0" step="0.01" required>
+                </div>
+
+                <div class="quotation-form-group">
+                    <label>Unit *</label>
+                    <select id="serviceItemUnit" required>
+                        <option value="Project">Project</option>
+                        <option value="Year">Year</option>
+                        <option value="Month">Month</option>
+                        <option value="Actual Cost">Actual Cost</option>
+                    </select>
+                </div>
+
+                <div class="quotation-form-group">
+                    <label>Status</label>
+                    <select id="serviceItemStatus">
+                        <option value="Active">Active</option>
+                        <option value="Inactive">Inactive</option>
+                    </select>
+                </div>
+
+                <div class="quotation-form-group full-width">
+                    <label>Description</label>
+                    <textarea id="serviceItemDescription" rows="3"></textarea>
+                </div>
+            </div>
+
+            <div class="quotation-form-actions">
+                <button type="button" class="cancel-quotation-btn" id="cancelServiceItemBtn">Cancel</button>
+                <button type="submit" class="save-quotation-btn">Save Service</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- =========================
      Quotations Section
 ========================= -->
 
@@ -2119,7 +2233,7 @@
 
                 <div class="form-group full-width">
                     <label>Notes</label>
-                    <textarea id="invoiceNotes" rows="3"></textarea>
+                    <textarea id="invoiceNotes" rows="3" placeholder="Hosting charges are ₹1,499 per year. Domain registration and renewal charges are separate and depend on the selected domain. Any third-party or external service charges are borne by the client."></textarea>
                 </div>
 
             </div>
@@ -2461,7 +2575,7 @@
 
                 <div class="quotation-form-group full-width">
                     <label>Notes</label>
-                    <textarea id="quotationNotes" rows="3"></textarea>
+                    <textarea id="quotationNotes" rows="3" placeholder="Domain & Hosting: 1 Year Hosting ₹1,499/year. Domain registration is separate and charged at actual cost. Any renewal or third-party charges are borne by the client."></textarea>
                 </div>
 
             </div>
@@ -4468,21 +4582,41 @@ function populateQuotationClients(selectedId = "") {
 // Add quotation item
 let serviceItems = [];
 
+const QUOTATION_DEFAULT_NOTES = "Domain & Hosting: 1 Year Hosting ₹1,499/year. Domain registration charges are separate and depend on the selected domain name and extension. Any renewal or third-party charges are borne by the client.";
+const INVOICE_DEFAULT_NOTES = "Hosting charges are ₹1,499 per year. Domain registration and renewal charges are separate and depend on the selected domain name and extension. Any third-party or external service charges are borne by the client.";
+
 const fallbackServiceItems = [
-    {id:"local-1",name:"Business Website",price:15000,unit:"Project",description:"Modern responsive business website"},
-    {id:"local-2",name:"E-commerce Website",price:25000,unit:"Project",description:"Professional online store / e-commerce website"},
-    {id:"local-3",name:"Landing Page",price:5000,unit:"Project",description:"Professional conversion-focused landing page"},
-    {id:"local-4",name:"Website Maintenance",price:999,unit:"Month",description:"Website maintenance and technical support"},
-    {id:"local-5",name:"SEO",price:5000,unit:"Month",description:"Search engine optimization service"},
-    {id:"local-6",name:"Google Business Profile",price:3000,unit:"Project",description:"Google Business Profile setup and optimization"},
-    {id:"local-7",name:"Social Media Management",price:5000,unit:"Month",description:"Social media management and content support"},
-    {id:"local-8",name:"WhatsApp Automation",price:7500,unit:"Project",description:"WhatsApp automation using official API"},
-    {id:"local-9",name:"AI Automation",price:10000,unit:"Project",description:"AI-powered business workflow automation"},
-    {id:"local-10",name:"Domain",price:1000,unit:"Year",description:"Domain registration"},
-    {id:"local-11",name:"Hosting",price:3000,unit:"Year",description:"Web hosting service"},
-    {id:"local-12",name:"Logo Design",price:2500,unit:"Project",description:"Professional business logo design"},
-    {id:"local-13",name:"UI/UX Design",price:5000,unit:"Project",description:"Professional UI/UX design service"},
-    {id:"local-14",name:"Custom Software",price:30000,unit:"Project",description:"Custom software / web application development"}
+    {id:"local-1",name:"Landing Page",price:3999,unit:"Project",category:"Website Development",description:"Professional conversion-focused landing page"},
+    {id:"local-2",name:"Portfolio Website",price:4999,unit:"Project",category:"Website Development",description:"Responsive professional portfolio website"},
+    {id:"local-3",name:"Business Website",price:7999,unit:"Project",category:"Website Development",description:"5–7 page responsive business website with contact, WhatsApp, SEO and Google Maps"},
+    {id:"local-4",name:"Website Redesign",price:5999,unit:"Project",category:"Website Development",description:"Modern redesign and UI improvement for an existing website"},
+    {id:"local-5",name:"WordPress Website",price:6999,unit:"Project",category:"Website Development",description:"Professional WordPress business website"},
+    {id:"local-6",name:"E-commerce Website",price:14999,unit:"Project",category:"Website Development",description:"Professional online store / e-commerce website"},
+    {id:"local-7",name:"Custom Web Application",price:19999,unit:"Project",category:"Website Development",description:"Custom web application development; final price depends on scope"},
+    {id:"local-8",name:"Starter Website Package",price:4999,unit:"Project",category:"Website Packages",description:"1–3 pages, responsive design, contact/WhatsApp integration and basic SEO"},
+    {id:"local-9",name:"Business Website Package",price:7999,unit:"Project",category:"Website Packages",description:"5–7 pages, premium responsive UI, contact form, WhatsApp, SEO, Google Maps and deployment"},
+    {id:"local-10",name:"Professional Website Package",price:11999,unit:"Project",category:"Website Packages",description:"8–12 pages, premium UI/UX, advanced animations, forms/integrations, SEO, analytics and deployment"},
+    {id:"local-11",name:"AI Chatbot",price:7999,unit:"Project",category:"AI & Automation",description:"AI chatbot implementation"},
+    {id:"local-12",name:"AI Website Assistant",price:9999,unit:"Project",category:"AI & Automation",description:"AI assistant integrated into a website"},
+    {id:"local-13",name:"AI Automation",price:9999,unit:"Project",category:"AI & Automation",description:"AI-powered workflow automation; final price depends on scope"},
+    {id:"local-14",name:"Google Sheets Automation",price:3999,unit:"Project",category:"AI & Automation",description:"Automation using Google Sheets"},
+    {id:"local-15",name:"Google Apps Script Automation",price:4999,unit:"Project",category:"AI & Automation",description:"Custom Google Apps Script automation"},
+    {id:"local-16",name:"Email Automation",price:2999,unit:"Project",category:"AI & Automation",description:"Automated email workflow setup"},
+    {id:"local-17",name:"WhatsApp Integration",price:1499,unit:"Project",category:"AI & Automation",description:"WhatsApp integration for website/business workflows"},
+    {id:"local-18",name:"Appointment Booking System",price:4999,unit:"Project",category:"AI & Automation",description:"Online appointment booking system"},
+    {id:"local-19",name:"Excel Dashboard",price:3999,unit:"Project",category:"Data Analytics",description:"Professional Excel dashboard"},
+    {id:"local-20",name:"Power BI Dashboard",price:5999,unit:"Project",category:"Data Analytics",description:"Interactive Power BI dashboard"},
+    {id:"local-21",name:"Data Analytics Dashboard",price:7999,unit:"Project",category:"Data Analytics",description:"Custom business analytics dashboard"},
+    {id:"local-22",name:"Google Business Profile Setup",price:1999,unit:"Project",category:"Setup & Support",description:"Google Business Profile setup"},
+    {id:"local-23",name:"SEO Basic Setup",price:2999,unit:"Project",category:"Setup & Support",description:"Basic SEO setup"},
+    {id:"local-24",name:"Website Speed Optimization",price:2999,unit:"Project",category:"Setup & Support",description:"Website performance optimization"},
+    {id:"local-25",name:"Website Security Setup",price:1999,unit:"Project",category:"Setup & Support",description:"Basic website security setup"},
+    {id:"local-26",name:"1 Year Hosting",price:1499,unit:"Year",category:"Setup & Support",description:"One year website hosting. Domain registration is separate."},
+    {id:"local-27",name:"Domain Registration",price:0,unit:"Actual Cost",category:"Setup & Support",description:"Domain registration charged separately at actual cost depending on domain name and extension."},
+    {id:"local-28",name:"Website Deployment",price:999,unit:"Project",category:"Setup & Support",description:"Website deployment and production setup"},
+    {id:"local-29",name:"SSL Setup",price:499,unit:"Project",category:"Setup & Support",description:"SSL setup; free SSL may be included by the hosting provider"},
+    {id:"local-30",name:"Website Maintenance",price:1499,unit:"Month",category:"Setup & Support",description:"Monthly website maintenance and technical support"},
+    {id:"local-31",name:"Social Media Integration",price:999,unit:"Project",category:"Setup & Support",description:"Social media integration on website"}
 ];
 
 async function loadServiceItems() {
@@ -4500,6 +4634,199 @@ async function loadServiceItems() {
         serviceItems = fallbackServiceItems;
     }
 }
+
+// =========================
+// SERVICE CATALOG MANAGEMENT
+// =========================
+let allServiceItems = [];
+let editingServiceItemId = null;
+
+const RECOMMENDED_SERVICE_ITEMS = fallbackServiceItems;
+
+async function applyRecommendedPricing() {
+    const button = document.getElementById("applyRecommendedPricingBtn");
+    if (button) { button.disabled = true; button.textContent = "Updating..."; }
+
+    try {
+        const existingByName = new Map(allServiceItems.map(item => [String(item.name || "").trim().toLowerCase(), item]));
+
+        for (const item of RECOMMENDED_SERVICE_ITEMS) {
+            const existing = existingByName.get(item.name.trim().toLowerCase());
+            const payload = {
+                name: item.name,
+                category: item.category,
+                description: item.description,
+                price: item.price,
+                unit: item.unit,
+                status: "Active"
+            };
+
+            const response = await fetch(
+                existing
+                    ? `https://nexttech-backend-euka.onrender.com/api/admin/service-items/${existing.id}`
+                    : "https://nexttech-backend-euka.onrender.com/api/admin/service-items",
+                {
+                    method: existing ? "PATCH" : "POST",
+                    headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
+                    body: JSON.stringify(payload)
+                }
+            );
+
+            const data = await response.json();
+            if (!response.ok || !data.success) {
+                throw new Error(data.message || `Failed to update ${item.name}.`);
+            }
+        }
+
+        await loadServiceCatalogAdmin();
+        await loadServiceItems();
+        alert("Recommended NextTech Labs pricing has been applied successfully.");
+    } catch (error) {
+        console.error("Recommended Pricing Error:", error);
+        alert(error.message || "Could not apply recommended pricing.");
+    } finally {
+        if (button) { button.disabled = false; button.textContent = "Apply Recommended Pricing"; }
+    }
+}
+
+document.getElementById("applyRecommendedPricingBtn")?.addEventListener("click", applyRecommendedPricing);
+
+async function loadServiceCatalogAdmin() {
+    const table = document.getElementById("serviceItemsTable");
+    if (!table) return;
+
+    try {
+        const response = await fetch(
+            "https://nexttech-backend-euka.onrender.com/api/admin/service-items/all",
+            { headers: { Authorization: `Bearer ${token}` } }
+        );
+        const data = await response.json();
+        if (!response.ok || !data.success) throw new Error(data.message || "Failed to load service catalog.");
+        allServiceItems = data.items || [];
+        renderServiceItems();
+    } catch (error) {
+        console.error("Service Catalog Error:", error);
+        allServiceItems = fallbackServiceItems;
+        renderServiceItems();
+    }
+}
+
+function serviceMoney(value) {
+    return Number(value || 0).toLocaleString("en-IN", { minimumFractionDigits: 0, maximumFractionDigits: 2 });
+}
+
+function renderServiceItems() {
+    const table = document.getElementById("serviceItemsTable");
+    if (!table) return;
+    const search = (document.getElementById("serviceItemSearch")?.value || "").toLowerCase().trim();
+    const category = document.getElementById("serviceItemCategoryFilter")?.value || "All";
+
+    const rows = allServiceItems.filter(item => {
+        const text = `${item.name || ""} ${item.category || ""} ${item.description || ""}`.toLowerCase();
+        return (!search || text.includes(search)) && (category === "All" || item.category === category);
+    });
+
+    if (!rows.length) {
+        table.innerHTML = `<tr><td colspan="6" class="empty">No service items found.</td></tr>`;
+        return;
+    }
+
+    table.innerHTML = rows.map(item => `
+        <tr>
+            <td><strong>${escapeHtml(item.name || "-")}</strong><br><small>${escapeHtml(item.description || "")}</small></td>
+            <td>${escapeHtml(item.category || "-")}</td>
+            <td><strong>${Number(item.price || 0) === 0 ? "Actual Cost" : `₹${serviceMoney(item.price)}`}</strong></td>
+            <td>${escapeHtml(item.unit || "Project")}</td>
+            <td>${escapeHtml(item.status || "Active")}</td>
+            <td>
+                <button class="edit-btn" onclick="editServiceItem(${item.id})">Edit</button>
+                <button class="delete-btn" onclick="deleteServiceItem(${item.id})">Delete</button>
+            </td>
+        </tr>
+    `).join("");
+}
+
+function openServiceItemModal(item = null) {
+    editingServiceItemId = item?.id || null;
+    document.getElementById("serviceItemModalTitle").textContent = item ? "Edit Service" : "Add Service";
+    document.getElementById("serviceItemId").value = item?.id || "";
+    document.getElementById("serviceItemName").value = item?.name || "";
+    document.getElementById("serviceItemCategory").value = item?.category || "Website Development";
+    document.getElementById("serviceItemPrice").value = item?.price ?? 0;
+    document.getElementById("serviceItemUnit").value = item?.unit || "Project";
+    document.getElementById("serviceItemStatus").value = item?.status || "Active";
+    document.getElementById("serviceItemDescription").value = item?.description || "";
+    document.getElementById("serviceItemModal").style.display = "flex";
+}
+
+function closeServiceItemModal() {
+    document.getElementById("serviceItemModal").style.display = "none";
+    editingServiceItemId = null;
+}
+
+window.editServiceItem = function(id) {
+    const item = allServiceItems.find(x => Number(x.id) === Number(id));
+    if (item) openServiceItemModal(item);
+};
+
+window.deleteServiceItem = async function(id) {
+    const item = allServiceItems.find(x => Number(x.id) === Number(id));
+    if (!item || !confirm(`Delete ${item.name}?`)) return;
+
+    try {
+        const response = await fetch(`https://nexttech-backend-euka.onrender.com/api/admin/service-items/${id}`, {
+            method: "DELETE",
+            headers: { Authorization: `Bearer ${token}` }
+        });
+        const data = await response.json();
+        if (!response.ok || !data.success) throw new Error(data.message || "Failed to delete service.");
+        await loadServiceCatalogAdmin();
+        await loadServiceItems();
+        alert("Service deleted successfully.");
+    } catch (error) {
+        alert(error.message);
+    }
+};
+
+document.getElementById("addServiceItemBtn")?.addEventListener("click", () => openServiceItemModal());
+document.getElementById("closeServiceItemModal")?.addEventListener("click", closeServiceItemModal);
+document.getElementById("cancelServiceItemBtn")?.addEventListener("click", closeServiceItemModal);
+document.getElementById("serviceItemSearch")?.addEventListener("input", renderServiceItems);
+document.getElementById("serviceItemCategoryFilter")?.addEventListener("change", renderServiceItems);
+
+document.getElementById("serviceItemForm")?.addEventListener("submit", async event => {
+    event.preventDefault();
+
+    const payload = {
+        name: document.getElementById("serviceItemName").value.trim(),
+        category: document.getElementById("serviceItemCategory").value,
+        price: Number(document.getElementById("serviceItemPrice").value || 0),
+        unit: document.getElementById("serviceItemUnit").value,
+        status: document.getElementById("serviceItemStatus").value,
+        description: document.getElementById("serviceItemDescription").value.trim()
+    };
+
+    const url = editingServiceItemId
+        ? `https://nexttech-backend-euka.onrender.com/api/admin/service-items/${editingServiceItemId}`
+        : "https://nexttech-backend-euka.onrender.com/api/admin/service-items";
+
+    try {
+        const response = await fetch(url, {
+            method: editingServiceItemId ? "PATCH" : "POST",
+            headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
+            body: JSON.stringify(payload)
+        });
+        const data = await response.json();
+        if (!response.ok || !data.success) throw new Error(data.message || "Failed to save service.");
+        closeServiceItemModal();
+        await loadServiceCatalogAdmin();
+        await loadServiceItems();
+        alert(editingServiceItemId ? "Service updated successfully." : "Service added successfully.");
+    } catch (error) {
+        alert(error.message);
+    }
+});
+
 
 function addQuotationItem(item = {}) {
     const container = document.getElementById("quotationItems");
@@ -4667,6 +4994,7 @@ if (addQuotationButton) {
 
             editingQuotationId = null;
             form.reset();
+            document.getElementById("quotationNotes").value = QUOTATION_DEFAULT_NOTES;
 
             // Auto-generate quotation number for every new quotation.
             const numberField = document.getElementById("quotationNumber");
@@ -5161,6 +5489,9 @@ window.convertQuotationToInvoice = function(id) {
     document.getElementById("invoiceDescription").value =
         quotation.description || "";
 
+    document.getElementById("invoiceNotes").value =
+        quotation.notes || INVOICE_DEFAULT_NOTES;
+
     document.getElementById("invoiceStatus").value =
         "Draft";
 
@@ -5431,6 +5762,7 @@ function resetInvoiceForm() {
 
     document.getElementById("invoiceDiscount").value = 0;
     document.getElementById("invoiceTax").value = 0;
+    document.getElementById("invoiceNotes").value = INVOICE_DEFAULT_NOTES;
 
     populateInvoiceClients();
     populateInvoiceQuotations();
@@ -6863,6 +7195,14 @@ Engineering Smart Digital Solutions
         document.getElementById("premiumDocumentModal")?.addEventListener("click",e=>{if(e.target.id==="premiumDocumentModal")closePreview()});
     });
 })();
+
+document.addEventListener("DOMContentLoaded", () => {
+    const quotationNotes = document.getElementById("quotationNotes");
+    if (quotationNotes && !quotationNotes.value) quotationNotes.value = QUOTATION_DEFAULT_NOTES;
+    const invoiceNotes = document.getElementById("invoiceNotes");
+    if (invoiceNotes && !invoiceNotes.value) invoiceNotes.value = INVOICE_DEFAULT_NOTES;
+    loadServiceCatalogAdmin();
+});
 </script>
 
 </body>
