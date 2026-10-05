@@ -1888,46 +1888,73 @@
 <!-- =========================
      Services & Pricing Section
 ========================= -->
-<section class="dashboard-section" id="serviceItemsSection">
-    <div class="section-header">
+<section class="dashboard-section service-catalog-section" id="serviceItemsSection">
+    <div class="service-catalog-hero">
+        <div class="service-catalog-title">
+            <div class="service-catalog-icon">₹</div>
+            <div>
+                <div class="service-eyebrow">PRICING CONTROL CENTER</div>
+                <h2>Services & Pricing</h2>
+                <p>Control the services, packages and rates that appear across your quotations and invoices.</p>
+            </div>
+        </div>
+        <div class="service-catalog-actions">
+            <button class="service-btn service-btn-ghost" id="applyRecommendedPricingBtn">↻ Apply Recommended Pricing</button>
+            <button class="service-btn service-btn-primary" id="addServiceItemBtn">＋ Add Service</button>
+        </div>
+    </div>
+
+    <div class="service-stats-grid">
+        <div class="service-stat-card">
+            <span class="service-stat-label">TOTAL SERVICES</span>
+            <strong id="serviceTotalCount">—</strong>
+            <small>Across all categories</small>
+        </div>
+        <div class="service-stat-card service-stat-active">
+            <span class="service-stat-label">ACTIVE</span>
+            <strong id="serviceActiveCount">—</strong>
+            <small>Available in quotations</small>
+        </div>
+        <div class="service-stat-card">
+            <span class="service-stat-label">CATEGORIES</span>
+            <strong id="serviceCategoryCount">—</strong>
+            <small>Pricing groups</small>
+        </div>
+        <div class="service-stat-card service-stat-note">
+            <span class="service-stat-label">HOSTING</span>
+            <strong>₹1,499<span>/year</span></strong>
+            <small>Domain charged separately</small>
+        </div>
+    </div>
+
+    <div class="service-catalog-toolbar">
+        <div class="service-search-wrap">
+            <span class="service-search-icon">⌕</span>
+            <input type="text" id="serviceItemSearch" placeholder="Search services, packages or descriptions...">
+        </div>
+        <div class="service-filter-wrap">
+            <label for="serviceItemCategoryFilter">Category</label>
+            <select id="serviceItemCategoryFilter">
+                <option value="All">All Categories</option>
+                <option value="Website Development">Website Development</option>
+                <option value="Website Packages">Website Packages</option>
+                <option value="AI & Automation">AI & Automation</option>
+                <option value="Data Analytics">Data Analytics</option>
+                <option value="Setup & Support">Setup & Support</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="service-catalog-head">
         <div>
-            <h2>Services & Pricing</h2>
-            <p>Manage services, packages and rates used in quotations and invoices.</p>
+            <span>Service catalog</span>
+            <small>These rates are used when creating quotations and invoices.</small>
         </div>
-        <div style="display:flex;gap:10px;flex-wrap:wrap;">
-            <button class="secondary-btn" id="applyRecommendedPricingBtn">Apply Recommended Pricing</button>
-            <button class="primary-btn" id="addServiceItemBtn">+ Add Service</button>
-        </div>
+        <span class="service-catalog-live"><i></i> Live pricing</span>
     </div>
 
-    <div class="client-filters">
-        <input type="text" id="serviceItemSearch" placeholder="Search service or package...">
-        <select id="serviceItemCategoryFilter">
-            <option value="All">All Categories</option>
-            <option value="Website Development">Website Development</option>
-            <option value="Website Packages">Website Packages</option>
-            <option value="AI & Automation">AI & Automation</option>
-            <option value="Data Analytics">Data Analytics</option>
-            <option value="Setup & Support">Setup & Support</option>
-        </select>
-    </div>
-
-    <div class="projects-table-wrapper">
-        <table class="projects-table">
-            <thead>
-                <tr>
-                    <th>Service</th>
-                    <th>Category</th>
-                    <th>Rate</th>
-                    <th>Unit</th>
-                    <th>Status</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody id="serviceItemsTable">
-                <tr><td colspan="6" class="loading">Loading services...</td></tr>
-            </tbody>
-        </table>
+    <div class="service-cards-grid" id="serviceItemsTable">
+        <div class="service-loading-card">Loading services...</div>
     </div>
 </section>
 
@@ -4716,8 +4743,9 @@ function serviceMoney(value) {
 }
 
 function renderServiceItems() {
-    const table = document.getElementById("serviceItemsTable");
-    if (!table) return;
+    const container = document.getElementById("serviceItemsTable");
+    if (!container) return;
+
     const search = (document.getElementById("serviceItemSearch")?.value || "").toLowerCase().trim();
     const category = document.getElementById("serviceItemCategoryFilter")?.value || "All";
 
@@ -4726,24 +4754,56 @@ function renderServiceItems() {
         return (!search || text.includes(search)) && (category === "All" || item.category === category);
     });
 
+    const activeCount = allServiceItems.filter(item => String(item.status || "Active").toLowerCase() === "active").length;
+    const categories = new Set(allServiceItems.map(item => item.category).filter(Boolean));
+    document.getElementById("serviceTotalCount") && (document.getElementById("serviceTotalCount").textContent = allServiceItems.length);
+    document.getElementById("serviceActiveCount") && (document.getElementById("serviceActiveCount").textContent = activeCount);
+    document.getElementById("serviceCategoryCount") && (document.getElementById("serviceCategoryCount").textContent = categories.size);
+
     if (!rows.length) {
-        table.innerHTML = `<tr><td colspan="6" class="empty">No service items found.</td></tr>`;
+        container.innerHTML = `
+            <div class="service-empty-card">
+                <div class="service-empty-icon">⌕</div>
+                <h3>No services found</h3>
+                <p>Try another search or category, or add a new service.</p>
+                <button class="service-btn service-btn-primary" onclick="document.getElementById('addServiceItemBtn')?.click()">＋ Add Service</button>
+            </div>`;
         return;
     }
 
-    table.innerHTML = rows.map(item => `
-        <tr>
-            <td><strong>${escapeHtml(item.name || "-")}</strong><br><small>${escapeHtml(item.description || "")}</small></td>
-            <td>${escapeHtml(item.category || "-")}</td>
-            <td><strong>${Number(item.price || 0) === 0 ? "Actual Cost" : `₹${serviceMoney(item.price)}`}</strong></td>
-            <td>${escapeHtml(item.unit || "Project")}</td>
-            <td>${escapeHtml(item.status || "Active")}</td>
-            <td>
-                <button class="edit-btn" onclick="editServiceItem(${item.id})">Edit</button>
-                <button class="delete-btn" onclick="deleteServiceItem(${item.id})">Delete</button>
-            </td>
-        </tr>
-    `).join("");
+    container.innerHTML = rows.map(item => {
+        const isActive = String(item.status || "Active").toLowerCase() === "active";
+        const price = Number(item.price || 0);
+        const priceLabel = price === 0 ? "Actual Cost" : `₹${serviceMoney(price)}`;
+        const unit = item.unit || "Project";
+        const categoryName = item.category || "Uncategorized";
+        const initials = String(item.name || "S").trim().split(/\s+/).slice(0, 2).map(word => word[0]).join("").toUpperCase();
+        return `
+            <article class="service-card ${isActive ? "" : "service-card-inactive"}">
+                <div class="service-card-top">
+                    <div class="service-service-icon">${escapeHtml(initials || "S")}</div>
+                    <div class="service-card-meta">
+                        <span class="service-category-pill">${escapeHtml(categoryName)}</span>
+                        <span class="service-status-pill ${isActive ? "active" : "inactive"}"><i></i>${isActive ? "Active" : "Inactive"}</span>
+                    </div>
+                </div>
+                <div class="service-card-body">
+                    <h3>${escapeHtml(item.name || "Untitled Service")}</h3>
+                    <p>${escapeHtml(item.description || "No description added for this service.")}</p>
+                </div>
+                <div class="service-card-footer">
+                    <div class="service-price-block">
+                        <span>RATE</span>
+                        <strong>${priceLabel}</strong>
+                        <small>${price === 0 ? "Quoted at actual cost" : `per ${escapeHtml(unit)}`}</small>
+                    </div>
+                    <div class="service-card-actions">
+                        <button class="service-action-btn edit" onclick="editServiceItem(${item.id})" title="Edit service">✎ <span>Edit</span></button>
+                        <button class="service-action-btn delete" onclick="deleteServiceItem(${item.id})" title="Delete service">⌫</button>
+                    </div>
+                </div>
+            </article>`;
+    }).join("");
 }
 
 function openServiceItemModal(item = null) {
@@ -6831,7 +6891,95 @@ const NEXTTECH_STAMP_DATA = "nexttech-stamp.webp";
         const body=document.getElementById("premiumDocumentBody").innerHTML;
         const win=window.open("","_blank","width=900,height=1000");
         if(!win) return alert("Please allow pop-ups for PDF/print.");
-        win.document.write(`<!doctype html><html><head><title>NextTech Labs Document</title><style>${document.querySelector("style").textContent}</style></head><body>${body}</body></html>`);
+        win.document.write(`<!doctype html><html><head><title>NextTech Labs Document</title><style>${document.querySelector("style").textContent}
+/* =========================================================
+   PREMIUM SERVICES & PRICING CONTROL CENTER
+========================================================= */
+.service-catalog-section{
+    margin-top:38px;
+    padding:0 0 42px;
+}
+.service-catalog-hero{
+    position:relative;
+    overflow:hidden;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:24px;
+    padding:26px 28px;
+    border:1px solid rgba(99,102,241,.16);
+    border-radius:22px;
+    background:
+        radial-gradient(circle at 88% 15%,rgba(37,99,235,.15),transparent 30%),
+        radial-gradient(circle at 10% 100%,rgba(124,58,237,.10),transparent 35%),
+        linear-gradient(135deg,#ffffff 0%,#f8faff 55%,#f6f3ff 100%);
+    box-shadow:0 18px 50px rgba(15,23,42,.08);
+}
+.service-catalog-hero:after{
+    content:"";position:absolute;right:-70px;bottom:-100px;width:260px;height:260px;border-radius:50%;
+    border:1px solid rgba(99,102,241,.10);box-shadow:0 0 0 35px rgba(99,102,241,.025),0 0 0 70px rgba(99,102,241,.018);
+}
+.service-catalog-title{display:flex;align-items:center;gap:16px;position:relative;z-index:1}
+.service-catalog-icon{width:52px;height:52px;border-radius:16px;display:grid;place-items:center;color:#fff;font-size:22px;font-weight:800;background:linear-gradient(135deg,#2563eb,#7c3aed);box-shadow:0 12px 24px rgba(79,70,229,.25)}
+.service-eyebrow{font-size:10px;letter-spacing:.16em;font-weight:800;color:#6366f1;margin-bottom:4px}
+.service-catalog-hero h2{margin:0;color:#0f172a;font-size:26px;line-height:1.15}
+.service-catalog-hero p{margin:7px 0 0;color:#64748b;font-size:13px;max-width:650px}
+.service-catalog-actions{display:flex;gap:10px;flex-wrap:wrap;position:relative;z-index:2}
+.service-btn{border:0;border-radius:12px;padding:11px 15px;font-size:12px;font-weight:800;cursor:pointer;transition:.2s ease;white-space:nowrap}
+.service-btn:hover{transform:translateY(-1px)}
+.service-btn-primary{color:#fff;background:linear-gradient(135deg,#2563eb,#4f46e5);box-shadow:0 9px 20px rgba(37,99,235,.22)}
+.service-btn-ghost{color:#334155;background:rgba(255,255,255,.8);border:1px solid #dbe2ee;box-shadow:0 6px 15px rgba(15,23,42,.05)}
+.service-stats-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;margin:16px 0}
+.service-stat-card{position:relative;overflow:hidden;padding:17px 18px;border:1px solid #e7eaf0;border-radius:17px;background:#fff;box-shadow:0 8px 25px rgba(15,23,42,.045)}
+.service-stat-card:before{content:"";position:absolute;left:0;top:0;width:4px;height:100%;background:linear-gradient(180deg,#2563eb,#7c3aed)}
+.service-stat-label{display:block;font-size:9px;letter-spacing:.13em;font-weight:800;color:#94a3b8}
+.service-stat-card strong{display:block;margin-top:6px;font-size:25px;color:#0f172a;line-height:1}
+.service-stat-card strong span{font-size:11px;color:#64748b;font-weight:700;margin-left:3px}
+.service-stat-card small{display:block;margin-top:7px;color:#94a3b8;font-size:10px}
+.service-stat-active:before{background:linear-gradient(180deg,#10b981,#06b6d4)}
+.service-stat-note:before{background:linear-gradient(180deg,#8b5cf6,#ec4899)}
+.service-catalog-toolbar{display:flex;gap:12px;align-items:center;padding:13px;border:1px solid #e7eaf0;border-radius:17px;background:#fff;box-shadow:0 8px 24px rgba(15,23,42,.04);margin-bottom:14px}
+.service-search-wrap{position:relative;flex:1}
+.service-search-icon{position:absolute;left:14px;top:50%;transform:translateY(-51%);font-size:19px;color:#94a3b8;pointer-events:none}
+.service-search-wrap input,.service-filter-wrap select{height:42px;box-sizing:border-box;border:1px solid #e2e8f0;border-radius:11px;background:#f8fafc;color:#0f172a;font-size:12px;outline:0;transition:.2s ease}
+.service-search-wrap input{width:100%;padding:0 13px 0 38px}
+.service-filter-wrap{display:flex;align-items:center;gap:8px}
+.service-filter-wrap label{font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.08em;color:#94a3b8}
+.service-filter-wrap select{padding:0 34px 0 12px;min-width:190px}
+.service-search-wrap input:focus,.service-filter-wrap select:focus{border-color:#818cf8;box-shadow:0 0 0 3px rgba(99,102,241,.10);background:#fff}
+.service-catalog-head{display:flex;align-items:center;justify-content:space-between;margin:20px 2px 11px}
+.service-catalog-head span:first-child{font-size:13px;font-weight:800;color:#0f172a}
+.service-catalog-head small{display:block;color:#94a3b8;font-size:10px;margin-top:3px}
+.service-catalog-live{display:inline-flex;align-items:center;gap:6px;color:#059669;font-size:10px;font-weight:800;background:#ecfdf5;border:1px solid #bbf7d0;padding:7px 10px;border-radius:999px}
+.service-catalog-live i,.service-status-pill i{width:6px;height:6px;border-radius:50%;display:inline-block;background:#10b981;box-shadow:0 0 0 3px rgba(16,185,129,.12)}
+.service-cards-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+.service-card{position:relative;display:flex;flex-direction:column;min-height:220px;border:1px solid #e6eaf1;border-radius:19px;background:#fff;overflow:hidden;box-shadow:0 8px 26px rgba(15,23,42,.045);transition:transform .2s ease,box-shadow .2s ease,border-color .2s ease}
+.service-card:hover{transform:translateY(-3px);box-shadow:0 16px 34px rgba(15,23,42,.09);border-color:#d7dcf5}
+.service-card:after{content:"";position:absolute;inset:0 0 auto 0;height:3px;background:linear-gradient(90deg,#2563eb,#7c3aed,#06b6d4);opacity:.9}
+.service-card-inactive{opacity:.72}
+.service-card-top{display:flex;align-items:center;justify-content:space-between;padding:18px 18px 0}
+.service-service-icon{width:38px;height:38px;border-radius:12px;display:grid;place-items:center;background:linear-gradient(135deg,#eef2ff,#eff6ff);color:#4338ca;font-size:11px;font-weight:900;border:1px solid #e0e7ff}
+.service-card-meta{display:flex;align-items:center;gap:6px;flex-wrap:wrap;justify-content:flex-end}
+.service-category-pill{max-width:145px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;padding:5px 8px;border-radius:7px;background:#f8fafc;color:#64748b;font-size:9px;font-weight:800;border:1px solid #e2e8f0}
+.service-status-pill{display:inline-flex;align-items:center;gap:6px;padding:5px 8px;border-radius:999px;font-size:9px;font-weight:800}
+.service-status-pill.active{background:#ecfdf5;color:#047857}.service-status-pill.inactive{background:#fef2f2;color:#b91c1c}.service-status-pill.inactive i{background:#ef4444;box-shadow:none}
+.service-card-body{padding:14px 18px 15px;flex:1}
+.service-card-body h3{margin:0;color:#111827;font-size:14px;line-height:1.35}
+.service-card-body p{margin:7px 0 0;color:#64748b;font-size:10.5px;line-height:1.55;min-height:33px}
+.service-card-footer{display:flex;align-items:flex-end;justify-content:space-between;gap:12px;padding:13px 18px 16px;border-top:1px solid #eef2f7;background:linear-gradient(180deg,#fff,#fbfcfe)}
+.service-price-block span{display:block;font-size:8px;letter-spacing:.12em;font-weight:900;color:#94a3b8}
+.service-price-block strong{display:block;margin-top:3px;color:#111827;font-size:18px;line-height:1.1}
+.service-price-block small{display:block;margin-top:4px;color:#94a3b8;font-size:9px}
+.service-card-actions{display:flex;align-items:center;gap:6px}
+.service-action-btn{height:32px;border-radius:9px;border:1px solid #e2e8f0;padding:0 10px;font-size:10px;font-weight:800;cursor:pointer;transition:.18s ease}
+.service-action-btn.edit{background:#f8fafc;color:#334155}.service-action-btn.edit:hover{background:#eef2ff;color:#4338ca;border-color:#c7d2fe}
+.service-action-btn.delete{width:32px;padding:0;background:#fff5f5;color:#dc2626;border-color:#fecaca}.service-action-btn.delete:hover{background:#fee2e2}
+.service-loading-card,.service-empty-card{grid-column:1/-1;min-height:180px;display:grid;place-items:center;text-align:center;border:1px dashed #d7deea;border-radius:18px;background:#fff;color:#64748b;padding:30px}
+.service-empty-card{display:flex;flex-direction:column}.service-empty-icon{width:44px;height:44px;border-radius:14px;display:grid;place-items:center;background:#eef2ff;color:#4f46e5;font-size:22px;margin-bottom:10px}.service-empty-card h3{margin:0;color:#0f172a}.service-empty-card p{margin:6px 0 14px;font-size:11px}
+@media (max-width:1100px){.service-cards-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.service-stats-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.service-catalog-hero{align-items:flex-start;flex-direction:column}.service-catalog-actions{width:100%}}
+@media (max-width:700px){.service-cards-grid{grid-template-columns:1fr}.service-stats-grid{grid-template-columns:1fr 1fr}.service-catalog-toolbar{align-items:stretch;flex-direction:column}.service-filter-wrap{justify-content:space-between}.service-filter-wrap select{flex:1}.service-catalog-head{align-items:flex-start;gap:10px;flex-direction:column}.service-catalog-hero{padding:21px}.service-catalog-actions .service-btn{flex:1}.service-card-footer{align-items:flex-start;flex-direction:column}.service-card-actions{width:100%}.service-action-btn.edit{flex:1}}
+@media (max-width:460px){.service-stats-grid{grid-template-columns:1fr}.service-catalog-title{align-items:flex-start}.service-catalog-icon{width:44px;height:44px}.service-catalog-hero h2{font-size:22px}}
+</style></head><body>${body}</body></html>`);
         win.document.close(); setTimeout(()=>win.print(),350);
     }
 
