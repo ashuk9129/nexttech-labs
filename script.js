@@ -177,31 +177,35 @@ Website Loaded Successfully 🚀
 // Contact Form - Backend API
 // =========================
 
+
+// =========================
+// Contact Form - Cloudflare Worker + D1
+// =========================
+
 const contactForm = document.getElementById("contactForm");
 
 if (contactForm) {
-
     contactForm.addEventListener("submit", async function (e) {
-
         e.preventDefault();
 
         const btn = document.getElementById("sendBtn");
 
-        btn.disabled = true;
-        btn.innerHTML = "Sending...";
-
         const leadData = {
-            name: document.getElementById("name").value.trim(),
-            email: document.getElementById("email").value.trim(),
-            phone: document.getElementById("phone").value.trim(),
-            subject: document.getElementById("subject").value,
-            message: document.getElementById("message").value.trim()
+            name: document.getElementById("name")?.value.trim() || "",
+            email: document.getElementById("email")?.value.trim() || "",
+            phone: document.getElementById("phone")?.value.trim() || "",
+            subject: document.getElementById("subject")?.value.trim() || "",
+            message: document.getElementById("message")?.value.trim() || ""
         };
 
-        try {
+        if (btn) {
+            btn.disabled = true;
+            btn.innerHTML = "Sending...";
+        }
 
+        try {
             const response = await fetch(
-                "https://nexttech-backend-euka.onrender.com/api/leads",
+                "https://nexttech-contact-api.ashutoshbro25.workers.dev/api/contact",
                 {
                     method: "POST",
                     headers: {
@@ -213,38 +217,45 @@ if (contactForm) {
 
             const data = await response.json();
 
-            if (!response.ok) {
-                throw new Error(
-                    data.message || "Failed to save lead."
-                );
+            if (!response.ok || !data.success) {
+                throw new Error(data.message || "Failed to send message.");
             }
 
-            Swal.fire({
-                icon: "success",
-                title: "Message Sent!",
-                text: "Thank you for contacting NextTech Labs. We'll get back to you soon.",
-                confirmButtonColor: "#2563eb"
-            });
+            if (typeof Swal !== "undefined") {
+                Swal.fire({
+                    icon: "success",
+                    title: "Message Received!",
+                    text: data.emailSent
+                        ? "Thank you! Your message has been sent successfully."
+                        : "Your message has been saved. Email notification is still being checked.",
+                    confirmButtonColor: "#2563eb"
+                });
+            } else {
+                alert(data.emailSent
+                    ? "Message sent successfully!"
+                    : "Message saved. Email notification is still being checked.");
+            }
 
             contactForm.reset();
 
         } catch (error) {
-
             console.error("Contact Form Error:", error);
 
-            Swal.fire({
-                icon: "error",
-                title: "Oops!",
-                text: "Failed to send message. Please try again."
-            });
+            if (typeof Swal !== "undefined") {
+                Swal.fire({
+                    icon: "error",
+                    title: "Unable to Send",
+                    text: "Please try again. If the problem continues, contact us directly."
+                });
+            } else {
+                alert("Message send nahi hua. Please dobara try karein.");
+            }
 
         } finally {
-
-            btn.disabled = false;
-            btn.innerHTML = "Send Message";
-
+            if (btn) {
+                btn.disabled = false;
+                btn.innerHTML = "Send Message";
+            }
         }
-
     });
-
 }
